@@ -638,7 +638,7 @@ def CreateFileSelection(self,window):
                                 style = 'Modern2.TButton',
                                 width = 10
                                 )
-    self.btn_cont1.place(anchor = 'e', relx = 0.999, rely = 0.965)
+    self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
     self.att_list.append('self.btn_cont1')
     
     # Create Back Button
@@ -649,7 +649,7 @@ def CreateFileSelection(self,window):
                                 style = 'Modern2.TButton',
                                 width = 10
                                 )
-    self.btn_back1.place(anchor = 'e', relx = 0.915, rely = 0.965)
+    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
     self.att_list.append('self.btn_back1')
 
     # Create Help Button
@@ -672,7 +672,7 @@ def CreateFileSelection(self,window):
                                 style = "Modern2.TButton",
                                 width = 7
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.965)
+    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
     self.att_list.append('self.btn_help')
 
     # Load Files

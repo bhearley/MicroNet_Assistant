@@ -62,15 +62,15 @@ class MicroNetAssistant:
 
         #Add the Title
         img = Image.open(title_img)
-        scale = 1.5
+        scale = 1.75
         img = img.resize((int(img.width*scale), int(img.height*scale)))
         self.img_hdr = ImageTk.PhotoImage(img)
         self.panel_hdr = tk.Label(window, image = self.img_hdr, bg = 'white')
-        self.panel_hdr.place(anchor = 'n', relx = 0.5, rely = 0.005)
+        self.panel_hdr.place(anchor = 'n', relx = 0.5, rely = 0.015)
 
         #Add the NASA Logo
         img = Image.open(logo_img)
-        scale = 0.8
+        scale = 1
         img = img.resize((int(img.width*scale), int(img.height*scale)))
         self.img_nasa = ImageTk.PhotoImage(img)
         self.panel_nasa = tk.Label(window, image = self.img_nasa, bg = 'white')
@@ -136,7 +136,7 @@ class MicroNetAssistant:
                                 style = "Modern2.TButton",
                                 width = 8
                                 )
-            self.btn_save.place(anchor = 'w', relx = 0.0845, rely = 0.965)
+            self.btn_save.place(anchor = 'w', relx = 0.05425, rely = 0.975)
             
 
     # Function to create a new project

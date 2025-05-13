@@ -22,7 +22,7 @@ def GetStyles(self):
                         "Modern.TButton",
                         background='#0b3d91',
                         foreground="white",
-                        font=("Segoe UI", 16),
+                        font=("Segoe UI", 18),
                         borderwidth=2,
                         padding=10,
                         focuscolor='',
@@ -39,7 +39,7 @@ def GetStyles(self):
                         "Modern2.TButton",
                         background='#0b3d91',
                         foreground="white",
-                        font=("Segoe UI", 14),
+                        font=("Segoe UI", 16),
                         borderwidth=2,
                         padding=10,
                         focuscolor='',
@@ -234,7 +234,7 @@ def GetStyles(self):
                         "Modern3.TLabel",
                         foreground="black",
                         background="white",
-                        font=("Segoe UI", 14),
+                        font=("Segoe UI", 18),
                         padding=0
                         )
     
@@ -252,7 +252,7 @@ def GetStyles(self):
                         "ModernT.TLabel",
                         foreground="black",
                         background="white",
-                        font=("Segoe UI", 16, 'bold'),
+                        font=("Segoe UI", 24, 'bold'),
                         padding=0
                         )
     

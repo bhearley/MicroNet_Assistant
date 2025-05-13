@@ -100,8 +100,8 @@ def BuildStartPage(self,window):
                             window, 
                             bd=3, 
                             relief="ridge", 
-                            width = 300,
-                            height = 300,
+                            width = 400,
+                            height = 400,
                             bg="white"
                             )
     self.box_frame1.place(anchor = 'c', relx=0.35, rely=0.5)
@@ -144,8 +144,8 @@ def BuildStartPage(self,window):
                             window, 
                             bd=3, 
                             relief="ridge", 
-                            width = 300,
-                            height = 300,
+                            width = 400,
+                            height = 400,
                             bg="white"
                             )
     self.box_frame2.place(anchor = 'c', relx=0.65, rely=0.5)
@@ -202,5 +202,5 @@ def BuildStartPage(self,window):
                                 style = "Modern2.TButton",
                                 width = 7
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.965)
+    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
     self.att_list.append('self.btn_help')
