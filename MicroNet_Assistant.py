@@ -37,7 +37,7 @@ from ModelCreator.TrainModel import *
 from RUCGenerator.BuildRUCGenerator import *
 
 #Create the GUI
-class MNA:
+class MicroNetAssistant:
     #Initialize
     def __init__(self):
         #--------------------------------------------------------------------------
@@ -57,8 +57,8 @@ class MNA:
         window.configure(bg='white')
 
         # Define Images
-        title_img = os.path.join(os.getcwd(),'GUI','ModelCreator','TitleHeader.png') # Set the title image path
-        logo_img = os.path.join(os.getcwd(),'GUI','ModelCreator','NasaLogo.png')     # Set the logo image path
+        title_img = os.path.join(os.getcwd(),'GUI','General','TitleHeader.png') # Set the title image path
+        logo_img = os.path.join(os.getcwd(),'GUI','General','NasaLogo.png')     # Set the logo image path
 
         #Add the Title
         img = Image.open(title_img)
@@ -118,7 +118,7 @@ class MNA:
         if hasattr(self,"btn_save") == False:
             # Create the Save Button
             # -- Load an image using PIL
-            self.image_path_save = os.path.join(os.getcwd(),'GUI','ModelCreator','save.png') 
+            self.image_path_save = os.path.join(os.getcwd(),'GUI','General','save.png') 
             self.image_save = Image.open(self.image_path_save)
             scale = 0.065
             self.image_save = self.image_save.resize((int(self.image_save.width*scale), int(self.image_save.height*scale)))
@@ -369,4 +369,4 @@ class MNA:
             ]
 
 # Start the GUI
-MNA()
+MicroNetAssistant()
