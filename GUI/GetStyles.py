@@ -56,7 +56,7 @@ def GetStyles(self):
                         "Modern3.TButton",
                         background='#DD361C',
                         foreground="white",
-                        font=("Segoe UI", 12),
+                        font=("Segoe UI", 14),
                         borderwidth=2,
                         padding=5,
                         focuscolor='',
@@ -73,7 +73,7 @@ def GetStyles(self):
                         "Modern4.TButton",
                         background='#DD361C',
                         foreground="white",
-                        font=("Segoe UI", 20, "bold"),
+                        font=("Segoe UI", 24, "bold"),
                         borderwidth=2,
                         padding=2,
                         focuscolor='',
@@ -174,7 +174,7 @@ def GetStyles(self):
                                 'ListBox1':{
                                     'bg':"#ffffff",                 
                                     'fg':"#333333",                 
-                                    'font':("Segoe UI", 9),         
+                                    'font':("Segoe UI", 12),         
                                     'selectbackground':"#428bca",   
                                     'selectforeground':"white",     
                                     'highlightthickness':1,         
@@ -205,7 +205,7 @@ def GetStyles(self):
                         background="#0b3d91",
                         troughcolor="#d9d9d9",
                         bordercolor="#cccccc",
-                        arrowcolor="#0b3d91"
+                        arrowcolor="#0b3d91",
                         )
     
     
