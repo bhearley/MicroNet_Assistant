@@ -17,6 +17,7 @@ def CropImages(self,window):
     import os
     from PIL import Image, ImageTk
     import tkinter as tk
+    import tkinter.font as tkfont
     from tkinter import messagebox
     from tkinter import ttk
 
@@ -190,15 +191,16 @@ def CropImages(self,window):
 
         # Create a Matplotlib figure
         if hasattr(self,"fig2") == False:
-            self.fig2, self.ax2 = plt.subplots(figsize=(8/1.15, 6/1.15))
-            self.fig2.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
+            scale_im = 0.8
+            self.fig2, self.ax2 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
+            self.fig2.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
         self.canvas = FigureCanvasTkAgg(self.fig2, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig2.get_figwidth() * self.fig2.get_dpi()),
                                 height=int(self.fig2.get_figheight() * self.fig2.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.15)
+        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.2)
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -221,7 +223,7 @@ def CropImages(self,window):
                                     background="white",
                                     style = "Modern2.TLabel"
                                     )
-        self.label_crop.place(anchor = 'n', relx = 0.45, rely = 0.86)
+        self.label_crop.place(anchor = 'n', relx = 0.47, rely = 0.86)
         self.loc_att_list.append('self.label_crop')
 
         # Register the validation function
@@ -234,10 +236,11 @@ def CropImages(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_C.insert(0, "700") # Set defualt value
-        self.entry_C.place(anchor = 'n', relx = 0.55, rely = 0.86)
+        self.entry_C.place(anchor = 'n', relx = 0.53, rely = 0.86)
         self.loc_att_list.append('self.entry_C')
         self.crop_window = int(self.entry_C.get())
 
@@ -290,15 +293,16 @@ def CropImages(self,window):
 
         # Create a Matplotlib figure
         if hasattr(self,"fig3") == False:
-            self.fig3, self.ax3 = plt.subplots(figsize=(8/1.15, 6/1.15))
-            self.fig3.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
+            scale_im = 0.8
+            self.fig3, self.ax3 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
+            self.fig3.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
         self.canvas = FigureCanvasTkAgg(self.fig3, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig3.get_figwidth() * self.fig3.get_dpi()),
                                 height=int(self.fig3.get_figheight() * self.fig3.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.15)
+        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.2)
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -599,7 +603,7 @@ def CropImages(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_01.place(anchor='n', relx = 0.25, rely = 0.2, height = 452)
+    self.scrollbar_01.place(anchor='n', relx = 0.225, rely = 0.2, height = 752)
     self.att_list.append('self.scrollbar_01')
     
     # Get list of all images
@@ -612,8 +616,8 @@ def CropImages(self,window):
                                 window, 
                                 listvariable=items,
                                 selectmode='single',
-                                height = 28,
-                                width = 48,
+                                height = 34,
+                                width = 54,
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -622,7 +626,7 @@ def CropImages(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_01.place(anchor='n', relx = 0.15, rely = 0.2)
+    self.listbox_01.place(anchor='n', relx = 0.125, rely = 0.2)
     self.att_list.append('self.listbox_01')
     self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
 
@@ -635,7 +639,7 @@ def CropImages(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_02.place(anchor='n', relx = 0.9425, rely = 0.2, height = 452)
+    self.scrollbar_02.place(anchor='n', relx = 0.9425, rely = 0.2, height = 752)
     self.att_list.append('self.scrollbar_02')
     
     # Get List of cropped images
@@ -652,8 +656,8 @@ def CropImages(self,window):
                                 window, 
                                 listvariable=items2,
                                 selectmode='single',
-                                height = 28,
-                                width = 48,
+                                height = 34,
+                                width = 54,
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -677,7 +681,7 @@ def CropImages(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.load_btn.place(anchor = 'n', relx = 0.15, rely = 0.775)
+    self.load_btn.place(anchor = 'n', relx = 0.125, rely = 0.775)
     self.att_list.append('self.load_btn')
 
     # Create button to view a cropped image
@@ -691,7 +695,7 @@ def CropImages(self,window):
     self.btn_view.place(anchor = 'n', relx = 0.795, rely = 0.775)
     self.att_list.append('self.btn_view')
 
-    # Create button to delete ca ropped image
+    # Create button to delete a cropped image
     self.btn_del = ttk.Button(
                             window, 
                             text = "Delete Image", 
@@ -710,7 +714,7 @@ def CropImages(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.btn_cont1.place(anchor = 'e', relx = 0.999, rely = 0.965)
+    self.btn_cont1.place(anchor = 'e',  relx = 0.997, rely = 0.975)
     self.att_list.append('self.btn_cont1')
 
     # Create Back Button
@@ -721,7 +725,7 @@ def CropImages(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.btn_back1.place(anchor = 'e', relx = 0.915, rely = 0.965)
+    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
     self.att_list.append('self.btn_back1')
 
      # Create Help Button
@@ -744,5 +748,5 @@ def CropImages(self,window):
                                 style = "Modern2.TButton",
                                 width = 7
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.965)
+    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
     self.att_list.append('self.btn_help')
