@@ -23,7 +23,7 @@ def SegmentImages(self,window):
     from tkinter import ttk
     
     # Import SAM Functions
-    from SAM.Utility import LoadModel, SetImage, GetMask
+    from ModelCreator.SegmentationModels.SAM.Utility import LoadModel, SetImage, GetMask
 
     # Import Functions
     from General.DeleteWidgets import DeleteLocal
