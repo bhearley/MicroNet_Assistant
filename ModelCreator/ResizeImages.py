@@ -15,6 +15,7 @@ def ResizeImages(self,window):
     import os
     from PIL import Image, ImageTk
     import tkinter as tk
+    import tkinter.font as tkfont
     from tkinter import messagebox
     from tkinter import ttk    
 
@@ -95,15 +96,16 @@ def ResizeImages(self,window):
 
         # Create a Matplotlib figure
         if hasattr(self,"fig1") == False:
-            self.fig1, self.ax1 = plt.subplots(figsize=(8/1.15, 6/1.15))
-            self.fig1.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
+            scale_im = 0.8
+            self.fig1, self.ax1 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
+            self.fig1.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
         self.canvas = FigureCanvasTkAgg(self.fig1, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig1.get_figwidth() * self.fig1.get_dpi()),
                                 height=int(self.fig1.get_figheight() * self.fig1.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.15)
+        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.2)
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -125,7 +127,7 @@ def ResizeImages(self,window):
                         text="X:", 
                         style = "Modern2.TLabel"
                         )
-        self.x_label.place(anchor = 'n', relx = 0.7525, rely = 0.199)
+        self.x_label.place(anchor = 'n', relx = 0.755, rely = 0.4)
         self.loc_att_list.append('self.x_label')
 
         # Create the y label
@@ -134,13 +136,13 @@ def ResizeImages(self,window):
                         text="Y:", 
                         style = "Modern2.TLabel"
                         )
-        self.y_label.place(anchor = 'n', relx = 0.825, rely = 0.199)
+        self.y_label.place(anchor = 'n', relx = 0.8275, rely = 0.4)
         self.loc_att_list.append('self.y_label')
 
         #Load an image using PIL
         self.image_path_scale = os.path.join(os.getcwd(),'GUI','Resize','scale.png')
         self.image_scale = Image.open(self.image_path_scale)
-        scale = 0.05
+        scale = 0.06
         self.image_scale = self.image_scale.resize((int(self.image_scale.width*scale), int(self.image_scale.height*scale)))
 
         # Convert the image to a Tkinter-compatible format
@@ -150,7 +152,7 @@ def ResizeImages(self,window):
         self.label_scale = ttk.Label(window, 
                                     image=self.photo_scale,
                                     background="white")
-        self.label_scale.place(anchor = 'n', relx = 0.9, rely = 0.199)
+        self.label_scale.place(anchor = 'n', relx = 0.9025, rely = 0.4)
         self.loc_att_list.append('self.label_scale')
 
         # Register the validation function
@@ -162,10 +164,11 @@ def ResizeImages(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_X.insert(0, str(int(self.image_full.width)))
-        self.entry_X.place(anchor = 'n', relx = 0.7875, rely = 0.2)
+        self.entry_X.place(anchor = 'n', relx = 0.7875, rely = 0.4)
         self.entry_X.config(state='disabled')
         self.loc_att_list.append('self.entry_X')
 
@@ -175,10 +178,11 @@ def ResizeImages(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_Y.insert(0, str(int(self.image_full.height)))
-        self.entry_Y.place(anchor = 'n', relx = 0.86, rely = 0.2)
+        self.entry_Y.place(anchor = 'n', relx = 0.86, rely = 0.4)
         self.entry_Y.config(state='disabled')
         self.loc_att_list.append('self.entry_Y')
 
@@ -188,10 +192,11 @@ def ResizeImages(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_S.insert(0, "1")
-        self.entry_S.place(anchor = 'n', relx = 0.94, rely = 0.2)
+        self.entry_S.place(anchor = 'n', relx = 0.94, rely = 0.4)
         self.loc_att_list.append('self.entry_S')
 
         # Create Scale Button
@@ -200,7 +205,7 @@ def ResizeImages(self,window):
                                 command = lambda: scale_img(self), 
                                 style = 'Modern2.TButton',
                                 width = 10)
-        self.btn_scale.place(anchor = 'n', relx = 0.86, rely = 0.3)
+        self.btn_scale.place(anchor = 'n', relx = 0.86, rely = 0.5)
         self.loc_att_list.append('self.btn_scale')
 
         # Create a ttk.Checkbutton widget (used as the toggle)
@@ -211,7 +216,7 @@ def ResizeImages(self,window):
                                     variable=self.var,
                                     style="TCheckbutton"
                                     )
-        self.checkbutton.place(anchor = 'n', relx = 0.86, rely = 0.37)
+        self.checkbutton.place(anchor = 'n', relx = 0.86, rely = 0.57)
         self.loc_att_list.append('self.checkbutton')
 
     # Function to continue to next page
@@ -384,10 +389,10 @@ def ResizeImages(self,window):
                                 window, 
                                 text = "Load Image", 
                                 command = lambda:load_image(self), 
-                                style = 'Modern2.TButton',
+                                style = 'Modern.TButton',
                                 width = 10
                                 )
-    self.load_btn.place(anchor = 'n', relx = 0.15, rely = 0.775)
+    self.load_btn.place(anchor = 'n', relx = 0.125, rely = 0.775)
     self.att_list.append('self.load_btn')
 
     # Create scrollbar for list of images
@@ -396,7 +401,7 @@ def ResizeImages(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_01.place(anchor='n', relx = 0.25, rely = 0.2, height = 452)
+    self.scrollbar_01.place(anchor='n', relx = 0.225, rely = 0.2, height = 752)
     self.att_list.append('self.scrollbar_01')
     
     # Get list of all images
@@ -409,8 +414,8 @@ def ResizeImages(self,window):
                                 window, 
                                 listvariable=items,
                                 selectmode='single',
-                                height = 28,
-                                width = 48,
+                                height = 34,
+                                width = 54,
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -419,7 +424,7 @@ def ResizeImages(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_01.place(anchor='n', relx = 0.15, rely = 0.2)
+    self.listbox_01.place(anchor='n', relx = 0.125, rely = 0.2)
     self.att_list.append('self.listbox_01')
     self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
 
@@ -434,7 +439,7 @@ def ResizeImages(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.btn_cont1.place(anchor = 'e', relx = 0.999, rely = 0.965)
+    self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
     self.att_list.append('self.btn_cont1')
     
     # Create Back Button
@@ -445,7 +450,7 @@ def ResizeImages(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.btn_back1.place(anchor = 'e', relx = 0.915, rely = 0.965)
+    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
     self.att_list.append('self.btn_back1')
 
     # Create Help Button
@@ -468,5 +473,5 @@ def ResizeImages(self,window):
                                 style = "Modern2.TButton",
                                 width = 7
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.965)
+    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
     self.att_list.append('self.btn_help')

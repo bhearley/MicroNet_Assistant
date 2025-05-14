@@ -152,7 +152,6 @@ def GetStyles(self):
     # Entry
     self.style.configure(
                         "Custom.TEntry", 
-                        font=('Segoe UI', 14),
                         foreground='black',
                         background='white',
                         relief='flat',
@@ -225,7 +224,7 @@ def GetStyles(self):
                         "Modern2.TLabel",
                         foreground="black",
                         background="white",
-                        font=("Segoe UI", 12),
+                        font=("Segoe UI", 14),
                         padding=0
                         )
     
