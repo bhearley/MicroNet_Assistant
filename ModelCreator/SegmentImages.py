@@ -17,6 +17,7 @@ def SegmentImages(self,window):
     import numpy as np
     import os
     from PIL import Image, ImageTk
+    import shutil
     import threading
     import tkinter as tk
     from tkinter import filedialog
@@ -53,9 +54,15 @@ def SegmentImages(self,window):
                 },
             }
     
-    # Save PNG of each image in Temp folder
+    # Create the Temp folder it it doesn't exist
     curr_dir = os.getcwd()
     temp_dir = os.path.join(curr_dir,'Temp')
+    try:
+        os.mkdir(temp_dir)
+    except:
+        pass
+
+    # Save PNG of each image in Temp folder
     png_files = glob.glob(os.path.join(temp_dir, "*.png"))
     for file_path in png_files:
         os.remove(file_path)
@@ -569,12 +576,12 @@ def SegmentImages(self,window):
         # Load the SAM Model if not in project
         if self.Segment['Data'][self.img_name]['Predictor'] is None or self.Segment['Data'][self.img_name]['Predictor'] == 'Load':
             # Function to open SAM Model
-            def open_file(callback):
+            def open_file(callback, loading):
                 if hasattr(self,'predictor') == False:
                     # Get the model path
                     model_path = ''
                     # -- Check default location
-                    def_direc = os.path.join(os.getcwd(),'SAM Models')
+                    def_direc = os.path.join(os.getcwd(),'ModelCreator','SegmentationModels','SAM','SAM Models')
                     ask_flag = 0
                     if os.path.isdir(def_direc):
                         # Search for .pth files in the directory
@@ -594,12 +601,38 @@ def SegmentImages(self,window):
                                 filetypes=(("PTH Files", "*.pth"),)
                             )
 
+                            if model_path == '':
+                                # Delete the page
+                                DeleteLocal(self)
+                                DeletePages(self)
+
+                                # Set Predictor
+                                self.predictor = None
+
+                                # Destory Loading Window
+                                loading.destroy()
+
+                                # Break Loop
+                                break
+
+                            else:
+                                shutil.moove(model_path,os.path.join(def_direc,os.path.basename(model_path)))
+
+
                     # -- Load the model and set the image
-                    model_type = os.path.basename(model_path)[4:9]
-                    sam, self.predictor = LoadModel(model_path, model_type)
+                    if hasattr(self,'predictor') == False:
+                        model_type = os.path.basename(model_path)[4:9]
+                        sam, self.predictor = LoadModel(model_path, model_type)
+                    else:
+                        del self.predictor
+                        return
 
                 # Set the predictor for the image
-                self.predictor, self.image_Sam = SetImage(self.predictor, os.path.join(temp_dir, self.img_name))
+                try:
+                    self.predictor, self.image_Sam = SetImage(self.predictor, os.path.join(temp_dir, self.img_name))
+                except:
+                    self.predictor = None
+
 
                 # Notify when done
                 callback()  # Notify when
@@ -639,7 +672,7 @@ def SegmentImages(self,window):
                     loading.destroy()
 
                 #Begin save on background thread
-                threading.Thread(target=open_file, args=(on_task_done,), daemon=True).start()
+                threading.Thread(target=open_file, args=(on_task_done,loading), daemon=True).start()
 
                 # Wait until loading window is closed
                 window.wait_window(loading)
@@ -651,94 +684,99 @@ def SegmentImages(self,window):
         else:
             self.predictor = self.Segment['Data'][self.img_name]['Predictor']
 
+        if self.predictor is None:
+            # Reload the page
+            self.load_page()
+            
+        else:
         # Creat an empty masked image
-        self.mask_image_f = Image.open(self.image_path)
-        pixels = self.mask_image_f.load()
-        for i in range(self.mask_image_f.width):
-            for j in range(self.mask_image_f.height):
-                pixels[i, j] = (255, 255, 255, 0)
+            self.mask_image_f = Image.open(self.image_path)
+            pixels = self.mask_image_f.load()
+            for i in range(self.mask_image_f.width):
+                for j in range(self.mask_image_f.height):
+                    pixels[i, j] = (255, 255, 255, 0)
 
-        # Create Button to Add Points (Brush)
-        icon = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "brush_w.png"))
-        icon = icon.resize((24, 24))
-        icon_img = ImageTk.PhotoImage(icon)
-        self.icon_img = icon_img
-        self.add_pts = ttk.Button(
-                                 window, 
-                                 text = " Brush",
-                                 image=self.icon_img,
-                                 compound='left',
-                                 style = "Modern5.TButton",                                  
-                                 command = lambda:add_pixels(self),
-                                 width = 5,
-                                 )
-        self.add_pts.place(anchor = 'n', relx = 0.7775, rely = 0.2)
-        self.loc_att_list.append('self.add_pts')
-        self.add_selected = False
-
-        # Create Button to Erase Points
-        icon2 = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "eraser_w.png"))
-        icon2 = icon2.resize((24, 24))
-        icon_img2 = ImageTk.PhotoImage(icon2)
-        self.icon_img2 = icon_img2
-        self.remove_pts = ttk.Button(
-                                    window,text = " Erase",
-                                    image=self.icon_img2,
+            # Create Button to Add Points (Brush)
+            icon = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "brush_w.png"))
+            icon = icon.resize((24, 24))
+            icon_img = ImageTk.PhotoImage(icon)
+            self.icon_img = icon_img
+            self.add_pts = ttk.Button(
+                                    window, 
+                                    text = " Brush",
+                                    image=self.icon_img,
                                     compound='left',
-                                    style = "Modern5.TButton",
-                                    command = lambda:rem_pixels(self),
+                                    style = "Modern5.TButton",                                  
+                                    command = lambda:add_pixels(self),
                                     width = 5,
                                     )
-        self.remove_pts.place(anchor = 'n', relx = 0.91, rely=0.2)
-        self.loc_att_list.append('self.remove_pts')
-        self.rem_selected = False
+            self.add_pts.place(anchor = 'n', relx = 0.7775, rely = 0.2)
+            self.loc_att_list.append('self.add_pts')
+            self.add_selected = False
 
-        # Create Brush Size Slider
-        self.slider = ttk.Scale(
+            # Create Button to Erase Points
+            icon2 = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "eraser_w.png"))
+            icon2 = icon2.resize((24, 24))
+            icon_img2 = ImageTk.PhotoImage(icon2)
+            self.icon_img2 = icon_img2
+            self.remove_pts = ttk.Button(
+                                        window,text = " Erase",
+                                        image=self.icon_img2,
+                                        compound='left',
+                                        style = "Modern5.TButton",
+                                        command = lambda:rem_pixels(self),
+                                        width = 5,
+                                        )
+            self.remove_pts.place(anchor = 'n', relx = 0.91, rely=0.2)
+            self.loc_att_list.append('self.remove_pts')
+            self.rem_selected = False
+
+            # Create Brush Size Slider
+            self.slider = ttk.Scale(
+                                    window,
+                                    from_=1,
+                                    to=25,
+                                    orient='horizontal',  
+                                    length=300,
+                                    style="Modern.Horizontal.TScale"
+                                    )
+            self.slider.place(anchor = 'n', relx = 0.845, rely = 0.275)
+            self.loc_att_list.append('self.slider')
+
+            # Get Available Masks
+            mask_list = []
+            for i in range(len(list(self.Segment['Data'][self.img_name]['Segments'].keys()))):
+                mask_list.append('Segment ' + str(list(self.Segment['Data'][self.img_name]['Segments'].keys())[i]))
+
+            # Create the dropdown (combobox) for Segmentation Options
+            self.combo1 = ttk.Combobox(
                                 window,
-                                from_=1,
-                                to=25,
-                                orient='horizontal',  
-                                length=300,
-                                style="Modern.Horizontal.TScale"
+                                values=mask_list,
+                                style="Modern.TCombobox",
+                                state="readonly"
                                 )
-        self.slider.place(anchor = 'n', relx = 0.845, rely = 0.275)
-        self.loc_att_list.append('self.slider')
+            self.combo1.bind("<<ComboboxSelected>>", change_combo)
+            self.combo1.place(anchor='n', relx = 0.845, rely = 0.4)
+            self.combo1.set(mask_list[0]) 
+            self.loc_att_list.append('self.combo1')
 
-        # Get Available Masks
-        mask_list = []
-        for i in range(len(list(self.Segment['Data'][self.img_name]['Segments'].keys()))):
-            mask_list.append('Segment ' + str(list(self.Segment['Data'][self.img_name]['Segments'].keys())[i]))
+            # Create the color image
+            self.img_c = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "blue.png"))
+            scale = 0.3
+            self.img_c = self.img_c.resize((int(self.img_c.width*scale), int(self.img_c.height*scale)))
+            self.imgtk_c = ImageTk.PhotoImage(self.img_c)
+            self.img_color = tk.Label(window, image = self.imgtk_c, bg = 'white')
+            self.img_color.place(anchor = 'n', relx = 0.845, rely = 0.5)
+            self.loc_att_list.append('self.img_color')
 
-        # Create the dropdown (combobox) for Segmentation Options
-        self.combo1 = ttk.Combobox(
-                            window,
-                            values=mask_list,
-                            style="Modern.TCombobox",
-                            state="readonly"
-                            )
-        self.combo1.bind("<<ComboboxSelected>>", change_combo)
-        self.combo1.place(anchor='n', relx = 0.845, rely = 0.4)
-        self.combo1.set(mask_list[0]) 
-        self.loc_att_list.append('self.combo1')
+            # Initialize Drawing
+            self.drawing = False
 
-        # Create the color image
-        self.img_c = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "blue.png"))
-        scale = 0.3
-        self.img_c = self.img_c.resize((int(self.img_c.width*scale), int(self.img_c.height*scale)))
-        self.imgtk_c = ImageTk.PhotoImage(self.img_c)
-        self.img_color = tk.Label(window, image = self.imgtk_c, bg = 'white')
-        self.img_color.place(anchor = 'n', relx = 0.845, rely = 0.5)
-        self.loc_att_list.append('self.img_color')
-
-        # Initialize Drawing
-        self.drawing = False
-
-        # Bind Canvas Events
-        self.canvas.mpl_connect("button_press_event", lambda event: mouse_click(self, event))
-        self.canvas.mpl_connect("motion_notify_event", lambda event : on_mouse_move(self, event))
-        self.canvas.mpl_connect("button_release_event", lambda event : on_mouse_release(self, event))
-        self.canvas.mpl_connect('figure_leave_event', lambda event: on_mouse_leave(self, event))
+            # Bind Canvas Events
+            self.canvas.mpl_connect("button_press_event", lambda event: mouse_click(self, event))
+            self.canvas.mpl_connect("motion_notify_event", lambda event : on_mouse_move(self, event))
+            self.canvas.mpl_connect("button_release_event", lambda event : on_mouse_release(self, event))
+            self.canvas.mpl_connect('figure_leave_event', lambda event: on_mouse_leave(self, event))
 
     # Function to continue to next page
     def next_page():
@@ -1061,7 +1099,7 @@ def SegmentImages(self,window):
 
     # Create scrollbar for segmentation images
     self.scrollbar_01= ttk.Scrollbar(window, orient= 'vertical', style = "Vertical.TScrollbar")
-    self.scrollbar_01.place(anchor='n', relx = 0.25, rely = 0.2, height = 452)
+    self.scrollbar_01.place(anchor='n', relx = 0.225, rely = 0.2, height = 752)
     self.att_list.append('self.scrollbar_01')
     
     # Get all images for segmentation
@@ -1074,8 +1112,8 @@ def SegmentImages(self,window):
                                 window, 
                                 listvariable=items,
                                 selectmode='single',
-                                height = 28,
-                                width = 48,
+                                height = 34,
+                                width = 54,
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -1084,7 +1122,7 @@ def SegmentImages(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_01.place(anchor='n', relx = 0.15, rely = 0.2)
+    self.listbox_01.place(anchor='n', relx = 0.125, rely = 0.2)
     self.att_list.append('self.listbox_01')
     self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
 
@@ -1099,7 +1137,7 @@ def SegmentImages(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.load_btn.place(anchor = 'n', relx = 0.15, rely = 0.775)
+    self.load_btn.place(anchor = 'n', relx = 0.125, rely = 0.775)
     self.att_list.append('self.load_btn')
 
     # Create Continue Button
@@ -1110,7 +1148,7 @@ def SegmentImages(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.btn_cont1.place(anchor = 'e', relx = 0.999, rely = 0.965)
+    self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
     self.att_list.append('self.btn_cont1')
 
     # Create Back Button
@@ -1121,7 +1159,7 @@ def SegmentImages(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.btn_back1.place(anchor = 'e', relx = 0.915, rely = 0.965)
+    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
     self.att_list.append('self.btn_back1')
 
     # Create Help Button
@@ -1144,5 +1182,5 @@ def SegmentImages(self,window):
                                 style = "Modern2.TButton",
                                 width = 7
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.965)
+    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
     self.att_list.append('self.btn_help')
