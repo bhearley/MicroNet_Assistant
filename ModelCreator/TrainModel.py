@@ -10,28 +10,30 @@
 #-----------------------------------------------------------------------------------------
 def TrainModel(self,window):
     # Import Modules
-    import glob
     import os
     import pandas as pd
     from PIL import Image, ImageTk
+    import shutil
     import sys
     import threading
     import tkinter as tk
     from tkinter import ttk
+    from tkinter import filedialog
+    from tkinter import messagebox
     from tkinter.scrolledtext import ScrolledText
     import tksheet
-    import time
 
     # Import Functions
     from General.DeleteWidgets import DeleteLocal
     from General.DeleteWidgets import DeletePages
+    from ModelCreator.SegmentationModels.MicroNet.TrainMicroNetModel import TrainMicroNetModel
 
     #Initialize list of attributes for each page
     self.att_list = []
     self.loc_att_list = []
 
     # Get the list of available models
-    mods = pd.read_csv(os.path.join(os.getcwd(),'General','AvailableModels.csv'), header=None)
+    mods = pd.read_csv(os.path.join(os.getcwd(),'ModelCreator','SegmentationModels','MicroNet','AvailableModels.csv'), header=None)
     self.architecture = []
     for i in range(mods.shape[1]):
         self.architecture.append(mods.values[0][i])    
@@ -59,7 +61,7 @@ def TrainModel(self,window):
                             style="Modern.TCombobox",
                             state="readonly"
                             )
-        self.combo_7_03.place(anchor='w', relx = 0.5, rely = 0.6)
+        self.combo_7_03.place(anchor='w', relx = 0.55, rely = 0.625)
         self.combo_7_03.set(values[0]) 
         self.loc_att_list.append('self.combo_7_03')
 
@@ -182,7 +184,15 @@ def TrainModel(self,window):
                                             'GPU':False,
                                             'ValViz':False,
                                             'TrainViz':False
-                                            }
+                                            },
+                                        'Paths':{
+                                            'Train':os.path.join(os.getcwd(),'Temp','Train'),
+                                            'Validation':os.path.join(os.getcwd(),'Temp','Validation'),
+                                            'Test':os.path.join(os.getcwd(),'Temp','Test'),
+                                            'TrainL':os.path.join(os.getcwd(),'Temp','Train Labelled'),
+                                            'ValidationL':os.path.join(os.getcwd(),'Temp','Validation Labelled'),
+                                            'TestL':os.path.join(os.getcwd(),'Temp','Test Labelled'),
+                                        }
                                         }
         
         # Populate Settings
@@ -201,10 +211,10 @@ def TrainModel(self,window):
         keys = list(self.Segment['ML']['Settings']['Augmentation'].keys())
         for i in range(1,len(keys)):
             if self.Segment['ML']['Settings']['Augmentation'][keys[i]] is None:
-                self.Segment['ML']['Settings']['Augmentation'][keys[i]] = self.sheet_7_01.data[i-1][1]
+                self.Segment['ML']['Settings']['Augmentation'][keys[i]] = float(self.sheet_7_01.data[i-1][1])
             else:
-                self.Segment['ML']['Settings']['Augmentation'][keys[i]] = [self.sheet_7_01.data[i-1][1],
-                                                                           self.sheet_7_01.data[i-1][2]]
+                self.Segment['ML']['Settings']['Augmentation'][keys[i]] = [float(self.sheet_7_01.data[i-1][1]),
+                                                                           float(self.sheet_7_01.data[i-1][2])]
                 
         # -- Train
         keys = list(self.Segment['ML']['Settings']['Train'].keys())
@@ -223,7 +233,57 @@ def TrainModel(self,window):
         if len(self.Segment['ML']['Settings']['Classes'].keys()) > 1:
             if self.sheet_7_03.data[-1][1] == True:
                 self.Segment['ML']['Settings']['Classes'][self.sheet_7_03.data[-1][1]] = (0,0,0)
-        
+
+        # -- Settings
+        if self.var_7_01.get() == 1:
+            self.Segment['ML']['Settings']['Settings']['GPU'] = True
+
+        if self.var_7_02.get() == 1:
+            self.Segment['ML']['Settings']['Settings']['TrainViz'] = True
+
+        if self.var_7_03.get() == 1:
+            self.Segment['ML']['Settings']['Settings']['ValViz'] = True
+
+        # -- Paths
+        # Move all images to temp folder
+        temp_dir = os.path.join(os.getcwd(),'Temp')
+        dir_list = ['Train', 'Validation', 'Test', 'Train Labelled',  'Validation Labelled',  'Test Labelled']
+        for dirs in dir_list:
+            path = os.path.join(temp_dir,dirs)
+            if os.path.exists(path):
+                # Directory exists → delete all contents
+                for item in os.listdir(path):
+                    item_path = os.path.join(path, item)
+                    if os.path.isfile(item_path) or os.path.islink(item_path):
+                        os.unlink(item_path) 
+                    elif os.path.isdir(item_path):
+                        shutil.rmtree(item_path)  
+            else:
+                # Directory doesn't exist → create it
+                os.makedirs(path)
+                print(f"Directory '{path}' created.")
+
+        # Get directory containing all images
+        if hasattr(self,"save_path") == False:
+            self.save_path = filedialog.askdirectory(
+                title="Select Folder Containing Saved Images",)
+
+
+        # -- Move Data to Temp Directory
+        dirs_list = ['Train', 'Validation', 'Test']
+        for dir_name in dirs_list:
+            for img in self.Segment['ML']['Data']['Train']:
+                # Get file base
+                mask_file = img
+                orig_file = img.split('_mask')[0] + '.' + img.split('.')[1]
+                
+                # Move the original file
+                shutil.copy(os.path.join(self.save_path,orig_file), os.path.join(temp_dir, dir_name, orig_file))
+
+                # Move the lablled file
+                shutil.copy(os.path.join(self.save_path,mask_file), os.path.join(temp_dir, dir_name + ' Labelled',orig_file))
+            
+        # Create window to show terminal output
         class TextRedirector:
             def __init__(self2, widget):
                 self2.widget = widget
@@ -236,39 +296,12 @@ def TrainModel(self,window):
                 pass  # needed for compatibility (e.g., with print buffering)
 
         def training_simulation(stop_event):
-            # Demo Data Structure
-            MicroNetData = {}
+            # Begin Training 
+            TrainMicroNetModel(self.Segment['ML']['Settings'])
 
-            # Set Images
-            MicroNetData['Files'] = {
-                                    'Train':[r'C:\Users\bhearley\Desktop\NASA GRC\Projects\Machine Learning\Segmentation\MicroFiberSegmentation\Projects\Microscale PMC\Labelled Images\image_0027_0.png',
-                                            r'C:\Users\bhearley\Desktop\NASA GRC\Projects\Machine Learning\Segmentation\MicroFiberSegmentation\Projects\Microscale PMC\Labelled Images\image_0087_0.png',
-                                            r'C:\Users\bhearley\Desktop\NASA GRC\Projects\Machine Learning\Segmentation\MicroFiberSegmentation\Projects\Microscale PMC\Labelled Images\image_0087_1.png',
-                                            r'C:\Users\bhearley\Desktop\NASA GRC\Projects\Machine Learning\Segmentation\MicroFiberSegmentation\Projects\Microscale PMC\Labelled Images\image_0107_0.png',
-                                            r'C:\Users\bhearley\Desktop\NASA GRC\Projects\Machine Learning\Segmentation\MicroFiberSegmentation\Projects\Microscale PMC\Labelled Images\image_0117_0.png',
-                                            r'C:\Users\bhearley\Desktop\NASA GRC\Projects\Machine Learning\Segmentation\MicroFiberSegmentation\Projects\Microscale PMC\Labelled Images\image_0125_1.png',
-                                            r'C:\Users\bhearley\Desktop\NASA GRC\Projects\Machine Learning\Segmentation\MicroFiberSegmentation\Projects\Microscale PMC\Labelled Images\image_0125_2.png',
-                                            r'C:\Users\bhearley\Desktop\NASA GRC\Projects\Machine Learning\Segmentation\MicroFiberSegmentation\Projects\Microscale PMC\Labelled Images\image_0027_2.png',
-                                            r'C:\Users\bhearley\Desktop\NASA GRC\Projects\Machine Learning\Segmentation\MicroFiberSegmentation\Projects\Microscale PMC\Labelled Images\image_0125_3.png',
-                                            ],
-                                    'Validation':[r'C:\Users\bhearley\Desktop\NASA GRC\Projects\Machine Learning\Segmentation\MicroFiberSegmentation\Projects\Microscale PMC\Labelled Images\image_0027_1.png',
-                                                r'C:\Users\bhearley\Desktop\NASA GRC\Projects\Machine Learning\Segmentation\MicroFiberSegmentation\Projects\Microscale PMC\Labelled Images\image_0117_1.png',
-                                            
-                                            ],
-                                    'Test':[]
-                                    }
-
-            # Set Labels
-            MicroNetData['Labels'] = {
-                                    #'Matrix':[0,0,0],
-                                    'Fiber':[255,0,0],
-                                    #'Crack':[255,0,0],
-                                    }
+            # Create Message
+            messagebox.showinfo(message = 'Model Saved!')
             
-            from Micronet.TrainModel import TrainMiroNet
-            TrainMiroNet(MicroNetData)
-            
-
 
         def start_training():
             self.stop_event.clear()
@@ -298,6 +331,7 @@ def TrainModel(self,window):
         self.training_thread = None
 
         start_training()
+
 
     # Function to continue to next page
     def next_page():
@@ -452,11 +486,11 @@ def TrainModel(self,window):
                             window, 
                             bd=3, 
                             relief="ridge", 
-                            width = 350,
-                            height = 275,
+                            width = 450,
+                            height = 400,
                             bg="white"
                             )
-    self.box_frame_7_01.place(anchor = 'n', relx=0.15, rely=0.175)
+    self.box_frame_7_01.place(anchor = 'n', relx=0.2, rely=0.175)
     self.att_list.append('self.box_frame_7_01')
 
     # Create a label for the model architecture
@@ -475,7 +509,7 @@ def TrainModel(self,window):
                             style = "Modern2.TLabel",
                             anchor='w'
                             )
-    self.label_7_02.place(anchor='w', relx = 0.05, rely = 0.2)
+    self.label_7_02.place(anchor='w', relx = 0.075, rely = 0.225)
     self.att_list.append('self.label_7_02')
 
     # Create drop down for architecture
@@ -485,7 +519,7 @@ def TrainModel(self,window):
                         style="Modern.TCombobox",
                         state="readonly"
                         )
-    self.combo_7_01.place(anchor='w', relx = 0.5, rely = 0.2)
+    self.combo_7_01.place(anchor='w', relx = 0.55, rely = 0.225)
     self.combo_7_01.set(self.architecture[0]) 
     self.loc_att_list.append('self.combo_7_01')
 
@@ -499,7 +533,7 @@ def TrainModel(self,window):
                             style = "Modern2.TLabel",
                             anchor='w'
                             )
-    self.label_7_03.place(anchor='w', relx = 0.05, rely = 0.4)
+    self.label_7_03.place(anchor='w', relx = 0.075, rely = 0.425)
     self.att_list.append('self.label_7_03')
 
     # Create drop down for encoder
@@ -510,7 +544,7 @@ def TrainModel(self,window):
                             state="readonly"
                             )
     self.combo_7_02.bind("<<ComboboxSelected>>", create_weights_drop)
-    self.combo_7_02.place(anchor='w', relx = 0.5, rely = 0.4)
+    self.combo_7_02.place(anchor='w', relx = 0.55, rely = 0.425)
     self.combo_7_02.set(list(self.models.keys())[0]) 
     self.loc_att_list.append('self.combo_7_02')
 
@@ -524,7 +558,7 @@ def TrainModel(self,window):
                             style = "Modern2.TLabel",
                             anchor='w'
                             )
-    self.label_7_04.place(anchor='w', relx = 0.05, rely = 0.6)
+    self.label_7_04.place(anchor='w', relx = 0.075, rely = 0.625)
     self.att_list.append('self.label_7_04')
 
     # Create the drop down for pretrained weights
@@ -546,8 +580,8 @@ def TrainModel(self,window):
                             window, 
                             bd=3, 
                             relief="ridge", 
-                            width = 450,
-                            height = 500,
+                            width = 550,
+                            height = 700,
                             bg="white"
                             )
     self.box_frame_7_02.place(anchor = 'n', relx=0.5, rely=0.175)
@@ -567,9 +601,8 @@ def TrainModel(self,window):
                             self.box_frame_7_02,
                             text='Crop Window: ',
                             style = "Modern2.TLabel",
-                            anchor='w'
                             )
-    self.label_7_06.place(anchor='w', relx = 0.2, rely = 0.14)
+    self.label_7_06.place(anchor='n', relx = 0.5, rely = 0.15)
     self.att_list.append('self.label_7_06')
 
     # Get Crop Window Options
@@ -591,7 +624,7 @@ def TrainModel(self,window):
                             style="Modern.TCombobox",
                             state="readonly"
                             )
-    self.combo_7_04.place(anchor='w', relx = 0.45, rely = 0.14)
+    self.combo_7_04.place(anchor='n', relx = 0.5, rely = 0.2)
     self.combo_7_04.set(size_opts[-1]) 
     self.loc_att_list.append('self.combo_7_04')
 
@@ -625,7 +658,7 @@ def TrainModel(self,window):
                             font = ('Segoe UI',12,"normal"),
                             header_font = ('Segoe UI',12,"bold")
                             )
-    self.sheet_7_01.place(anchor = 'n', relx = 0.5, rely = 0.2)
+    self.sheet_7_01.place(anchor = 'n', relx = 0.5, rely = 0.275)
     self.loc_att_list.append('self.sheet_7_01')
 
     # format sheet
@@ -661,11 +694,11 @@ def TrainModel(self,window):
                             window, 
                             bd=3, 
                             relief="ridge", 
-                            width = 350,
+                            width = 400,
                             height = 500,
                             bg="white"
                             )
-    self.box_frame_7_03.place(anchor = 'n', relx=0.85, rely=0.175)
+    self.box_frame_7_03.place(anchor = 'n', relx=0.8, rely=0.175)
     self.att_list.append('self.box_frame_7_03')
 
     # Create label for Image Augmentation
@@ -680,11 +713,11 @@ def TrainModel(self,window):
     # Create the Image Augmentation Sheet
     Cols2 = ['Option','Value']
     Rows2 = [
-        ['Epochs', None],
-        ['Patience',None],
-        ['Learning Rate', None],
-        ['Batch Size', None],
-        ['Validation Batch Size', None],
+        ['Epochs'],
+        ['Patience'],
+        ['Learning Rate'],
+        ['Batch Size'],
+        ['Validation Batch Size'],
         ]
     self.sheet_7_02 = tksheet.Sheet(
                             self.box_frame_7_03, 
@@ -714,15 +747,20 @@ def TrainModel(self,window):
     for i in range(len(Rows2)):
         row = Rows2[i]
         self.sheet_7_02.set_cell_data(i,0,row[0])
-        if row[1] != None:
-            self.sheet_7_02.set_cell_data(i,1,0.5)
 
     # Populate Existing Data
     if "Model Information" in self.Segment.keys():
         sheet_data = self.Segment['Model Information'][1]
         for i in range(len(sheet_data)):
             for j in range(len(sheet_data[0])):
-                self.sheet_7_02.set_cell_data(i,j,sheet_data[i][j])
+                if i != 2 and j == 1:
+                    try:
+                        self.sheet_7_02.set_cell_data(i,j,int(sheet_data[i][j]))
+                    except:
+                        pass
+                else:
+                    self.sheet_7_02.set_cell_data(i,j,sheet_data[i][j])
+
 
     self.sheet_7_02.redraw()
 
@@ -753,11 +791,11 @@ def TrainModel(self,window):
                             window, 
                             bd=3, 
                             relief="ridge", 
-                            width = 350,
-                            height = 200,
+                            width = 450,
+                            height = 250,
                             bg="white"
                             )
-    self.box_frame_7_04.place(anchor = 'n', relx=0.15, rely=0.55)
+    self.box_frame_7_04.place(anchor = 'n', relx=0.2, rely=0.5)
     self.att_list.append('self.box_frame_7_04')
 
     # Create label for Classification Labels
@@ -786,19 +824,19 @@ def TrainModel(self,window):
                             total_rows = len(Rows3)+1, 
                             total_columns = len(Cols3), 
                             headers = Cols3,
-                            width = 300, 
+                            width = 350, 
                             height = 155, 
                             show_x_scrollbar = False, 
                             show_y_scrollbar = False,
                             font = ('Segoe UI',12,"normal"),
                             header_font = ('Segoe UI',12,"bold")
                             )
-    self.sheet_7_03.place(anchor = 'n', relx = 0.5, rely = 0.2)
+    self.sheet_7_03.place(anchor = 'n', relx = 0.5, rely = 0.275)
     self.loc_att_list.append('self.sheet_7_03')
 
     # format sheet
     self.sheet_7_03.set_index_width(0)
-    self.sheet_7_03.column_width(column = 0, width = 65, redraw = True)
+    self.sheet_7_03.column_width(column = 0, width = 115, redraw = True)
     self.sheet_7_03.column_width(column = 1, width = 200, redraw = True)
     self.sheet_7_03.column_width(column = 2, width = 25, redraw = True)
     self.sheet_7_03.table_align(align = 'c',redraw=True)
@@ -827,15 +865,15 @@ def TrainModel(self,window):
     self.sheet_7_03.redraw()
 
     # Create Button to train
-    self.load_btn = ttk.Button(
+    self.train_btn = ttk.Button(
                                window, 
                                text = "Train Model", 
                                command = lambda:begin_train(self), 
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.load_btn.place(anchor = 'n', relx = 0.5, rely = 0.85)
-    self.att_list.append('self.load_btn')
+    self.train_btn.place(anchor = 'n', relx = 0.5, rely = 0.75)
+    self.att_list.append('self.train_btn')
     
     # Create Continue Button
     self.btn_cont1 = ttk.Button(
@@ -845,7 +883,7 @@ def TrainModel(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.btn_cont1.place(anchor = 'e', relx = 0.999, rely = 0.965)
+    self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
     self.att_list.append('self.btn_cont1')
 
     # Create Back Button
@@ -854,7 +892,7 @@ def TrainModel(self,window):
                                command = back_page, 
                                style = 'Modern2.TButton',
                                width = 10)
-    self.btn_back1.place(anchor = 'e', relx = 0.915, rely = 0.965)
+    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
     self.att_list.append('self.btn_back1')
 
     # Create Help Button
@@ -877,5 +915,5 @@ def TrainModel(self,window):
                                 style = "Modern2.TButton",
                                 width = 7
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.965)
+    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
     self.att_list.append('self.btn_help')

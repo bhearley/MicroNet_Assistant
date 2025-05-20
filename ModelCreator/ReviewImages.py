@@ -86,6 +86,10 @@ def ReviewImages(self,window):
             save_path = filedialog.askdirectory(
                 title="Select Folder to Save Images",)
             
+            # Save for later
+            self.save_path = save_path
+
+            # Save images
             for item in self.Segment['Final'].keys():
                 # Save the original picture
                 fname = item.split('.')
