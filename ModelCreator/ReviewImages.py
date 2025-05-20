@@ -70,7 +70,7 @@ def ReviewImages(self,window):
 
             # Dispaly the image 
             self.img_f = self.Segment['Final'][[self.listbox_01.get(idx) for idx in self.listbox_01.curselection()][0]]
-            scale = 0.8
+            scale = 1.2
             self.img_f = self.img_f.resize((int(self.img_f.width*scale), int(self.img_f.height*scale)))
             self.imgtk_f = ImageTk.PhotoImage(self.img_f)
             self.img_final = tk.Label(window, image = self.imgtk_f, bg = 'white')
@@ -299,7 +299,7 @@ def ReviewImages(self,window):
 
     # Create the scrollbar
     self.scrollbar_01= ttk.Scrollbar(window, orient= 'vertical', style = "Vertical.TScrollbar")
-    self.scrollbar_01.place(anchor='n', relx = 0.25, rely = 0.2, height = 452)
+    self.scrollbar_01.place(anchor='n', relx = 0.225, rely = 0.2, height = 752)
     self.att_list.append('self.scrollbar_01')
     
     # Get all images
@@ -311,8 +311,8 @@ def ReviewImages(self,window):
     self.listbox_01 = tk.Listbox(window, 
                                 listvariable=items,
                                 selectmode='single',
-                                height = 28,
-                                width = 48,
+                                height = 34,
+                                width = 54,
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -321,7 +321,7 @@ def ReviewImages(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']                                  
                                 )
-    self.listbox_01.place(anchor='n', relx = 0.15, rely = 0.2)
+    self.listbox_01.place(anchor='n', relx = 0.125, rely = 0.2)
     self.att_list.append('self.listbox_01')
     self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
 
@@ -336,7 +336,7 @@ def ReviewImages(self,window):
                                style = 'Modern2.TButton',
                                width = 12
                                )
-    self.load_btn.place(anchor = 'n', relx = 0.1025, rely = 0.775)
+    self.load_btn.place(anchor = 'n', relx = 0.08, rely = 0.775)
     self.att_list.append('self.load_btn')
 
     # Create button to export images
@@ -344,7 +344,7 @@ def ReviewImages(self,window):
                               command = lambda:save_images(self), 
                               style = 'Modern2.TButton',
                               width = 12)
-    self.btn_exp.place(anchor = 'n', relx = 0.2074, rely = 0.775)
+    self.btn_exp.place(anchor = 'n', relx = 0.17, rely = 0.775)
     self.att_list.append('self.btn_exp')
 
     # Create Continue Button
@@ -355,7 +355,7 @@ def ReviewImages(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.btn_cont1.place(anchor = 'e', relx = 0.999, rely = 0.965)
+    self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
     self.att_list.append('self.btn_cont1')
 
     # Create Back Button
@@ -364,7 +364,7 @@ def ReviewImages(self,window):
                                command = back_page, 
                                style = 'Modern2.TButton',
                                width = 10)
-    self.btn_back1.place(anchor = 'e', relx = 0.915, rely = 0.965)
+    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
     self.att_list.append('self.btn_back1')
 
     # Create Help Button
@@ -387,5 +387,5 @@ def ReviewImages(self,window):
                                 style = "Modern2.TButton",
                                 width = 7
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.965)
+    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
     self.att_list.append('self.btn_help')
