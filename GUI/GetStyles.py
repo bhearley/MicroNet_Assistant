@@ -90,7 +90,7 @@ def GetStyles(self):
                         "Modern5.TButton",
                         background='#DD361C',
                         foreground="white",
-                        font=("Segoe UI", 14),
+                        font=("Segoe UI", 16),
                         borderwidth=2,
                         padding=5,
                         focuscolor='',

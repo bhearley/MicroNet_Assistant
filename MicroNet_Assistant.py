@@ -346,7 +346,10 @@ class MicroNetAssistant:
         if self.prev_img is not None:
             self.Segment['Data'][self.prev_img]['Original Image'] = self.image
             self.Segment['Data'][self.prev_img]['Segmented Image'] = self.combined_all
-            self.Segment['Data'][self.prev_img]['Predictor'] = self.predictor
+            try:
+                self.Segment['Data'][self.prev_img]['Predictor'] = self.predictor
+            except:
+                pass
 
     # Function to save the current segmentation
     def save_model(self):

@@ -538,7 +538,7 @@ def SegmentImages(self,window):
         # Create a Matplotlib figure
         if hasattr(self,"fig") == False:
             self.fig, self.ax = plt.subplots()
-            self.fig.set_dpi(70)
+            self.fig.set_dpi(150)
             self.fig.set_size_inches(self.image.width / self.fig.dpi, self.image.height / self.fig.dpi)
             self.fig.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
 
@@ -547,7 +547,7 @@ def SegmentImages(self,window):
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig.get_figwidth() * self.fig.get_dpi()),
                                   height=int(self.fig.get_figheight() * self.fig.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.08)
+        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.15)
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -573,210 +573,219 @@ def SegmentImages(self,window):
         self.label_title.place(anchor = 'center', relx = 0.5, rely = 0.125)
         self.att_list.append('self.label_title')
     
-        # Load the SAM Model if not in project
-        if self.Segment['Data'][self.img_name]['Predictor'] is None or self.Segment['Data'][self.img_name]['Predictor'] == 'Load':
-            # Function to open SAM Model
-            def open_file(callback, loading):
-                if hasattr(self,'predictor') == False:
-                    # Get the model path
-                    model_path = ''
-                    # -- Check default location
-                    def_direc = os.path.join(os.getcwd(),'ModelCreator','SegmentationModels','SAM','SAM Models')
-                    ask_flag = 0
-                    if os.path.isdir(def_direc):
-                        # Search for .pth files in the directory
-                        pth_files = glob.glob(os.path.join(def_direc, "*.pth"))
-                        if pth_files:
-                            model_path = os.path.abspath(pth_files[0]) 
+        # Get the segmentation model
+        seg_mod = self.combo2.get()
+
+
+        if seg_mod == 'Segment Anything (SAM)':
+            # Load the SAM Model if not in project
+            if self.Segment['Data'][self.img_name]['Predictor'] is None or self.Segment['Data'][self.img_name]['Predictor'] == 'Load':
+                # Function to open SAM Model
+                def open_file(callback, loading):
+                    if hasattr(self,'predictor') == False:
+                        # Get the model path
+                        model_path = ''
+                        # -- Check default location
+                        def_direc = os.path.join(os.getcwd(),'ModelCreator','SegmentationModels','SAM','SAM Models')
+                        ask_flag = 0
+                        if os.path.isdir(def_direc):
+                            # Search for .pth files in the directory
+                            pth_files = glob.glob(os.path.join(def_direc, "*.pth"))
+                            if pth_files:
+                                model_path = os.path.abspath(pth_files[0]) 
+                            else:
+                                ask_flag = 1
                         else:
                             ask_flag = 1
-                    else:
-                        ask_flag = 1
 
-                    # -- Ask for path from user if not found
-                    if ask_flag == 1:
-                        while '.pth' not in model_path:
-                            model_path = filedialog.askopenfilename(
-                                title="Open a SAM *PTH file",
-                                filetypes=(("PTH Files", "*.pth"),)
-                            )
+                        # -- Ask for path from user if not found
+                        if ask_flag == 1:
+                            while '.pth' not in model_path:
+                                model_path = filedialog.askopenfilename(
+                                    title="Open a SAM *PTH file",
+                                    filetypes=(("PTH Files", "*.pth"),)
+                                )
 
-                            if model_path == '':
-                                # Delete the page
-                                DeleteLocal(self)
-                                DeletePages(self)
+                                if model_path == '':
+                                    # Delete the page
+                                    DeleteLocal(self)
+                                    DeletePages(self)
 
-                                # Set Predictor
-                                self.predictor = None
+                                    # Set Predictor
+                                    self.predictor = None
 
-                                # Destory Loading Window
-                                loading.destroy()
+                                    # Destory Loading Window
+                                    loading.destroy()
 
-                                # Break Loop
-                                break
+                                    # Break Loop
+                                    break
 
-                            else:
-                                shutil.moove(model_path,os.path.join(def_direc,os.path.basename(model_path)))
+                                else:
+                                    shutil.move(model_path,os.path.join(def_direc,os.path.basename(model_path)))
 
 
-                    # -- Load the model and set the image
-                    if hasattr(self,'predictor') == False:
-                        model_type = os.path.basename(model_path)[4:9]
-                        sam, self.predictor = LoadModel(model_path, model_type)
-                    else:
-                        del self.predictor
+                        # -- Load the model and set the image
+                        if hasattr(self,'predictor') == False:
+                            model_type = os.path.basename(model_path)[4:9]
+                            sam, self.predictor = LoadModel(os.path.join(def_direc,os.path.basename(model_path)), model_type)
+                        else:
+                            del self.predictor
+                            return
+
+                    # Set the predictor for the image
+                    try:
+                        self.predictor, self.image_Sam = SetImage(self.predictor, os.path.join(temp_dir, self.img_name))
+                    except:
+                        self.predictor = None
+
+
+                    # Notify when done
+                    callback()  # Notify when
+
+                # Function to show the progress bar
+                def show_loading_window():
+
+                    # Create loading bar window
+                    loading = tk.Toplevel(window)
+                    loading.title("Loading SAM")
+                    loading.geometry("300x100")
+                    loading.resizable(False, False)
+                    loading.configure(bg='white')
+                    loading.grab_set() 
+
+                    # Function for progress bar Exit Protocol
+                    def on_closing_sam(self):
                         return
+                    
+                    # Create the window exit protocal
+                    loading.protocol("WM_DELETE_WINDOW", lambda:on_closing_sam(self))
 
-                # Set the predictor for the image
-                try:
-                    self.predictor, self.image_Sam = SetImage(self.predictor, os.path.join(temp_dir, self.img_name))
-                except:
-                    self.predictor = None
+                    # Create the label
+                    ttk.Label(
+                            loading, 
+                            text="Loading SAM for the image - Please Wait.", 
+                            style = "Modern1.TLabel").pack(pady=10)
 
+                    # Create the progress bar
+                    pb = ttk.Progressbar(loading, mode='indeterminate', style = "Modern.Horizontal.TProgressbar")
+                    pb.pack(fill='x', padx=20, pady=10)
+                    pb.start(10)
 
-                # Notify when done
-                callback()  # Notify when
+                    # Function to close window when task is completed
+                    def on_task_done():
+                        pb.stop()
+                        loading.destroy()
 
-            # Function to show the progress bar
-            def show_loading_window():
+                    #Begin save on background thread
+                    threading.Thread(target=open_file, args=(on_task_done,loading), daemon=True).start()
 
-                # Create loading bar window
-                loading = tk.Toplevel(window)
-                loading.title("Loading SAM")
-                loading.geometry("300x100")
-                loading.resizable(False, False)
-                loading.configure(bg='white')
-                loading.grab_set() 
+                    # Wait until loading window is closed
+                    window.wait_window(loading)
 
-                # Function for progress bar Exit Protocol
-                def on_closing_sam(self):
-                    return
-                
-                # Create the window exit protocal
-                loading.protocol("WM_DELETE_WINDOW", lambda:on_closing_sam(self))
+                # Start Loading Model
+                show_loading_window()
 
-                # Create the label
-                ttk.Label(
-                          loading, 
-                          text="Loading SAM for the image - Please Wait.", 
-                          style = "Modern1.TLabel").pack(pady=10)
+            # Get SAM model if already in project
+            else:
+                self.predictor = self.Segment['Data'][self.img_name]['Predictor']
 
-                # Create the progress bar
-                pb = ttk.Progressbar(loading, mode='indeterminate', style = "Modern.Horizontal.TProgressbar")
-                pb.pack(fill='x', padx=20, pady=10)
-                pb.start(10)
+            if self.predictor is None:
+                # Reload the page
+                self.load_page()
 
-                # Function to close window when task is completed
-                def on_task_done():
-                    pb.stop()
-                    loading.destroy()
-
-                #Begin save on background thread
-                threading.Thread(target=open_file, args=(on_task_done,loading), daemon=True).start()
-
-                # Wait until loading window is closed
-                window.wait_window(loading)
-
-            # Start Loading Model
-            show_loading_window()
-
-        # Get SAM model if already in project
-        else:
-            self.predictor = self.Segment['Data'][self.img_name]['Predictor']
-
-        if self.predictor is None:
-            # Reload the page
-            self.load_page()
+        # Manual Segmentation
+        elif seg_mod == 'Manual':
+            self.Segment['Data'][self.img_name]['Predictor'] = 'Load'
             
-        else:
         # Creat an empty masked image
-            self.mask_image_f = Image.open(self.image_path)
-            pixels = self.mask_image_f.load()
-            for i in range(self.mask_image_f.width):
-                for j in range(self.mask_image_f.height):
-                    pixels[i, j] = (255, 255, 255, 0)
+        self.mask_image_f = Image.open(self.image_path)
+        pixels = self.mask_image_f.load()
+        for i in range(self.mask_image_f.width):
+            for j in range(self.mask_image_f.height):
+                pixels[i, j] = (255, 255, 255, 0)
 
-            # Create Button to Add Points (Brush)
-            icon = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "brush_w.png"))
-            icon = icon.resize((24, 24))
-            icon_img = ImageTk.PhotoImage(icon)
-            self.icon_img = icon_img
-            self.add_pts = ttk.Button(
-                                    window, 
-                                    text = " Brush",
-                                    image=self.icon_img,
+        # Create Button to Add Points (Brush)
+        icon = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "brush_w.png"))
+        icon = icon.resize((24, 24))
+        icon_img = ImageTk.PhotoImage(icon)
+        self.icon_img = icon_img
+        self.add_pts = ttk.Button(
+                                window, 
+                                text = " Brush",
+                                image=self.icon_img,
+                                compound='left',
+                                style = "Modern5.TButton",                                  
+                                command = lambda:add_pixels(self),
+                                width = 5,
+                                )
+        self.add_pts.place(anchor = 'n', relx = 0.805, rely = 0.2)
+        self.loc_att_list.append('self.add_pts')
+        self.add_selected = False
+
+        # Create Button to Erase Points
+        icon2 = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "eraser_w.png"))
+        icon2 = icon2.resize((24, 24))
+        icon_img2 = ImageTk.PhotoImage(icon2)
+        self.icon_img2 = icon_img2
+        self.remove_pts = ttk.Button(
+                                    window,text = " Erase",
+                                    image=self.icon_img2,
                                     compound='left',
-                                    style = "Modern5.TButton",                                  
-                                    command = lambda:add_pixels(self),
+                                    style = "Modern5.TButton",
+                                    command = lambda:rem_pixels(self),
                                     width = 5,
                                     )
-            self.add_pts.place(anchor = 'n', relx = 0.7775, rely = 0.2)
-            self.loc_att_list.append('self.add_pts')
-            self.add_selected = False
+        self.remove_pts.place(anchor = 'n', relx = 0.885, rely=0.2)
+        self.loc_att_list.append('self.remove_pts')
+        self.rem_selected = False
 
-            # Create Button to Erase Points
-            icon2 = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "eraser_w.png"))
-            icon2 = icon2.resize((24, 24))
-            icon_img2 = ImageTk.PhotoImage(icon2)
-            self.icon_img2 = icon_img2
-            self.remove_pts = ttk.Button(
-                                        window,text = " Erase",
-                                        image=self.icon_img2,
-                                        compound='left',
-                                        style = "Modern5.TButton",
-                                        command = lambda:rem_pixels(self),
-                                        width = 5,
-                                        )
-            self.remove_pts.place(anchor = 'n', relx = 0.91, rely=0.2)
-            self.loc_att_list.append('self.remove_pts')
-            self.rem_selected = False
-
-            # Create Brush Size Slider
-            self.slider = ttk.Scale(
-                                    window,
-                                    from_=1,
-                                    to=25,
-                                    orient='horizontal',  
-                                    length=300,
-                                    style="Modern.Horizontal.TScale"
-                                    )
-            self.slider.place(anchor = 'n', relx = 0.845, rely = 0.275)
-            self.loc_att_list.append('self.slider')
-
-            # Get Available Masks
-            mask_list = []
-            for i in range(len(list(self.Segment['Data'][self.img_name]['Segments'].keys()))):
-                mask_list.append('Segment ' + str(list(self.Segment['Data'][self.img_name]['Segments'].keys())[i]))
-
-            # Create the dropdown (combobox) for Segmentation Options
-            self.combo1 = ttk.Combobox(
+        # Create Brush Size Slider
+        self.slider = ttk.Scale(
                                 window,
-                                values=mask_list,
-                                style="Modern.TCombobox",
-                                state="readonly"
+                                from_=1,
+                                to=25,
+                                orient='horizontal',  
+                                length=300,
+                                style="Modern.Horizontal.TScale"
                                 )
-            self.combo1.bind("<<ComboboxSelected>>", change_combo)
-            self.combo1.place(anchor='n', relx = 0.845, rely = 0.4)
-            self.combo1.set(mask_list[0]) 
-            self.loc_att_list.append('self.combo1')
+        self.slider.place(anchor = 'n', relx = 0.845, rely = 0.265)
+        self.loc_att_list.append('self.slider')
 
-            # Create the color image
-            self.img_c = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "blue.png"))
-            scale = 0.3
-            self.img_c = self.img_c.resize((int(self.img_c.width*scale), int(self.img_c.height*scale)))
-            self.imgtk_c = ImageTk.PhotoImage(self.img_c)
-            self.img_color = tk.Label(window, image = self.imgtk_c, bg = 'white')
-            self.img_color.place(anchor = 'n', relx = 0.845, rely = 0.5)
-            self.loc_att_list.append('self.img_color')
+        # Get Available Masks
+        mask_list = []
+        for i in range(len(list(self.Segment['Data'][self.img_name]['Segments'].keys()))):
+            mask_list.append('Segment ' + str(list(self.Segment['Data'][self.img_name]['Segments'].keys())[i]))
 
-            # Initialize Drawing
-            self.drawing = False
+        # Create the dropdown (combobox) for Segmentation Options
+        self.combo1 = ttk.Combobox(
+                            window,
+                            values=mask_list,
+                            style="Modern.TCombobox",
+                            state="readonly"
+                            )
+        self.combo1.bind("<<ComboboxSelected>>", change_combo)
+        self.combo1.place(anchor='n', relx = 0.845, rely = 0.3)
+        self.combo1.set(mask_list[0]) 
+        self.loc_att_list.append('self.combo1')
 
-            # Bind Canvas Events
-            self.canvas.mpl_connect("button_press_event", lambda event: mouse_click(self, event))
-            self.canvas.mpl_connect("motion_notify_event", lambda event : on_mouse_move(self, event))
-            self.canvas.mpl_connect("button_release_event", lambda event : on_mouse_release(self, event))
-            self.canvas.mpl_connect('figure_leave_event', lambda event: on_mouse_leave(self, event))
+        # Create the color image
+        self.img_c = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "blue.png"))
+        scale = 0.3
+        self.img_c = self.img_c.resize((int(self.img_c.width*scale), int(self.img_c.height*scale)))
+        self.imgtk_c = ImageTk.PhotoImage(self.img_c)
+        self.img_color = tk.Label(window, image = self.imgtk_c, bg = 'white')
+        self.img_color.place(anchor = 'n', relx = 0.845, rely = 0.375)
+        self.loc_att_list.append('self.img_color')
+
+        # Initialize Drawing
+        self.drawing = False
+
+        # Bind Canvas Events
+        self.canvas.mpl_connect("button_press_event", lambda event: mouse_click(self, event))
+        self.canvas.mpl_connect("motion_notify_event", lambda event : on_mouse_move(self, event))
+        self.canvas.mpl_connect("button_release_event", lambda event : on_mouse_release(self, event))
+        self.canvas.mpl_connect('figure_leave_event', lambda event: on_mouse_leave(self, event))
+
 
     # Function to continue to next page
     def next_page():
@@ -1120,14 +1129,31 @@ def SegmentImages(self,window):
                                 selectbackground=self.style_man['ListBox']['ListBox1']['selectbackground'], 
                                 selectforeground=self.style_man['ListBox']['ListBox1']['selectforeground'],  
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
-                                bd=self.style_man['ListBox']['ListBox1']['bd']
+                                bd=self.style_man['ListBox']['ListBox1']['bd'],
+                                exportselection=0
                                 )
     self.listbox_01.place(anchor='n', relx = 0.125, rely = 0.2)
     self.att_list.append('self.listbox_01')
     self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
 
-    #Configure the scrollbar
+    # Configure the scrollbar
     self.scrollbar_01.config(command= self.listbox_01.yview)
+
+    # Create combo box for segmentation option
+    seg_opts = ['Segment Anything (SAM)','Manual']
+
+    # Create the dropdown (combobox) for Segmentation Options
+    self.combo2 = ttk.Combobox(
+                        window,
+                        values=seg_opts,
+                        style="Modern.TCombobox",
+                        state="readonly",
+                        width = 25,
+                        )
+    self.combo2.place(anchor='n', relx = 0.125, rely = 0.765)
+    self.combo2.set(seg_opts[0]) 
+    self.att_list.append('self.combo2')
+
 
     # Create button to load an image
     self.load_btn = ttk.Button(
@@ -1137,7 +1163,7 @@ def SegmentImages(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.load_btn.place(anchor = 'n', relx = 0.125, rely = 0.775)
+    self.load_btn.place(anchor = 'n', relx = 0.125, rely = 0.8)
     self.att_list.append('self.load_btn')
 
     # Create Continue Button
