@@ -245,7 +245,7 @@ def DataDefinition(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_6_01.place(anchor='n', relx = 0.25, rely = 0.2, height = 405)
+    self.scrollbar_6_01.place(anchor='n', relx = 0.25, rely = 0.2, height = 752)
     self.loc_att_list.append('self.scrollbar_6_01')
 
     # Create the label for All Images
@@ -263,8 +263,8 @@ def DataDefinition(self,window):
                                 window, 
                                 listvariable=items1,
                                 selectmode='multiple',
-                                height = 25,
-                                width = 48,
+                                height = 34,
+                                width = 54,
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -285,7 +285,7 @@ def DataDefinition(self,window):
                                 style = "Modern3.TButton",
                                 width = 15
                                 )
-    self.btn_6_01.place(anchor = 'c', relx = 0.15, rely = 0.75)
+    self.btn_6_01.place(anchor = 'c', relx = 0.15, rely = 0.775)
     self.loc_att_list.append('self.btn_6_01')
 
     # Create a vertical scrollbar for Training Data
@@ -294,7 +294,7 @@ def DataDefinition(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_6_02.place(anchor='n', relx = 0.483, rely = 0.2, height = 405)
+    self.scrollbar_6_02.place(anchor='n', relx = 0.483, rely = 0.2, height = 752)
     self.loc_att_list.append('self.scrollbar_6_02')
 
     # Create the label for Training Data
@@ -312,8 +312,8 @@ def DataDefinition(self,window):
                                 window, 
                                 listvariable=items2,
                                 selectmode='multiple',
-                                height = 25,
-                                width = 48,
+                                height = 34,
+                                width = 54,
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -334,7 +334,7 @@ def DataDefinition(self,window):
                                 style = "Modern3.TButton",
                                 width = 15
                                 )
-    self.btn_6_02.place(anchor = 'c', relx = 0.383, rely = 0.75)
+    self.btn_6_02.place(anchor = 'c', relx = 0.383, rely = 0.775)
     self.loc_att_list.append('self.btn_6_02')
 
     # Create a vertical scrollbar for Validation Data
@@ -343,7 +343,7 @@ def DataDefinition(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_6_03.place(anchor='n', relx = 0.716, rely = 0.2, height = 405)
+    self.scrollbar_6_03.place(anchor='n', relx = 0.716, rely = 0.2, height = 752)
     self.loc_att_list.append('self.scrollbar_6_03')
 
     # Create the label for Validation Data
@@ -361,8 +361,8 @@ def DataDefinition(self,window):
                                 window, 
                                 listvariable=items3,
                                 selectmode='multiple',
-                                height = 25,
-                                width = 48,
+                                height = 34,
+                                width = 54,
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -383,7 +383,7 @@ def DataDefinition(self,window):
                                 style = "Modern3.TButton",
                                 width = 15
                                 )
-    self.btn_6_03.place(anchor = 'c', relx = 0.616, rely = 0.75)
+    self.btn_6_03.place(anchor = 'c', relx = 0.616, rely = 0.775)
     self.loc_att_list.append('self.btn_6_03')
 
     # Create a vertical scrollbar for Test Data
@@ -392,7 +392,7 @@ def DataDefinition(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_6_04.place(anchor='n', relx = 0.95, rely = 0.2, height = 405)
+    self.scrollbar_6_04.place(anchor='n', relx = 0.95, rely = 0.2, height = 752)
     self.loc_att_list.append('self.scrollbar_6_04')
 
     # Create the label for All Images
@@ -410,8 +410,8 @@ def DataDefinition(self,window):
                                 window, 
                                 listvariable=items4,
                                 selectmode='multiple',
-                                height = 25,
-                                width = 48,
+                                height = 34,
+                                width = 54,
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -432,7 +432,7 @@ def DataDefinition(self,window):
                                 style = "Modern3.TButton",
                                 width = 15
                                 )
-    self.btn_6_04.place(anchor = 'c', relx = 0.85, rely = 0.75)
+    self.btn_6_04.place(anchor = 'c', relx = 0.85, rely = 0.775)
     self.loc_att_list.append('self.btn_6_04')
 
     # Create Continue Button
@@ -443,7 +443,7 @@ def DataDefinition(self,window):
                                style = 'Modern2.TButton',
                                width = 10
                                )
-    self.btn_cont1.place(anchor = 'e', relx = 0.999, rely = 0.965)
+    self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
     self.att_list.append('self.btn_cont1')
 
     # Create Back Button
@@ -452,7 +452,7 @@ def DataDefinition(self,window):
                                command = back_page, 
                                style = 'Modern2.TButton',
                                width = 10)
-    self.btn_back1.place(anchor = 'e', relx = 0.915, rely = 0.965)
+    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
     self.att_list.append('self.btn_back1')
 
     # Create Help Button
@@ -475,5 +475,5 @@ def DataDefinition(self,window):
                                 style = "Modern2.TButton",
                                 width = 7
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.965)
+    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
     self.att_list.append('self.btn_help')
