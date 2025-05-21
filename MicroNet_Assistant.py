@@ -182,11 +182,11 @@ class MicroNetAssistant:
             # Load the page
             self.load_page()
 
-    # Function to start exporting a segmentation
-    def start_export(self):
+    # Function to load an existing model
+    def segment_image(self):
         #--------------------------------------------------------------------------
         #
-        #   PURPOSE: Enable exporting segmentation to a model.
+        #   PURPOSE: Load a trained model and segment an imate
         #
         #--------------------------------------------------------------------------
 
@@ -199,11 +199,11 @@ class MicroNetAssistant:
         # Load the page
         self.load_page()
 
-    # Function to load an existing model
-    def segment_image(self):
+    # Function to start exporting a segmentation
+    def start_export(self):
         #--------------------------------------------------------------------------
         #
-        #   PURPOSE: Load a trained model and segment an imate
+        #   PURPOSE: Enable exporting segmentation to a model.
         #
         #--------------------------------------------------------------------------
 
@@ -215,6 +215,7 @@ class MicroNetAssistant:
 
         # Load the page
         self.load_page()
+
             
     # Function to load a GUI Page
     def load_page(self):

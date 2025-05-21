@@ -19,6 +19,7 @@ def BuildRUCGenerator(self,window):
     from tkinter import filedialog
     from tkinter import messagebox
     from tkinter import ttk
+    import tkinter.font as tkfont
     import tksheet
 
     # Import Functions
@@ -372,14 +373,15 @@ def BuildRUCGenerator(self,window):
                 
                 # Create the Matplotlib Figure
                 if hasattr(self,"fig2") == False:
-                    self.fig2, self.ax2 = plt.subplots(figsize=(8/1.5, 6/1.5))
+                    img_scale = 0.9
+                    self.fig2, self.ax2 = plt.subplots(figsize=(8/img_scale, 6/img_scale))
                     self.fig2.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
 
                 # Embed the Matplotlib figure in Tkinter
                 self.canvas2 = FigureCanvasTkAgg(self.fig2, master=window)
                 self.canvas_widget2 = self.canvas2.get_tk_widget()
-                self.canvas_widget2.config(width=int(self.fig2.get_figwidth() * self.fig2.get_dpi()),
-                                        height=int(self.fig2.get_figheight() * self.fig2.get_dpi()))
+                self.canvas_widget2.config(width=int(self.fig1.get_figheight() * self.image.width/self.image.height  * self.fig1.get_dpi()),
+                                        height=int(self.fig1.get_figheight() * self.fig1.get_dpi()))
                 self.canvas_widget2.place(anchor='n', relx = 0.825, rely = 0.25)
                 self.loc_att_list.append('self.canvas2')
                 self.loc_att_list.append('self.canvas_widget2')
@@ -393,6 +395,8 @@ def BuildRUCGenerator(self,window):
                 original_xlim = self.ax2.get_xlim()
                 original_ylim = self.ax2.get_ylim()
 
+                if hasattr(self,"toolbar"):
+                    self.toolbar.destroy()
                 self.toolbar = NavigationToolbar2Tk(self.canvas2, window)
                 self.toolbar.update()
                 self.toolbar.push_current()
@@ -475,7 +479,7 @@ def BuildRUCGenerator(self,window):
                                 from_=self.xboundL,
                                 to=self.xboundU,
                                 orient='horizontal',  
-                                length=150,
+                                length=200,
                                 style="Modern.Horizontal.TScale",
                                 command = change_x_slider
                                 )
@@ -518,7 +522,7 @@ def BuildRUCGenerator(self,window):
                                 from_=self.yboundL,
                                 to=self.yboundU,
                                 orient='horizontal',  
-                                length=150,
+                                length=200,
                                 style="Modern.Horizontal.TScale",
                                 command = change_y_slider
                                 )
@@ -690,7 +694,8 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd2, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
             self.entry_convx.place(anchor='n', relx = 0.5, rely = 0.5)
             self.entry_convx.insert(0, 1)
@@ -707,7 +712,8 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd2, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
             self.entry_convy.place(anchor='n', relx = 0.5, rely = 0.65)
             self.entry_convy.insert(0, 1)
@@ -718,7 +724,7 @@ def BuildRUCGenerator(self,window):
                                     text = "Export", 
                                     command = lambda:export_data(self), 
                                     style = 'Modern2.TButton',
-                                    width = 10
+                                    width = 12
                                     ).place(anchor = 'n', relx = 0.5, rely = 0.8)
 
         # Create the label for the segmented image
@@ -732,7 +738,8 @@ def BuildRUCGenerator(self,window):
 
         # Create the canvas to display the image
         if hasattr(self,"fig1") == False:
-            self.fig1, self.ax1 = plt.subplots(figsize=(8/1.5, 6/1.5))
+            img_scale = 0.9
+            self.fig1, self.ax1 = plt.subplots(figsize=(8/img_scale, 6/img_scale))
             self.fig1.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
 
         # Embed the Matplotlib figure in Tkinter
@@ -788,7 +795,8 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_XL.insert(0, self.xboundL) # Set defualt value
         self.entry_XL.place(anchor = 'n', relx = 0.425, rely = 0.329)
@@ -802,7 +810,8 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_XU.insert(0, self.xboundU) # Set defualt value
         self.entry_XU.place(anchor = 'n', relx = 0.575, rely = 0.329)
@@ -816,7 +825,8 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_XV.insert(0, self.xsub) # Set defualt value
         self.entry_XV.place(anchor = 'n', relx = 0.5, rely = 0.2925)
@@ -842,7 +852,8 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_YL.insert(0, self.yboundL) # Set defualt value
         self.entry_YL.place(anchor = 'n', relx = 0.425, rely = 0.479)
@@ -856,7 +867,8 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_YU.insert(0, self.xboundU) # Set defualt value
         self.entry_YU.place(anchor = 'n', relx = 0.575, rely = 0.479)
@@ -870,7 +882,8 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10
+                            width = 10,
+                            font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_YV.insert(0, self.xsub) # Set defualt value
         self.entry_YV.place(anchor = 'n', relx = 0.5, rely = 0.4425)
@@ -883,7 +896,7 @@ def BuildRUCGenerator(self,window):
                                     text = "Update RUC", 
                                     command = create_ruc, 
                                     style = 'Modern3.TButton',
-                                    width = 10
+                                    width = 12
                                     )
         self.btn_ruc.place(anchor = 'n', relx = 0.5, rely = 0.595)
         self.att_list.append('self.btn_ruc')
@@ -1252,7 +1265,6 @@ def BuildRUCGenerator(self,window):
         image_label.image = img_tk
         image_label.pack(anchor="center")
 
-
     # Function for Home
     def home():
         # Delete the page
@@ -1285,7 +1297,7 @@ def BuildRUCGenerator(self,window):
                                 text = "Select File", 
                                 command = get_file, 
                                 style = 'Modern2.TButton',
-                                width = 10
+                                width = 12
                                 )
     self.btn_file.place(anchor = 'n', relx = 0.5, rely = 0.15)
     self.att_list.append('self.btn_file')
@@ -1310,7 +1322,7 @@ def BuildRUCGenerator(self,window):
                                 style = "Modern2.TButton",
                                 width = 7
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.965)
+    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
     self.att_list.append('self.btn_help')
 
     # Create Home Button
@@ -1333,5 +1345,5 @@ def BuildRUCGenerator(self,window):
                                 style = "Modern2.TButton",
                                 width = 7
                                 )
-    self.btn_home.place(anchor = 'e', relx = 0.999, rely = 0.965)
+    self.btn_home.place(anchor = 'e', relx = 0.997, rely = 0.975)
     self.att_list.append('self.btn_home')

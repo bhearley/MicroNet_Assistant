@@ -14,6 +14,7 @@ def UseModel(self,window):
     from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
     import os
     from PIL import Image, ImageTk
+    import threading
     import tkinter as tk
     from tkinter import filedialog
     from tkinter import messagebox
@@ -38,6 +39,11 @@ def UseModel(self,window):
             1:(255, 0, 0, 128),
             2:(0, 255, 0, 128),
             }
+    ClrsF = {
+            0:(0, 0, 255, 255),
+            1:(255, 0, 0, 255),
+            2:(0, 255, 0, 255),
+            }
 
     # Function for Validation for Entry
     def only_numbers_and_decimal(char, current_value):
@@ -49,72 +55,75 @@ def UseModel(self,window):
         return False
 
     # Function to load a model
-    def load_model(self):
-        # Preallocate file path
-        file_path = ''
+    def load_model(self, tag):
+        if tag == 'New':
+            # Preallocate file path
+            file_path = ''
 
-        # Ask for the file name
-        while '.tar' not in file_path:
+            # Ask for the file name
             file_path = filedialog.askopenfilename(
                 title="Open an image",
                 filetypes=(("MicroNet Model", "*.tar"),)
             )
+        else:
+            file_path = self.mod_path
 
-        # Save model path
-        self.mod_path = file_path
+        if ".tar" in file_path:
+            # Save model path
+            self.mod_path = file_path
 
-        # Destory old title and label
-        if hasattr(self,"mod_title"):
-            self.mod_title.destroy()
-            self.mod_label.destroy()
-            self.class_label.destroy()
-            self.entry_C.destroy()
+            # Destory old title and label
+            if hasattr(self,"mod_title"):
+                self.mod_title.destroy()
+                self.mod_label.destroy()
+                self.class_label.destroy()
+                self.entry_C.destroy()
 
-        # Create title
-        self.mod_title = ttk.Label(
-                        window, 
-                        text="Model Name:", 
-                        style = "Modern2.TLabel",
-                        anchor = 'w'
-                        )
-        self.mod_title.place(anchor = 'n', relx = 0.125, rely = 0.3)
-        self.att_list.append('self.mod_title')
-
-        # Create label
-        self.mod_label = ttk.Label(
-                        window, 
-                        text= os.path.basename(self.mod_path), 
-                        style = "Modern2.TLabel",
-                        anchor = 'w'
-                        )
-        self.mod_label.place(anchor = 'n', relx = 0.125, rely = 0.335)
-        self.att_list.append('self.mod_label')
-
-        # Create classes label
-        self.mod_label = ttk.Label(
-                        window, 
-                        text= 'Number of Classes:', 
-                        style = "Modern2.TLabel",
-                        anchor = 'w'
-                        )
-        self.mod_label.place(anchor = 'n', relx = 0.125, rely = 0.45)
-        self.att_list.append('self.mod_label')
-
-        # Register the validation function
-        vcmd = (window.register(only_numbers_and_decimal), "%S", "%P")
-
-        # Add the Entry Box for Scale
-        self.entry_C = ttk.Entry(window, 
-                            validate="key", 
-                            validatecommand=vcmd, 
-                            style="Custom.TEntry",
-                            justify='center',
-                            width = 10,
-                            font = tkfont.Font(family="Segoe UI", size=14)
+            # Create title
+            self.mod_title = ttk.Label(
+                            window, 
+                            text="Model Name:", 
+                            style = "Modern2.TLabel",
+                            anchor = 'w'
                             )
-        self.entry_C.insert(0, "2")
-        self.entry_C.place(anchor = 'n', relx = 0.125, rely = 0.485)
-        self.att_list.append('self.entry_C')
+            self.mod_title.place(anchor = 'n', relx = 0.125, rely = 0.3)
+            self.att_list.append('self.mod_title')
+
+            # Create label
+            self.mod_label = ttk.Label(
+                            window, 
+                            text= os.path.basename(self.mod_path), 
+                            style = "Modern2.TLabel",
+                            anchor = 'w'
+                            )
+            self.mod_label.place(anchor = 'n', relx = 0.125, rely = 0.335)
+            self.att_list.append('self.mod_label')
+
+            # Create classes label
+            self.class_label = ttk.Label(
+                            window, 
+                            text= 'Number of Classes:', 
+                            style = "Modern2.TLabel",
+                            anchor = 'w'
+                            )
+            self.class_label.place(anchor = 'n', relx = 0.125, rely = 0.45)
+            self.att_list.append('self.class_label')
+
+            # Register the validation function
+            vcmd = (window.register(only_numbers_and_decimal), "%S", "%P")
+
+            # Add the Entry Box for Number of Classes
+            self.entry_C = ttk.Entry(window, 
+                                validate="key", 
+                                validatecommand=vcmd, 
+                                style="Custom.TEntry",
+                                justify='center',
+                                width = 10,
+                                font = tkfont.Font(family="Segoe UI", size=14)
+                                )
+            self.entry_C.insert(0, "2")
+            self.entry_C.place(anchor = 'n', relx = 0.125, rely = 0.485)
+            self.att_list.append('self.entry_C')
 
     # Function to load an image
     def load_image(self):
@@ -139,28 +148,30 @@ def UseModel(self,window):
             file_path = ''
 
             # Ask for the file name
-            while '.' not in file_path:
-                file_path = filedialog.askopenfilename(
-                    title="Open an image",
-                    filetypes=(("PNG Files", "*.png"),
-                            ("JPEG Files", "*.jpg"),
-                            ("TIFF Files", "*.tiff"),)
-                )
+            file_path = filedialog.askopenfilename(
+                title="Open an image",
+                filetypes=(("PNG Files", "*.png"),
+                        ("JPEG Files", "*.jpg"),
+                        ("TIFF Files", "*.tiff"),)
+            )
             
-            # Delete Existing Items
-            for widget in self.loc_att_list:
+            try:
+                # Delete Existing Items
+                for widget in self.loc_att_list:
+                    try:
+                        eval(widget).destroy()
+                    except:
+                        pass
                 try:
-                    eval(widget).destroy()
+                    del self.canvas
                 except:
                     pass
-            try:
-                del self.canvas
-            except:
-                pass
 
-            # Load the image
-            self.img_inf_path = file_path
-            self.image_inf = Image.open(file_path)
+                # Load the image
+                self.img_inf_path = file_path
+                self.image_inf = Image.open(file_path).convert('RGBA')
+            except:
+                return
 
         else:
             self.pass_in = False
@@ -176,7 +187,7 @@ def UseModel(self,window):
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig4.get_figwidth() * self.fig4.get_dpi()),
                                 height=int(self.fig4.get_figheight() * self.fig4.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.2)
+        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.3)
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -189,7 +200,7 @@ def UseModel(self,window):
         # Add the Matplotlib navigation toolbar
         self.toolbar = NavigationToolbar2Tk(self.canvas, window)
         self.toolbar.update()
-        self.toolbar.place(anchor='n', relx = 0.5, rely = 0.8)
+        self.toolbar.place(anchor='n', relx = 0.5, rely = 0.875)
         self.loc_att_list.append('self.toolbar')
 
         # Create the x label
@@ -198,7 +209,7 @@ def UseModel(self,window):
                         text="X:", 
                         style = "Modern2.TLabel"
                         )
-        self.x_label.place(anchor = 'n', relx = 0.755, rely = 0.4)
+        self.x_label.place(anchor = 'n', relx = 0.77, rely = 0.4)
         self.loc_att_list.append('self.x_label')
 
         # Create the y label
@@ -207,7 +218,7 @@ def UseModel(self,window):
                         text="Y:", 
                         style = "Modern2.TLabel"
                         )
-        self.y_label.place(anchor = 'n', relx = 0.8275, rely = 0.4)
+        self.y_label.place(anchor = 'n', relx = 0.8425, rely = 0.4)
         self.loc_att_list.append('self.y_label')
 
         #Load an image using PIL
@@ -223,7 +234,7 @@ def UseModel(self,window):
         self.label_scale = ttk.Label(window, 
                                     image=self.photo_scale,
                                     background="white")
-        self.label_scale.place(anchor = 'n', relx = 0.9025, rely = 0.4)
+        self.label_scale.place(anchor = 'n', relx = 0.9175, rely = 0.4)
         self.loc_att_list.append('self.label_scale')
 
         # Register the validation function
@@ -239,7 +250,7 @@ def UseModel(self,window):
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_X.insert(0, str(int(self.image_inf.width)))
-        self.entry_X.place(anchor = 'n', relx = 0.7875, rely = 0.4)
+        self.entry_X.place(anchor = 'n', relx = 0.8025, rely = 0.4)
         self.entry_X.config(state='disabled')
         self.loc_att_list.append('self.entry_X')
 
@@ -253,7 +264,7 @@ def UseModel(self,window):
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_Y.insert(0, str(int(self.image_inf.height)))
-        self.entry_Y.place(anchor = 'n', relx = 0.86, rely = 0.4)
+        self.entry_Y.place(anchor = 'n', relx = 0.875, rely = 0.4)
         self.entry_Y.config(state='disabled')
         self.loc_att_list.append('self.entry_Y')
 
@@ -267,7 +278,7 @@ def UseModel(self,window):
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_S.insert(0, "1")
-        self.entry_S.place(anchor = 'n', relx = 0.94, rely = 0.4)
+        self.entry_S.place(anchor = 'n', relx = 0.955, rely = 0.4)
         self.loc_att_list.append('self.entry_S')
 
         # Create Scale Button
@@ -276,7 +287,7 @@ def UseModel(self,window):
                                 command = lambda: scale_img(self), 
                                 style = 'Modern2.TButton',
                                 width = 10)
-        self.btn_scale.place(anchor = 'n', relx = 0.86, rely = 0.5)
+        self.btn_scale.place(anchor = 'n', relx = 0.875, rely = 0.5)
         self.loc_att_list.append('self.btn_scale')
 
     # Function to segment an image
@@ -290,8 +301,56 @@ def UseModel(self,window):
             messagebox.showerror(message='No image defined!')
             return
         
-        self.inf_pred = SegmentMicroNet(self.mod_path, self.img_inf_path, int(self.entry_C.get()))
+        # Function to save the data
+        def seg_img(callback):
+            # Segment the image
+            self.inf_pred = SegmentMicroNet(self.mod_path, self.img_inf_path, int(self.entry_C.get()))
 
+            # Notify when done
+            callback()
+
+        # Function to display progress bar while saving
+        def show_loading_window():
+            # Create the window
+            loading = tk.Toplevel(window)
+            loading.title("Segmenting")
+            loading.geometry("250x100")
+            loading.resizable(False, False)
+            loading.configure(bg='white')
+            loading.grab_set()  
+
+            # Function for progress bar Exit Protocol
+            def on_closing_saving(self):
+                # Don't allow exit while saving
+                return
+            
+            # Create the window exit protocal
+            loading.protocol("WM_DELETE_WINDOW", lambda:on_closing_saving(self))
+
+            # Create the label
+            ttk.Label(loading, 
+                        text="Segmenting Image - Please Wait.", 
+                        style = "Modern1.TLabel").pack(pady=10)
+
+            # Create the progress bar
+            pb = ttk.Progressbar(loading, mode='indeterminate',style = "Modern.Horizontal.TProgressbar")
+            pb.pack(fill='x', padx=20, pady=10)
+            pb.start(10)
+
+            # Function to close window when task is completed
+            def on_task_done():
+                pb.stop()
+                loading.destroy()
+
+            #Begin save on background thread
+            threading.Thread(target=seg_img, args=(on_task_done,), daemon=True).start()
+
+            # Wait until loading window is closed
+            window.wait_window(loading)
+
+        # Start Save
+        show_loading_window()
+        
         # Make a copy of the image
         self.image_inf_seg = self.image_inf.copy()
 
@@ -320,6 +379,13 @@ def UseModel(self,window):
             del self.canvas
         except:
             pass
+        self.load_btn.destroy()
+        self.load_mod_btn.destroy()
+        self.seg_btn.destroy()
+        self.mod_title.destroy()
+        self.mod_label.destroy()
+        self.class_label.destroy()
+        self.entry_C.destroy()
 
         # Create a Matplotlib figure
         if hasattr(self,"fig4") == False:
@@ -332,7 +398,7 @@ def UseModel(self,window):
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig4.get_figwidth() * self.fig4.get_dpi()),
                                 height=int(self.fig4.get_figheight() * self.fig4.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.2)
+        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.3)
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -341,6 +407,78 @@ def UseModel(self,window):
         self.ax4.imshow(self.combined_inf)
         self.ax4.axis('off')  # Hide axes
         self.canvas.draw()
+
+        # Create button to save image
+        self.save_seg_btn = ttk.Button(
+                                    window, 
+                                    text = "Save Image", 
+                                    command = lambda:save_seg(self, 'Save'), 
+                                    style = 'Modern.TButton',
+                                    width = 12
+                                    )
+        self.save_seg_btn.place(anchor = 'n', relx = 0.44, rely = 0.2)
+        self.loc_att_list.append('self.save_seg_btn')
+
+        # Create button to save image
+        self.disc_seg_btn = ttk.Button(
+                                    window, 
+                                    text = "Discard Image", 
+                                    command = lambda:save_seg(self, 'Discard'), 
+                                    style = 'Modern.TButton',
+                                    width = 12
+                                    )
+        self.disc_seg_btn.place(anchor = 'n', relx = 0.56, rely = 0.2)
+        self.loc_att_list.append('self.disc_seg_btn')
+
+    # Function to save/discard an image
+    def save_seg(self, tag):
+        # Save Image
+        if tag == 'Save':
+            # Get save name
+            file_path = ''
+            file_path = filedialog.asksaveasfilename(title="Save the image")
+
+            if file_path != '':
+                if '.' not in file_path:
+                    file_path = file_path + '.' + self.img_inf_path.split('.')[-1]
+
+            # Make a copy of the image
+            self.image_inf_seg = self.image_inf.copy()
+
+            # Get the pixels
+            pixels = self.image_inf_seg.load()
+
+            # Assign Values
+            for i in range(self.inf_pred.shape[0]):
+                for j in range(self.inf_pred.shape[1]):
+                    for k in range(self.inf_pred.shape[2]):
+                        if self.inf_pred[i][j][k] == True:
+                            pixels[i,j] = ClrsF[k]
+                        else:
+                            pixels[i,j] = (255,255,255,0)
+
+            # Combine Images
+            self.combined_inf = Image.alpha_composite(self.image_inf, self.image_inf_seg)
+
+            # Save the image
+            self.combined_inf.save(file_path)
+
+        # Delete the page
+        DeleteLocal(self)
+        DeletePages(self)
+
+        # Reload the page
+        UseModel(self, window)
+        ReloadUseModel(self, window)
+
+    # Function to reload the page after save/discard
+    def ReloadUseModel(self, window):
+        # Reload the model
+        load_model(self,'Reload')
+
+        # Reload the image
+        self.pass_in = True
+        load_image(self)
 
     # Function to continue to next page
     def next_page():
@@ -355,7 +493,7 @@ def UseModel(self,window):
         self.load_page()
 
     # Function to go back to previous page
-    def back_page():
+    def home():
         # Delete the page
         DeleteLocal(self)
         DeletePages(self)
@@ -491,7 +629,7 @@ def UseModel(self,window):
     self.load_mod_btn = ttk.Button(
                                 window, 
                                 text = "Load Model", 
-                                command = lambda:load_model(self), 
+                                command = lambda:load_model(self, 'New'), 
                                 style = 'Modern.TButton',
                                 width = 10
                                 )
@@ -510,15 +648,15 @@ def UseModel(self,window):
     self.att_list.append('self.load_btn')
 
     # Create button to segment an image
-    self.load_btn = ttk.Button(
+    self.seg_btn = ttk.Button(
                                 window, 
                                 text = "Segment Image", 
                                 command = lambda:segment_image(self), 
                                 style = 'Modern.TButton',
                                 width = 15
                                 )
-    self.load_btn.place(anchor = 'n', relx = 0.5, rely = 0.85)
-    self.att_list.append('self.load_btn')
+    self.seg_btn.place(anchor = 'n', relx = 0.5, rely = 0.2)
+    self.att_list.append('self.seg_btn')
 
     # Create Continue Button
     self.btn_cont1 = ttk.Button(
@@ -531,14 +669,28 @@ def UseModel(self,window):
     self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
     self.att_list.append('self.btn_cont1')
 
-    # Create Back Button
-    self.btn_back1 = ttk.Button(window, 
-                               text = "Back", 
-                               command = back_page, 
-                               style = 'Modern2.TButton',
-                               width = 10)
-    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
-    self.att_list.append('self.btn_back1')
+    # Create Home Button
+    # -- Load an image using PIL
+    self.image_path_home = os.path.join(os.getcwd(),'GUI','General','home.png') 
+    self.image_home = Image.open(self.image_path_home)
+    scale = 1
+    self.image_home = self.image_home.resize((int(self.image_help.width*scale), int(self.image_help.height*scale)))
+
+    # -- Convert the image to a Tkinter-compatible format
+    self.photo_home = ImageTk.PhotoImage(self.image_home)
+
+    # -- Create the button
+    self.btn_home = ttk.Button(
+                                window, 
+                                text = " Home",
+                                image=self.photo_home,
+                                compound='left',                                 
+                                command = home,
+                                style = "Modern2.TButton",
+                                width = 7
+                                )
+    self.btn_home.place(anchor = 'e', relx = 0.942, rely = 0.975)
+    self.att_list.append('self.btn_home')
 
     # Create Help Button
     # -- Load an image using PIL
