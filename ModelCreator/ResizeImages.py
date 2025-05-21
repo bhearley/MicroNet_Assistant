@@ -468,11 +468,11 @@ def ResizeImages(self,window):
                                 text = "Continue", 
                                 command = next_page, 
                                 style = 'Modern2.TButton',
-                                width = self.Placement['FileSelect']['ButtonCont'][2]
+                                width = self.Placement['Resize']['ButtonCont'][2]
                                 )
     self.btn_cont.place(anchor = 'e', 
-                        relx = self.Placement['FileSelect']['ButtonCont'][0], 
-                        rely = self.Placement['FileSelect']['ButtonCont'][1])
+                        relx = self.Placement['Resize']['ButtonCont'][0], 
+                        rely = self.Placement['Resize']['ButtonCont'][1])
     self.att_list.append('self.btn_cont')
     
     # Create Back Button
@@ -481,11 +481,11 @@ def ResizeImages(self,window):
                                 text = "Back", 
                                 command = back_page, 
                                 style = 'Modern2.TButton',
-                                width = self.Placement['FileSelect']['ButtonBack'][2]
+                                width = self.Placement['Resize']['ButtonBack'][2]
                                 )
     self.btn_back.place(anchor = 'e', 
-                         relx = self.Placement['FileSelect']['ButtonBack'][0], 
-                         rely = self.Placement['FileSelect']['ButtonBack'][1])
+                         relx = self.Placement['Resize']['ButtonBack'][0], 
+                         rely = self.Placement['Resize']['ButtonBack'][1])
     self.att_list.append('self.btn_back')
 
     # Create Help Button
@@ -506,9 +506,9 @@ def ResizeImages(self,window):
                                 compound='left',                                 
                                 command = helper,
                                 style = "Modern2.TButton",
-                                width = self.Placement['FileSelect']['Help'][2]
+                                width = self.Placement['Resize']['Help'][2]
                                 )
     self.btn_help.place(anchor = 'w', 
-                        relx = self.Placement['FileSelect']['Help'][0], 
-                        rely = self.Placement['FileSelect']['Help'][1])
+                        relx = self.Placement['Resize']['Help'][0], 
+                        rely = self.Placement['Resize']['Help'][1])
     self.att_list.append('self.btn_help')

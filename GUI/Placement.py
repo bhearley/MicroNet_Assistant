@@ -84,6 +84,38 @@ def Placement(self, res):
                                 'ButtonBack':[],
                                 'Help':[]
                                 },
+                    'Segment':{
+                                'Image1':[],
+                                'Canvas1':[],
+                                'Toolbar1':[],
+                                'LabelTitle':[],
+                                'ButtonAdd':[],
+                                'ButtonRemove':[],
+                                'Slider1':[],
+                                'Combo1':[],
+                                'Scrollbar1':[],
+                                'Listbox1':[],
+                                'Combo2':[],
+                                'ButtonCont':[],
+                                'ButtonBack':[],
+                                'Help':[]
+                                },
+                    'Review':{
+                                'Image1':[],
+                                'Canvas1':[],
+                                'Toolbar1':[],
+                                'LabelTitle':[],
+                                'ButtonAdd':[],
+                                'ButtonRemove':[],
+                                'Slider1':[],
+                                'Combo1':[],
+                                'Scrollbar1':[],
+                                'Listbox1':[],
+                                'Combo2':[],
+                                'ButtonCont':[],
+                                'ButtonBack':[],
+                                'Help':[]
+                                },
     }
     
     # 2560 x 1440
@@ -162,6 +194,24 @@ def Placement(self, res):
         Placement['Resize']['ButtonBack'] = [0.942, 0.975, 10]
         Placement['Resize']['Help'] = [0.001, 0.975, 7, 0.05]
 
+        # -- Segment
+        Placement['Segment']['Image1'] = [0.845, 0.375, 0.3]
+        Placement['Segment']['Canvas1'] = [0.5, 0.2, 0.8]
+        Placement['Segment']['Toolbar1'] = [0.5, 0.875]
+        Placement['Segment']['LabelTitle'] = [0.5, .125]
+        Placement['Segment']['ButtonAdd'] = [0.805, 0.2, 5]
+        Placement['Segment']['ButtonRemove'] = [0.885, 0.2, 5]
+        Placement['Segment']['Slider1'] = [0.845, 0.265, 300]
+        Placement['Segment']['Combo1'] = [0.845, 0.3]
+        Placement['Segment']['Scrollbar1'] = [0.225, 0.2, 752]
+        Placement['Segment']['Listbox1'] = [0.125, 0.2, 34, 54]
+        Placement['Segment']['Combo2'] = [0.125, 0.765, 25]
+        Placement['Segment']['ButtonLoad'] = [0.125, 0.8, 10]
+        Placement['Segment']['ButtonCont'] = [0.997, 0.975, 10]
+        Placement['Segment']['ButtonBack'] = [0.942, 0.975, 10]
+        Placement['Segment']['Help'] = [0.001, 0.975, 7, 0.05]
+        
+
 
     # 1536 x 960
     if res == "1536x960":
@@ -217,9 +267,9 @@ def Placement(self, res):
         Placement['Resize']['ButtonLoad'] = [0.15, 0.775, 10]
         Placement['Resize']['Scrollbar1'] = [0.25, 0.2, 445]
         Placement['Resize']['Listbox1'] = [0.15, 0.2, 20, 31]
-        Placement['FileSelect']['ButtonCont'] = [0.999, 0.965, 10]
-        Placement['FileSelect']['ButtonBack'] = [0.909, 0.965, 10]
-        Placement['FileSelect']['Help'] = [0.001, 0.965, 7, 0.05]
+        Placement['Resize']['ButtonCont'] = [0.999, 0.965, 10]
+        Placement['Resize']['ButtonBack'] = [0.909, 0.965, 10]
+        Placement['Resize']['Help'] = [0.001, 0.965, 7, 0.05]
 
         # -- Crop
         Placement['Crop']['Canvas1'] = [0.5, 0.175, 1.25]
@@ -235,9 +285,26 @@ def Placement(self, res):
         Placement['Crop']['ButtonLoad'] = [0.15, 0.775, 10]
         Placement['Crop']['ButtonView'] = [0.795, 0.775, 12]
         Placement['Crop']['ButtonDelete'] = [0.9, 0.775, 12]
-        Placement['FileSelect']['ButtonCont'] = [0.999, 0.965, 10]
-        Placement['FileSelect']['ButtonBack'] = [0.909, 0.965, 10]
-        Placement['FileSelect']['Help'] = [0.001, 0.965, 7, 0.05]
+        Placement['Crop']['ButtonCont'] = [0.999, 0.965, 10]
+        Placement['Crop']['ButtonBack'] = [0.909, 0.965, 10]
+        Placement['Crop']['Help'] = [0.001, 0.965, 7, 0.05]
+
+        # -- Segment
+        Placement['Segment']['Image1'] = [0.845, 0.5, 0.3]
+        Placement['Segment']['Canvas1'] = [0.5, 0.2, 1.25]
+        Placement['Segment']['Toolbar1'] = [0.5, 0.875]
+        Placement['Segment']['LabelTitle'] = [0.5, .125]
+        Placement['Segment']['ButtonAdd'] = [0.7775, 0.2, 5]
+        Placement['Segment']['ButtonRemove'] = [0.91, 0.2, 5]
+        Placement['Segment']['Slider1'] = [0.845, 0.275, 300]
+        Placement['Segment']['Combo1'] = [0.845, 0.4]
+        Placement['Segment']['Scrollbar1'] = [0.25, 0.2, 445]
+        Placement['Segment']['Listbox1'] = [0.15, 0.2, 20, 31]
+        Placement['Segment']['Combo2'] = [0.15, 0.74, 25]
+        Placement['Segment']['ButtonLoad'] = [0.15, 0.79, 10]
+        Placement['Segment']['ButtonCont'] = [0.999, 0.965, 10]
+        Placement['Segment']['ButtonBack'] = [0.909, 0.965, 10]
+        Placement['Segment']['Help'] = [0.001, 0.965, 7, 0.05]
 
 
     # Set to self

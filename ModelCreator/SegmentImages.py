@@ -302,11 +302,13 @@ def SegmentImages(self,window):
 
             # Display the image
             self.img_c = Image.open(self.img_c)
-            scale = 0.3
+            scale = self.Placement['Segment']['Image1'][2]
             self.img_c = self.img_c.resize((int(self.img_c.width*scale), int(self.img_c.height*scale)))
             self.imgtk_c = ImageTk.PhotoImage(self.img_c)
             self.img_color = tk.Label(window, image = self.imgtk_c, bg = 'white')
-            self.img_color.place(anchor = 'n', relx = 0.845, rely = 0.5)
+            self.img_color.place(anchor = 'n', 
+                                 relx = self.Placement['Segment']['Image1'][0], 
+                                 rely = self.Placement['Segment']['Image1'][1])
             self.loc_att_list.append('self.img_color')
 
         # Create Hovering Cursor
@@ -537,17 +539,18 @@ def SegmentImages(self,window):
 
         # Create a Matplotlib figure
         if hasattr(self,"fig") == False:
-            self.fig, self.ax = plt.subplots()
-            self.fig.set_dpi(150)
-            self.fig.set_size_inches(self.image.width / self.fig.dpi, self.image.height / self.fig.dpi)
-            self.fig.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+            scale_im = self.Placement['Segment']['Canvas1'][2]
+            self.fig, self.ax = plt.subplots(figsize=(6/scale_im, 6/scale_im))
+            self.fig.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
         self.canvas = FigureCanvasTkAgg(self.fig, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig.get_figwidth() * self.fig.get_dpi()),
                                   height=int(self.fig.get_figheight() * self.fig.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.15)
+        self.canvas_widget.place(anchor='n', 
+                                 relx = self.Placement['Segment']['Canvas1'][0], 
+                                 rely = self.Placement['Segment']['Canvas1'][1])
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -560,7 +563,9 @@ def SegmentImages(self,window):
         # Add the Matplotlib navigation toolbar
         self.toolbar = NavigationToolbar2Tk(self.canvas, window)
         self.toolbar.update()
-        self.toolbar.place(anchor='n', relx = 0.5, rely = 0.875)
+        self.toolbar.place(anchor='n', 
+                           relx = self.Placement['Segment']['Toolbar1'][0], 
+                           rely = self.Placement['Segment']['Toolbar1'][1])
         self.loc_att_list.append('self.toolbar')
 
         # Replace the title (canvas covers the title)
@@ -570,7 +575,9 @@ def SegmentImages(self,window):
                                 text='Segment Images',
                                 style = "ModernT.TLabel"
                                 )
-        self.label_title.place(anchor = 'center', relx = 0.5, rely = 0.125)
+        self.label_title.place(anchor = 'center', 
+                               relx = self.Placement['Segment']['LabelTitle'][0], 
+                               rely = self.Placement['Segment']['LabelTitle'][1])
         self.att_list.append('self.label_title')
     
         # Get the segmentation model
@@ -716,9 +723,11 @@ def SegmentImages(self,window):
                                 compound='left',
                                 style = "Modern5.TButton",                                  
                                 command = lambda:add_pixels(self),
-                                width = 5,
+                                width = self.Placement['Segment']['ButtonAdd'][2],
                                 )
-        self.add_pts.place(anchor = 'n', relx = 0.805, rely = 0.2)
+        self.add_pts.place(anchor = 'n', 
+                           relx = self.Placement['Segment']['ButtonAdd'][0], 
+                           rely = self.Placement['Segment']['ButtonAdd'][1])
         self.loc_att_list.append('self.add_pts')
         self.add_selected = False
 
@@ -733,9 +742,11 @@ def SegmentImages(self,window):
                                     compound='left',
                                     style = "Modern5.TButton",
                                     command = lambda:rem_pixels(self),
-                                    width = 5,
+                                    width = self.Placement['Segment']['ButtonRemove'][2],
                                     )
-        self.remove_pts.place(anchor = 'n', relx = 0.885, rely=0.2)
+        self.remove_pts.place(anchor = 'n',
+                              relx = self.Placement['Segment']['ButtonRemove'][0], 
+                              rely = self.Placement['Segment']['ButtonRemove'][1])
         self.loc_att_list.append('self.remove_pts')
         self.rem_selected = False
 
@@ -745,10 +756,12 @@ def SegmentImages(self,window):
                                 from_=1,
                                 to=25,
                                 orient='horizontal',  
-                                length=300,
+                                length=self.Placement['Segment']['Slider1'][2],
                                 style="Modern.Horizontal.TScale"
                                 )
-        self.slider.place(anchor = 'n', relx = 0.845, rely = 0.265)
+        self.slider.place(anchor = 'n', 
+                          relx = self.Placement['Segment']['Slider1'][0], 
+                          rely = self.Placement['Segment']['Slider1'][1])
         self.loc_att_list.append('self.slider')
 
         # Get Available Masks
@@ -764,17 +777,21 @@ def SegmentImages(self,window):
                             state="readonly"
                             )
         self.combo1.bind("<<ComboboxSelected>>", change_combo)
-        self.combo1.place(anchor='n', relx = 0.845, rely = 0.3)
+        self.combo1.place(anchor='n', 
+                          relx = self.Placement['Segment']['Combo1'][0], 
+                          rely = self.Placement['Segment']['Combo1'][1])
         self.combo1.set(mask_list[0]) 
         self.loc_att_list.append('self.combo1')
 
         # Create the color image
         self.img_c = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "blue.png"))
-        scale = 0.3
+        scale = self.Placement['Segment']['Image1'][2]
         self.img_c = self.img_c.resize((int(self.img_c.width*scale), int(self.img_c.height*scale)))
         self.imgtk_c = ImageTk.PhotoImage(self.img_c)
         self.img_color = tk.Label(window, image = self.imgtk_c, bg = 'white')
-        self.img_color.place(anchor = 'n', relx = 0.845, rely = 0.375)
+        self.img_color.place(anchor = 'n', 
+                             relx = self.Placement['Segment']['Image1'][0], 
+                             rely = self.Placement['Segment']['Image1'][1])
         self.loc_att_list.append('self.img_color')
 
         # Initialize Drawing
@@ -1103,12 +1120,23 @@ def SegmentImages(self,window):
                                 text='Segment Images',
                                 style = "ModernT.TLabel"
                                 )
-    self.label_title.place(anchor = 'center', relx = 0.5, rely = 0.125)
+    self.label_title.place(anchor = 'center', 
+                           relx = self.Placement['Segment']['LabelTitle'][0], 
+                           rely = self.Placement['Segment']['LabelTitle'][1])
     self.att_list.append('self.label_title')
 
     # Create scrollbar for segmentation images
-    self.scrollbar_01= ttk.Scrollbar(window, orient= 'vertical', style = "Vertical.TScrollbar")
-    self.scrollbar_01.place(anchor='n', relx = 0.225, rely = 0.2, height = 752)
+    self.scrollbar_01= ttk.Scrollbar(
+                                     window, 
+                                     orient= 'vertical', 
+                                     style = "Vertical.TScrollbar"
+                                     )
+    self.scrollbar_01.place(
+                            anchor='n', 
+                            relx = self.Placement['Segment']['Scrollbar1'][0], 
+                            rely = self.Placement['Segment']['Scrollbar1'][1], 
+                            height = self.Placement['Segment']['Scrollbar1'][2]
+                            )
     self.att_list.append('self.scrollbar_01')
     
     # Get all images for segmentation
@@ -1121,8 +1149,8 @@ def SegmentImages(self,window):
                                 window, 
                                 listvariable=items,
                                 selectmode='single',
-                                height = 34,
-                                width = 54,
+                                height = self.Placement['Segment']['Listbox1'][2],
+                                width = self.Placement['Segment']['Listbox1'][3],
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -1132,7 +1160,11 @@ def SegmentImages(self,window):
                                 bd=self.style_man['ListBox']['ListBox1']['bd'],
                                 exportselection=0
                                 )
-    self.listbox_01.place(anchor='n', relx = 0.125, rely = 0.2)
+    self.listbox_01.place(
+                            anchor='n', 
+                            relx = self.Placement['Segment']['Listbox1'][0], 
+                            rely = self.Placement['Segment']['Listbox1'][1]
+                            )
     self.att_list.append('self.listbox_01')
     self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
 
@@ -1148,9 +1180,13 @@ def SegmentImages(self,window):
                         values=seg_opts,
                         style="Modern.TCombobox",
                         state="readonly",
-                        width = 25,
+                        width = self.Placement['Segment']['Combo2'][2],
                         )
-    self.combo2.place(anchor='n', relx = 0.125, rely = 0.765)
+    self.combo2.place(
+                        anchor='n', 
+                        relx = self.Placement['Segment']['Combo2'][0], 
+                        rely = self.Placement['Segment']['Combo2'][1]
+                        )
     self.combo2.set(seg_opts[0]) 
     self.att_list.append('self.combo2')
 
@@ -1161,36 +1197,44 @@ def SegmentImages(self,window):
                                text = "Load Image", 
                                command = lambda:load_image(self), 
                                style = 'Modern2.TButton',
-                               width = 10
+                               width = self.Placement['Segment']['ButtonLoad'][2]
                                )
-    self.load_btn.place(anchor = 'n', relx = 0.125, rely = 0.8)
+    self.load_btn.place(
+                        anchor = 'n', 
+                        relx = self.Placement['Segment']['ButtonLoad'][0], 
+                        rely = self.Placement['Segment']['ButtonLoad'][1]
+                        )
     self.att_list.append('self.load_btn')
 
     # Create Continue Button
-    self.btn_cont1 = ttk.Button(
-                               window, 
-                               text = "Continue", 
-                               command = next_page, 
-                               style = 'Modern2.TButton',
-                               width = 10
-                               )
-    self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
-    self.att_list.append('self.btn_cont1')
-
+    self.btn_cont = ttk.Button(
+                                window, 
+                                text = "Continue", 
+                                command = next_page, 
+                                style = 'Modern2.TButton',
+                                width = self.Placement['Segment']['ButtonCont'][2]
+                                )
+    self.btn_cont.place(anchor = 'e', 
+                        relx = self.Placement['Segment']['ButtonCont'][0], 
+                        rely = self.Placement['Segment']['ButtonCont'][1])
+    self.att_list.append('self.btn_cont')
+    
     # Create Back Button
-    self.btn_back1 = ttk.Button(
-                               window, 
-                               text = "Back", 
-                               command = back_page, 
-                               style = 'Modern2.TButton',
-                               width = 10
-                               )
-    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
-    self.att_list.append('self.btn_back1')
+    self.btn_back = ttk.Button(
+                                window, 
+                                text = "Back", 
+                                command = back_page, 
+                                style = 'Modern2.TButton',
+                                width = self.Placement['Segment']['ButtonBack'][2]
+                                )
+    self.btn_back.place(anchor = 'e', 
+                         relx = self.Placement['Segment']['ButtonBack'][0], 
+                         rely = self.Placement['Segment']['ButtonBack'][1])
+    self.att_list.append('self.btn_back')
 
     # Create Help Button
     # -- Load an image using PIL
-    self.image_path_help = os.path.join(os.getcwd(),'GUI', 'General', 'help.png') 
+    self.image_path_help = os.path.join(os.getcwd(),'GUI','General','help.png') 
     self.image_help = Image.open(self.image_path_help)
     scale = 0.05
     self.image_help = self.image_help.resize((int(self.image_help.width*scale), int(self.image_help.height*scale)))
@@ -1206,7 +1250,9 @@ def SegmentImages(self,window):
                                 compound='left',                                 
                                 command = helper,
                                 style = "Modern2.TButton",
-                                width = 7
+                                width = self.Placement['Segment']['Help'][2]
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
+    self.btn_help.place(anchor = 'w', 
+                        relx = self.Placement['Segment']['Help'][0], 
+                        rely = self.Placement['Segment']['Help'][1])
     self.att_list.append('self.btn_help')

@@ -745,11 +745,11 @@ def CropImages(self,window):
                                 text = "Continue", 
                                 command = next_page, 
                                 style = 'Modern2.TButton',
-                                width = self.Placement['FileSelect']['ButtonCont'][2]
+                                width = self.Placement['Crop']['ButtonCont'][2]
                                 )
     self.btn_cont.place(anchor = 'e', 
-                        relx = self.Placement['FileSelect']['ButtonCont'][0], 
-                        rely = self.Placement['FileSelect']['ButtonCont'][1])
+                        relx = self.Placement['Crop']['ButtonCont'][0], 
+                        rely = self.Placement['Crop']['ButtonCont'][1])
     self.att_list.append('self.btn_cont')
     
     # Create Back Button
@@ -758,11 +758,11 @@ def CropImages(self,window):
                                 text = "Back", 
                                 command = back_page, 
                                 style = 'Modern2.TButton',
-                                width = self.Placement['FileSelect']['ButtonBack'][2]
+                                width = self.Placement['Crop']['ButtonBack'][2]
                                 )
     self.btn_back.place(anchor = 'e', 
-                         relx = self.Placement['FileSelect']['ButtonBack'][0], 
-                         rely = self.Placement['FileSelect']['ButtonBack'][1])
+                         relx = self.Placement['Crop']['ButtonBack'][0], 
+                         rely = self.Placement['Crop']['ButtonBack'][1])
     self.att_list.append('self.btn_back')
 
     # Create Help Button
@@ -783,9 +783,9 @@ def CropImages(self,window):
                                 compound='left',                                 
                                 command = helper,
                                 style = "Modern2.TButton",
-                                width = self.Placement['FileSelect']['Help'][2]
+                                width = self.Placement['Crop']['Help'][2]
                                 )
     self.btn_help.place(anchor = 'w', 
-                        relx = self.Placement['FileSelect']['Help'][0], 
-                        rely = self.Placement['FileSelect']['Help'][1])
+                        relx = self.Placement['Crop']['Help'][0], 
+                        rely = self.Placement['Crop']['Help'][1])
     self.att_list.append('self.btn_help')
