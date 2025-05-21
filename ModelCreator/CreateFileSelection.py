@@ -2,7 +2,7 @@
 #
 #   CreateFileSelection.py
 #
-#   PURPOSE: Allow user to select folder and images for the project
+#   PURPOSE: Allow user to select folder and images for the labelling.
 #
 #   INPUTS:
 #       self    structure containing all GUI information
@@ -30,6 +30,7 @@ def CreateFileSelection(self,window):
 
     # Function to set image directory
     def set_path():
+
         # Delete Local Attributes
         DeleteLocal(self)
 
@@ -68,12 +69,13 @@ def CreateFileSelection(self,window):
 
         # Function to move items right
         def move_right():
+        
             # Get selected values
-            values = [self.listbox_01.get(idx) for idx in self.listbox_01.curselection()]
+            values = [self.listbox_1_01.get(idx) for idx in self.listbox_1_01.curselection()]
 
             # Get all options in both list boxes
-            list1 = list(self.listbox_01.get(0, tk.END))
-            list2 = list(self.listbox_02.get(0, tk.END))
+            list1 = list(self.listbox_1_01.get(0, tk.END))
+            list2 = list(self.listbox_1_02.get(0, tk.END))
 
             # Update Lists
             for item in values:
@@ -83,13 +85,13 @@ def CreateFileSelection(self,window):
             list2.sort()
 
             # Update Listboxes
-            self.listbox_01.delete(0, tk.END)  
+            self.listbox_1_01.delete(0, tk.END)  
             for item in list1:
-                self.listbox_01.insert(tk.END, item)
+                self.listbox_1_01.insert(tk.END, item)
 
-            self.listbox_02.delete(0, tk.END)  
+            self.listbox_1_02.delete(0, tk.END)  
             for item in list2:
-                self.listbox_02.insert(tk.END, item)
+                self.listbox_1_02.insert(tk.END, item)
 
             # Update Data Structures
             self.Segment['Files']['All Files'] = list1
@@ -97,12 +99,13 @@ def CreateFileSelection(self,window):
 
         # Function to move items left
         def move_left():
+        
             # Get selected values
-            values = [self.listbox_02.get(idx) for idx in self.listbox_02.curselection()]
+            values = [self.listbox_1_02.get(idx) for idx in self.listbox_1_02.curselection()]
 
             # Get all options in both list boxes
-            list1 = list(self.listbox_01.get(0, tk.END))
-            list2 = list(self.listbox_02.get(0, tk.END))
+            list1 = list(self.listbox_1_01.get(0, tk.END))
+            list2 = list(self.listbox_1_02.get(0, tk.END))
 
             # Update Lists
             for item in values:
@@ -112,13 +115,13 @@ def CreateFileSelection(self,window):
             list1.sort()
 
             # Update Listboxes
-            self.listbox_01.delete(0, tk.END)  
+            self.listbox_1_01.delete(0, tk.END)  
             for item in list1:
-                self.listbox_01.insert(tk.END, item)
+                self.listbox_1_01.insert(tk.END, item)
 
-            self.listbox_02.delete(0, tk.END)  
+            self.listbox_1_02.delete(0, tk.END)  
             for item in list2:
-                self.listbox_02.insert(tk.END, item)
+                self.listbox_1_02.insert(tk.END, item)
 
             # Update Data Structures
             self.Segment['Files']['All Files'] = list1
@@ -126,9 +129,10 @@ def CreateFileSelection(self,window):
 
         # Function to move all items right
         def move_all_right():
+        
             # Get all options in both list boxes
-            list1 = list(self.listbox_01.get(0, tk.END))
-            list2 = list(self.listbox_02.get(0, tk.END))
+            list1 = list(self.listbox_1_01.get(0, tk.END))
+            list2 = list(self.listbox_1_02.get(0, tk.END))
 
             # Update Lists
             list2 = list2 + list1
@@ -138,13 +142,13 @@ def CreateFileSelection(self,window):
             list2.sort()
 
             # Update Listboxes
-            self.listbox_01.delete(0, tk.END)  
+            self.listbox_1_01.delete(0, tk.END)  
             for item in list1:
-                self.listbox_01.insert(tk.END, item)
+                self.listbox_1_01.insert(tk.END, item)
 
-            self.listbox_02.delete(0, tk.END)  
+            self.listbox_1_02.delete(0, tk.END)  
             for item in list2:
-                self.listbox_02.insert(tk.END, item)
+                self.listbox_1_02.insert(tk.END, item)
 
             # Update Data Structures
             self.Segment['Files']['All Files'] = list1
@@ -152,9 +156,10 @@ def CreateFileSelection(self,window):
 
         # Function to move all items left
         def move_all_left():
+        
             # Get all options in both list boxes
-            list1 = list(self.listbox_01.get(0, tk.END))
-            list2 = list(self.listbox_02.get(0, tk.END))
+            list1 = list(self.listbox_1_01.get(0, tk.END))
+            list2 = list(self.listbox_1_02.get(0, tk.END))
 
             # Update Lists
             list1 = list2 + list1
@@ -164,13 +169,13 @@ def CreateFileSelection(self,window):
             list2.sort()
 
             # Update Listboxes
-            self.listbox_01.delete(0, tk.END)  
+            self.listbox_1_01.delete(0, tk.END)  
             for item in list1:
-                self.listbox_01.insert(tk.END, item)
+                self.listbox_1_01.insert(tk.END, item)
 
-            self.listbox_02.delete(0, tk.END)  
+            self.listbox_1_02.delete(0, tk.END)  
             for item in list2:
-                self.listbox_02.insert(tk.END, item)
+                self.listbox_1_02.insert(tk.END, item)
 
             # Update Data Strucutres
             self.Segment['Files']['All Files'] = list1
@@ -178,14 +183,16 @@ def CreateFileSelection(self,window):
 
         # Function to view selected images
         def view_selected():
+        
             # Function to display image
             def show_image(tag):
+        
                 # Delete existing image
                 for widget in view_window.winfo_children():
                     if isinstance(widget, tk.Canvas):
                         widget.delete("all")
 
-                # Delete exiting image title
+                # Delete existing image title
                 try:
                     self.label_title_v.destroy()
                 except:
@@ -203,11 +210,15 @@ def CreateFileSelection(self,window):
 
                 # Create the title
                 self.label_title_v = ttk.Label(
-                                view_window,
-                                text=self.all_files_v[self.ct],
-                                style = "ModernT.TLabel"
-                                )
-                self.label_title_v.place(anchor="n", relx = self.Placement['FileSelect']['LabelT'][0], rely = self.Placement['FileSelect']['LabelT'][1])
+                                                view_window,
+                                                text=self.all_files_v[self.ct],
+                                                style = "ModernT.TLabel"
+                                                )
+                self.label_title_v.place(
+                                            anchor="n", 
+                                            relx = self.Placement['FileSelect']['LabelT'][0], 
+                                            rely = self.Placement['FileSelect']['LabelT'][1]
+                                            )
 
                 # Show the image
                 self.img_view = Image.open(os.path.join(self.file_path, self.all_files_v[self.ct])).convert('RGBA')
@@ -218,32 +229,38 @@ def CreateFileSelection(self,window):
                     self.figv.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
 
                 # Embed the Matplotlib figure in Tkinter
-                self.canvas = FigureCanvasTkAgg(self.figv, master=view_window)
-                self.canvas_widget = self.canvas.get_tk_widget()
-                self.canvas_widget.config(width=int(self.figv.get_figwidth() * self.figv.get_dpi()),
+                self.canvas_v = FigureCanvasTkAgg(self.figv, master=view_window)
+                self.canvas_widget_v = self.canvas_v.get_tk_widget()
+                self.canvas_widget_v.config(width=int(self.figv.get_figwidth() * self.figv.get_dpi()),
                                         height=int(self.figv.get_figheight() * self.figv.get_dpi()))
-                self.canvas_widget.place(anchor='n', relx = self.Placement['FileSelect']['Canvas1'][0], rely = self.Placement['FileSelect']['Canvas1'][1])
-                self.loc_att_list.append('self.canvas')
-                self.loc_att_list.append('self.canvas_widget')
+                self.canvas_widget_v.place(
+                                            anchor='n', 
+                                            relx = self.Placement['FileSelect']['Canvas1'][0], 
+                                            rely = self.Placement['FileSelect']['Canvas1'][1]
+                                            )
 
                 # Display the image
                 self.axv.clear()  # Clear previous image
                 self.axv.imshow(self.img_view)
                 self.axv.axis('off')  # Hide axes
-                self.canvas.draw()
+                self.canvas_v.draw()
 
                 # Add the Matplotlib navigation toolbar
-                self.toolbar = NavigationToolbar2Tk(self.canvas, view_window)
+                self.toolbar = NavigationToolbar2Tk(self.canvas_v, view_window)
                 self.toolbar.update()
-                self.toolbar.place(anchor='n', relx = self.Placement['FileSelect']['Toolbar1'][0], rely = self.Placement['FileSelect']['Toolbar1'][1])
+                self.toolbar.place(
+                                    anchor='n', 
+                                    relx = self.Placement['FileSelect']['Toolbar1'][0], 
+                                    rely = self.Placement['FileSelect']['Toolbar1'][1]
+                                    )
                 self.loc_att_list.append('self.toolbar')
 
             # Get All Selected Files
             self.all_files_v = []
 
             # Get selected values
-            values1 = [self.listbox_01.get(idx) for idx in self.listbox_01.curselection()]
-            values2 = [self.listbox_02.get(idx) for idx in self.listbox_02.curselection()]
+            values1 = [self.listbox_1_01.get(idx) for idx in self.listbox_1_01.curselection()]
+            values2 = [self.listbox_1_02.get(idx) for idx in self.listbox_1_02.curselection()]
 
             for value in values1:
                 self.all_files_v.append(value)
@@ -262,24 +279,32 @@ def CreateFileSelection(self,window):
                 view_window.grab_set()
 
                 # Create button to scroll left
-                btn_left = ttk.Button(
+                btn_1_02 = ttk.Button(
                                         view_window, 
                                         text = "\u2190", 
                                         command = lambda:show_image('l'), 
                                         style = "Modern4.TButton",
                                         width = self.Placement['FileSelect']['ButtonLeftW'][2]
                                         )
-                btn_left.place(anchor = 'n', relx = self.Placement['FileSelect']['ButtonLeftW'][0], rely = self.Placement['FileSelect']['ButtonLeftW'][1])
+                btn_1_02.place(
+                                anchor = 'n', 
+                                relx = self.Placement['FileSelect']['ButtonLeftW'][0], 
+                                rely = self.Placement['FileSelect']['ButtonLeftW'][1]
+                                )
 
                 # Create button to scroll right
-                btn_right = ttk.Button(
+                btn_1_01 = ttk.Button(
                                         view_window, 
                                         text = "\u2192", 
                                         command = lambda:show_image('r'),
                                         style = "Modern4.TButton",
                                         width = self.Placement['FileSelect']['ButtonRightW'][2]
                                         )
-                btn_right.place(anchor = 'n', relx = self.Placement['FileSelect']['ButtonRightW'][0], rely = self.Placement['FileSelect']['ButtonRightW'][1])
+                btn_1_01.place(
+                                anchor = 'n', 
+                                relx = self.Placement['FileSelect']['ButtonRightW'][0], 
+                                rely = self.Placement['FileSelect']['ButtonRightW'][1]
+                                )
 
                 # Initialize
                 self.ct = -1
@@ -295,27 +320,31 @@ def CreateFileSelection(self,window):
         self.file_path = self.Segment['Files']['Path']
         
         # Create a vertical scrollbar for all images
-        self.scrollbar_01= ttk.Scrollbar(
+        self.scrollbar_1_01= ttk.Scrollbar(
                                         window, 
                                         orient= 'vertical', 
                                         style = "Vertical.TScrollbar"
                                         )
-        self.scrollbar_01.place(anchor='n', 
+        self.scrollbar_1_01.place(
+                                anchor='n', 
                                 relx = self.Placement['FileSelect']['Scrollbar1'][0], 
                                 rely = self.Placement['FileSelect']['Scrollbar1'][1], 
-                                height = self.Placement['FileSelect']['Scrollbar1'][2])
-        self.loc_att_list.append('self.scrollbar_01')
+                                height = self.Placement['FileSelect']['Scrollbar1'][2]
+                                )
+        self.loc_att_list.append('self.scrollbar_1_01')
 
         # Create a label for all images
-        self.label_01 = ttk.Label(
+        self.label_1_01 = ttk.Label(
                                 window,
                                 text='All Images',
                                 style = "Modern3.TLabel"
                                 )
-        self.label_01.place(anchor='n', 
-                            relx = self.Placement['FileSelect']['Label1'][0], 
-                            rely = self.Placement['FileSelect']['Label1'][1])
-        self.loc_att_list.append('self.label_01')
+        self.label_1_01.place(
+                                anchor='n', 
+                                relx = self.Placement['FileSelect']['Label1'][0], 
+                                rely = self.Placement['FileSelect']['Label1'][1]
+                                )
+        self.loc_att_list.append('self.label_1_01')
 
         # Get list of all files
         all_images = self.Segment['Files']['All Files']
@@ -323,7 +352,7 @@ def CreateFileSelection(self,window):
 
         # Create a list box for all files
         items = tk.StringVar(value=all_images)
-        self.listbox_01 = tk.Listbox(
+        self.listbox_1_01 = tk.Listbox(
                                     window, 
                                     listvariable=items,
                                     selectmode='multiple',
@@ -337,37 +366,43 @@ def CreateFileSelection(self,window):
                                     highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                     bd=self.style_man['ListBox']['ListBox1']['bd']
                                     )
-        self.listbox_01.place(anchor='n', 
-                              relx = self.Placement['FileSelect']['Listbox1'][0], 
-                              rely = self.Placement['FileSelect']['Listbox1'][1])
-        self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
-        self.loc_att_list.append('self.listbox_01')
+        self.listbox_1_01.place(
+                                anchor='n', 
+                                relx = self.Placement['FileSelect']['Listbox1'][0], 
+                                rely = self.Placement['FileSelect']['Listbox1'][1]
+                                )
+        self.listbox_1_01.config(yscrollcommand= self.scrollbar_1_01.set)
+        self.loc_att_list.append('self.listbox_1_01')
 
         # Configure the scrollbar for all images
-        self.scrollbar_01.config(command= self.listbox_01.yview)
+        self.scrollbar_1_01.config(command= self.listbox_1_01.yview)
 
         # Create a vertical scrollbar for project images
-        self.scrollbar_02= ttk.Scrollbar(
+        self.scrollbar_1_02= ttk.Scrollbar(
                                         window, 
                                         orient= 'vertical', 
                                         style = "Vertical.TScrollbar"
                                         )
-        self.scrollbar_02.place(anchor='n', 
-                                relx = self.Placement['FileSelect']['Scrollbar2'][0], 
-                                rely = self.Placement['FileSelect']['Scrollbar2'][1], 
-                                height = self.Placement['FileSelect']['Scrollbar2'][2])
-        self.loc_att_list.append('self.scrollbar_02')
+        self.scrollbar_1_02.place(
+                                    anchor='n', 
+                                    relx = self.Placement['FileSelect']['Scrollbar2'][0], 
+                                    rely = self.Placement['FileSelect']['Scrollbar2'][1], 
+                                    height = self.Placement['FileSelect']['Scrollbar2'][2]
+                                    )
+        self.loc_att_list.append('self.scrollbar_1_02')
 
         # Create the label for project images
-        self.label_02 = ttk.Label(
+        self.label_1_02 = ttk.Label(
                                 window,
                                 text='Manual Segmentation Images',
                                 style = "Modern3.TLabel"
                                 )
-        self.label_02.place(anchor='n', 
-                            relx = self.Placement['FileSelect']['Label2'][0], 
-                            rely = self.Placement['FileSelect']['Label2'][1])
-        self.loc_att_list.append('self.label_02')
+        self.label_1_02.place(
+                                anchor='n', 
+                                relx = self.Placement['FileSelect']['Label2'][0], 
+                                rely = self.Placement['FileSelect']['Label2'][1]
+                                )
+        self.loc_att_list.append('self.label_1_02')
 
         # Get list of project images
         seg_images = self.Segment['Files']['Segment Files']
@@ -375,7 +410,7 @@ def CreateFileSelection(self,window):
 
          # Create the list box for project images
         items2 = tk.StringVar(value=seg_images)
-        self.listbox_02 = tk.Listbox(
+        self.listbox_1_02 = tk.Listbox(
                                     window, 
                                     listvariable=items2,
                                     selectmode='multiple',
@@ -389,90 +424,101 @@ def CreateFileSelection(self,window):
                                     highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                     bd=self.style_man['ListBox']['ListBox1']['bd']
                                     )
-        self.listbox_02.place(anchor='n', 
-                              relx = self.Placement['FileSelect']['Listbox2'][0], 
-                              rely = self.Placement['FileSelect']['Listbox2'][1])
-        self.listbox_02.config(yscrollcommand= self.scrollbar_02.set)
-        self.loc_att_list.append('self.listbox_02')
+        self.listbox_1_02.place(
+                                anchor='n', 
+                                relx = self.Placement['FileSelect']['Listbox2'][0], 
+                                rely = self.Placement['FileSelect']['Listbox2'][1]
+                                )
+        self.listbox_1_02.config(yscrollcommand= self.scrollbar_1_02.set)
+        self.loc_att_list.append('self.listbox_1_02')
 
         #Configure the scrollbar for project images
-        self.scrollbar_02.config(command= self.listbox_02.yview)
+        self.scrollbar_1_02.config(command= self.listbox_1_02.yview)
 
         # Create button to move items right
-        self.btn_right = ttk.Button(
+        self.btn_1_02 = ttk.Button(
                                     window, 
                                     text = "\u2192", 
                                     command = move_right, 
                                     style = "Modern4.TButton",
                                     width = self.Placement['FileSelect']['ButtonRight'][2]
                                     )
-        self.btn_right.place(anchor = 'c', 
-                             relx = self.Placement['FileSelect']['ButtonRight'][0], 
-                             rely = self.Placement['FileSelect']['ButtonRight'][1])
-        self.loc_att_list.append('self.btn_right')
+        self.btn_1_02.place(
+                            anchor = 'c', 
+                            relx = self.Placement['FileSelect']['ButtonRight'][0], 
+                            rely = self.Placement['FileSelect']['ButtonRight'][1]
+                            )
+        self.loc_att_list.append('self.btn_1_02')
 
         # Create button to move items left
-        self.btn_left = ttk.Button(
+        self.btn_1_03 = ttk.Button(
                                   window, 
                                   text = "\u2190", 
                                   command = move_left, 
                                   style = "Modern4.TButton",
                                   width = self.Placement['FileSelect']['ButtonLeft'][2]
                                     )
-        self.btn_left.place(anchor = 'c', 
+        self.btn_1_03.place(
+                            anchor = 'c', 
                             relx = self.Placement['FileSelect']['ButtonLeft'][0], 
-                            rely = self.Placement['FileSelect']['ButtonLeft'][1])
-        self.loc_att_list.append('self.btn_left')
+                            rely = self.Placement['FileSelect']['ButtonLeft'][1]
+                            )
+        self.loc_att_list.append('self.btn_1_03')
 
         # Create button to move all items right
-        self.btn_all_right = ttk.Button(
+        self.btn_1_04 = ttk.Button(
                                        window, 
                                        text = "Add All Images", 
                                        command = move_all_right, 
                                        style = "Modern3.TButton",
                                        width = self.Placement['FileSelect']['ButtonAllRight'][2]
                                         )
-        self.btn_all_right.place(anchor = 'n', 
-                                 relx = self.Placement['FileSelect']['ButtonAllRight'][0], 
-                                 rely = self.Placement['FileSelect']['ButtonAllRight'][1])
-        self.loc_att_list.append('self.btn_all_right')
+        self.btn_1_04.place(
+                            anchor = 'n', 
+                            relx = self.Placement['FileSelect']['ButtonAllRight'][0], 
+                            rely = self.Placement['FileSelect']['ButtonAllRight'][1]
+                            )
+        self.loc_att_list.append('self.btn_1_04')
 
         # Create button to move all items left
-        self.btn_all_left = ttk.Button(
+        self.btn_1_05 = ttk.Button(
                                       window, 
                                       text = "Remove All Images", 
                                       command = move_all_left, 
                                       style = "Modern3.TButton",
                                       width = self.Placement['FileSelect']['ButtonAllLeft'][2]
                                         )
-        self.btn_all_left.place(anchor = 'n', 
-                                relx = self.Placement['FileSelect']['ButtonAllLeft'][0], 
-                                rely = self.Placement['FileSelect']['ButtonAllLeft'][1])
-        self.loc_att_list.append('self.btn_all_left')
+        self.btn_1_05.place(
+                            anchor = 'n', 
+                            relx = self.Placement['FileSelect']['ButtonAllLeft'][0], 
+                            rely = self.Placement['FileSelect']['ButtonAllLeft'][1])
+        self.loc_att_list.append('self.btn_1_05')
 
         # Create button to view an image
-        self.btn_view_sel = ttk.Button(
+        self.btn_1_06 = ttk.Button(
                                       window, 
                                       text = "View Selected Images", 
                                       command = view_selected, 
                                       style = "Modern3.TButton",
                                       width = self.Placement['FileSelect']['ButtonView'][0]
                                         )
-        self.btn_view_sel.place(anchor = 'n', 
-                                relx = self.Placement['FileSelect']['ButtonView'][0], 
-                                rely = self.Placement['FileSelect']['ButtonView'][1])
-        self.loc_att_list.append('self.btn_view_sel')
+        self.btn_1_06.place(
+                            anchor = 'n', 
+                            relx = self.Placement['FileSelect']['ButtonView'][0], 
+                            rely = self.Placement['FileSelect']['ButtonView'][1]
+                            )
+        self.loc_att_list.append('self.btn_1_06')
 
     # Function to continue to next page
     def next_page():
         # Check if the image directory has been set
-        if hasattr(self,"listbox_02") == False:
+        if hasattr(self,"listbox_1_02") == False:
             # Show error if there are no segementation files
             messagebox.showerror(message = 'No Image Directory Set.')
             return
         
         # Get the list of project images
-        list2 = list(self.listbox_02.get(0, tk.END))
+        list2 = list(self.listbox_1_02.get(0, tk.END))
 
         # Check for project images
         if len(list2) == 0:
@@ -640,23 +686,27 @@ def CreateFileSelection(self,window):
                                 text='Image Selection',
                                 style = "ModernT.TLabel"
                                 )
-    self.label_title.place(anchor = 'center', 
-                           relx = self.Placement['FileSelect']['LabelTitle'][0], 
-                           rely = self.Placement['FileSelect']['LabelTitle'][1])
+    self.label_title.place(
+                            anchor = 'center', 
+                            relx = self.Placement['FileSelect']['LabelTitle'][0], 
+                            rely = self.Placement['FileSelect']['LabelTitle'][1]
+                            )
     self.att_list.append('self.label_title')
 
     # Create Folder Selection Button
-    self.btn_fldr = ttk.Button(
+    self.btn_1_01 = ttk.Button(
                             window, 
                             text = "Set Image Directory", 
                             command = set_path, 
                             style = 'Modern.TButton',
                             width = self.Placement['FileSelect']['ButtonFldr'][2]
                             )
-    self.btn_fldr.place(anchor = 'center', 
+    self.btn_1_01.place(
+                        anchor = 'center', 
                         relx = self.Placement['FileSelect']['ButtonFldr'][0], 
-                        rely = self.Placement['FileSelect']['ButtonFldr'][1])
-    self.att_list.append('self.btn_fldr')
+                        rely = self.Placement['FileSelect']['ButtonFldr'][1]
+                        )
+    self.att_list.append('self.btn_1_01')
     
     # Create Continue Button
     self.btn_cont = ttk.Button(
