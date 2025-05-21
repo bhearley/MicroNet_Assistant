@@ -191,7 +191,7 @@ def CropImages(self,window):
 
         # Create a Matplotlib figure
         if hasattr(self,"fig2") == False:
-            scale_im = 0.8
+            scale_im = self.Placement['Crop']['Canvas1'][2]
             self.fig2, self.ax2 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
             self.fig2.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
@@ -200,7 +200,9 @@ def CropImages(self,window):
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig2.get_figwidth() * self.fig2.get_dpi()),
                                 height=int(self.fig2.get_figheight() * self.fig2.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.2)
+        self.canvas_widget.place(anchor='n', 
+                                 relx = self.Placement['Crop']['Canvas1'][0], 
+                                 rely = self.Placement['Crop']['Canvas1'][1])
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -213,7 +215,10 @@ def CropImages(self,window):
         # Add the Matplotlib navigation toolbar
         self.toolbar = NavigationToolbar2Tk(self.canvas, window)
         self.toolbar.update()
-        self.toolbar.place(anchor='n', relx = 0.5, rely = 0.8)
+        self.toolbar.place(anchor='n', 
+                           relx = self.Placement['Crop']['Toolbar1'][0], 
+                           rely = self.Placement['Crop']['Toolbar1'][1]
+                           )
         self.loc_att_list.append('self.toolbar')
 
         # Create the crop window label
@@ -223,7 +228,9 @@ def CropImages(self,window):
                                     background="white",
                                     style = "Modern2.TLabel"
                                     )
-        self.label_crop.place(anchor = 'n', relx = 0.47, rely = 0.86)
+        self.label_crop.place(anchor = 'n', 
+                              relx = self.Placement['Crop']['LabelCrop'][0], 
+                              rely = self.Placement['Crop']['LabelCrop'][1])
         self.loc_att_list.append('self.label_crop')
 
         # Register the validation function
@@ -236,11 +243,13 @@ def CropImages(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10,
+                            width = self.Placement['Crop']['EntryCrop'][2],
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_C.insert(0, "700") # Set defualt value
-        self.entry_C.place(anchor = 'n', relx = 0.53, rely = 0.86)
+        self.entry_C.place(anchor = 'n', 
+                           relx = self.Placement['Crop']['EntryCrop'][0], 
+                           rely = self.Placement['Crop']['EntryCrop'][1])
         self.loc_att_list.append('self.entry_C')
         self.crop_window = int(self.entry_C.get())
 
@@ -293,7 +302,7 @@ def CropImages(self,window):
 
         # Create a Matplotlib figure
         if hasattr(self,"fig3") == False:
-            scale_im = 0.8
+            scale_im = self.Placement['Crop']['Canvas1'][2]
             self.fig3, self.ax3 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
             self.fig3.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
@@ -302,7 +311,9 @@ def CropImages(self,window):
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig3.get_figwidth() * self.fig3.get_dpi()),
                                 height=int(self.fig3.get_figheight() * self.fig3.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.2)
+        self.canvas_widget.place(anchor='n', 
+                                 relx = self.Placement['Crop']['Canvas1'][0], 
+                                 rely = self.Placement['Crop']['Canvas1'][1])
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -315,7 +326,9 @@ def CropImages(self,window):
         # Add the Matplotlib navigation toolbar
         self.toolbar = NavigationToolbar2Tk(self.canvas, window)
         self.toolbar.update()
-        self.toolbar.place(anchor='n', relx = 0.5, rely = 0.8)
+        self.toolbar.place(anchor='n', 
+                           relx = self.Placement['Crop']['Toolbar1'][0], 
+                           rely = self.Placement['Crop']['Toolbar1'][1])
         self.loc_att_list.append('self.toolbar')
 
         # Cover the crop window
@@ -323,9 +336,11 @@ def CropImages(self,window):
                                 window,
                                 text = "                                                                                                    ",
                                 background='white',
-                                padding = 5,
+                                padding = self.Placement['Crop']['LabelCover'][2],
                                 )
-        self.cover.place(anchor = 'n', relx = 0.5, rely = 0.86)
+        self.cover.place(anchor = 'n', 
+                         relx = self.Placement['Crop']['LabelCover'][0], 
+                         rely = self.Placement['Crop']['LabelCover'][1])
         self.loc_att_list.append('self.cover')
 
     # Function to delete a cropped image
@@ -594,7 +609,9 @@ def CropImages(self,window):
                                 text='Crop Images',
                                 style = "ModernT.TLabel"
                                 )
-    self.label_title.place(anchor = 'center', relx = 0.5, rely = 0.125)
+    self.label_title.place(anchor = 'center', 
+                           relx = self.Placement['Crop']['LabelTitle'][0], 
+                           rely = self.Placement['Crop']['LabelTitle'][1])
     self.att_list.append('self.label_title')
 
     # Create scrollbar for list of all images
@@ -603,7 +620,10 @@ def CropImages(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_01.place(anchor='n', relx = 0.225, rely = 0.2, height = 752)
+    self.scrollbar_01.place(anchor='n', 
+                            relx = self.Placement['Crop']['Scrollbar1'][0], 
+                            rely = self.Placement['Crop']['Scrollbar1'][1], 
+                            height = self.Placement['Crop']['Scrollbar1'][2])
     self.att_list.append('self.scrollbar_01')
     
     # Get list of all images
@@ -616,8 +636,8 @@ def CropImages(self,window):
                                 window, 
                                 listvariable=items,
                                 selectmode='single',
-                                height = 34,
-                                width = 54,
+                                height = self.Placement['Crop']['Listbox1'][2],
+                                width = self.Placement['Crop']['Listbox1'][3],
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -626,7 +646,9 @@ def CropImages(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_01.place(anchor='n', relx = 0.125, rely = 0.2)
+    self.listbox_01.place(anchor='n', 
+                          relx = self.Placement['Crop']['Listbox1'][0], 
+                          rely = self.Placement['Crop']['Listbox1'][1])
     self.att_list.append('self.listbox_01')
     self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
 
@@ -639,7 +661,10 @@ def CropImages(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_02.place(anchor='n', relx = 0.9425, rely = 0.2, height = 752)
+    self.scrollbar_02.place(anchor='n', 
+                            relx = self.Placement['Crop']['Scrollbar2'][0], 
+                            rely = self.Placement['Crop']['Scrollbar2'][1], 
+                            height = self.Placement['Crop']['Scrollbar2'][2])
     self.att_list.append('self.scrollbar_02')
     
     # Get List of cropped images
@@ -656,8 +681,8 @@ def CropImages(self,window):
                                 window, 
                                 listvariable=items2,
                                 selectmode='single',
-                                height = 34,
-                                width = 54,
+                                height = self.Placement['Crop']['Listbox2'][2],
+                                width = self.Placement['Crop']['Listbox2'][3],
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -666,7 +691,9 @@ def CropImages(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_02.place(anchor='n', relx = 0.8425, rely = 0.2)
+    self.listbox_02.place(anchor='n',
+                          relx = self.Placement['Crop']['Listbox2'][0], 
+                          rely = self.Placement['Crop']['Listbox2'][1])
     self.att_list.append('self.listbox_02')
     self.listbox_02.config(yscrollcommand= self.scrollbar_02.set)
 
@@ -679,9 +706,11 @@ def CropImages(self,window):
                                text = "Load Image", 
                                command = lambda:load_image(self), 
                                style = 'Modern2.TButton',
-                               width = 10
+                               width = self.Placement['Crop']['ButtonLoad'][2]
                                )
-    self.load_btn.place(anchor = 'n', relx = 0.125, rely = 0.775)
+    self.load_btn.place(anchor = 'n', 
+                        relx = self.Placement['Crop']['ButtonLoad'][0], 
+                        rely = self.Placement['Crop']['ButtonLoad'][1])
     self.att_list.append('self.load_btn')
 
     # Create button to view a cropped image
@@ -690,9 +719,11 @@ def CropImages(self,window):
                             text = "View Image", 
                             command = lambda:view_image(self), 
                             style = 'Modern2.TButton',
-                            width = 12
+                            width = self.Placement['Crop']['ButtonView'][2]
                             )
-    self.btn_view.place(anchor = 'n', relx = 0.795, rely = 0.775)
+    self.btn_view.place(anchor = 'n',
+                        relx = self.Placement['Crop']['ButtonView'][0], 
+                        rely = self.Placement['Crop']['ButtonView'][1])
     self.att_list.append('self.btn_view')
 
     # Create button to delete a cropped image
@@ -701,34 +732,40 @@ def CropImages(self,window):
                             text = "Delete Image", 
                             command = lambda:del_images(self), 
                             style = 'Modern2.TButton',
-                            width = 12
+                            width = self.Placement['Crop']['ButtonDelete'][2]
                             )
-    self.btn_del.place(anchor = 'n', relx = 0.9, rely = 0.775)
+    self.btn_del.place(anchor = 'n',
+                       relx = self.Placement['Crop']['ButtonDelete'][0], 
+                       rely = self.Placement['Crop']['ButtonDelete'][1])
     self.att_list.append('self.btn_del')
 
     # Create Continue Button
-    self.btn_cont1 = ttk.Button(
-                               window, 
-                               text = "Continue", 
-                               command = next_page, 
-                               style = 'Modern2.TButton',
-                               width = 10
-                               )
-    self.btn_cont1.place(anchor = 'e',  relx = 0.997, rely = 0.975)
-    self.att_list.append('self.btn_cont1')
-
+    self.btn_cont = ttk.Button(
+                                window, 
+                                text = "Continue", 
+                                command = next_page, 
+                                style = 'Modern2.TButton',
+                                width = self.Placement['FileSelect']['ButtonCont'][2]
+                                )
+    self.btn_cont.place(anchor = 'e', 
+                        relx = self.Placement['FileSelect']['ButtonCont'][0], 
+                        rely = self.Placement['FileSelect']['ButtonCont'][1])
+    self.att_list.append('self.btn_cont')
+    
     # Create Back Button
-    self.btn_back1 = ttk.Button(
-                               window, 
-                               text = "Back", 
-                               command = back_page, 
-                               style = 'Modern2.TButton',
-                               width = 10
-                               )
-    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
-    self.att_list.append('self.btn_back1')
+    self.btn_back = ttk.Button(
+                                window, 
+                                text = "Back", 
+                                command = back_page, 
+                                style = 'Modern2.TButton',
+                                width = self.Placement['FileSelect']['ButtonBack'][2]
+                                )
+    self.btn_back.place(anchor = 'e', 
+                         relx = self.Placement['FileSelect']['ButtonBack'][0], 
+                         rely = self.Placement['FileSelect']['ButtonBack'][1])
+    self.att_list.append('self.btn_back')
 
-     # Create Help Button
+    # Create Help Button
     # -- Load an image using PIL
     self.image_path_help = os.path.join(os.getcwd(),'GUI','General','help.png') 
     self.image_help = Image.open(self.image_path_help)
@@ -746,7 +783,9 @@ def CropImages(self,window):
                                 compound='left',                                 
                                 command = helper,
                                 style = "Modern2.TButton",
-                                width = 7
+                                width = self.Placement['FileSelect']['Help'][2]
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
+    self.btn_help.place(anchor = 'w', 
+                        relx = self.Placement['FileSelect']['Help'][0], 
+                        rely = self.Placement['FileSelect']['Help'][1])
     self.att_list.append('self.btn_help')

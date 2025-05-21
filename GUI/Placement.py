@@ -66,6 +66,24 @@ def Placement(self, res):
                                 'ButtonBack':[],
                                 'Help':[]
                                 },
+                    'Crop':{
+                                'Canvas1':[],
+                                'Toolbar1':[],
+                                'LabelCrop':[],
+                                'EntryCrop':[],
+                                'LabelCover':[],
+                                'LabelTitle':[],
+                                'Scrollbar1':[],
+                                'Listbox1':[],
+                                'Scrollbar2':[],
+                                'Listbox2':[],
+                                'ButtonLoad':[],
+                                'ButtonView':[],
+                                'ButtonDelete':[],
+                                'ButtonCont':[],
+                                'ButtonBack':[],
+                                'Help':[]
+                                },
     }
     
     # 2560 x 1440
@@ -126,6 +144,25 @@ def Placement(self, res):
         Placement['Resize']['ButtonBack'] = [0.942, 0.975, 10]
         Placement['Resize']['Help'] = [0.001, 0.975, 7, 0.05]
 
+        # -- Crop
+        Placement['Crop']['Canvas1'] = [0.5, 0.2, 0.8]
+        Placement['Crop']['Toolbar1'] = [0.5, 0.8]
+        Placement['Crop']['LabelCrop'] = [0.47, 0.86]
+        Placement['Crop']['EntryCrop'] = [0.53, 0.86, 10]
+        Placement['Crop']['LabelCover'] = [0.5, 0.86, 10]
+        Placement['Crop']['LabelTitle'] = [0.5, 0.125]
+        Placement['Crop']['Scrollbar1'] = [0.225, 0.2, 752]
+        Placement['Crop']['Listbox1'] = [0.125, 0.2, 34, 54]
+        Placement['Crop']['Scrollbar2'] = [0.9425, 0.2, 752]
+        Placement['Crop']['Listbox2'] = [0.8425, 0.2, 34, 54]
+        Placement['Crop']['ButtonLoad'] = [0.125, 0.775, 10]
+        Placement['Crop']['ButtonView'] = [0.795, 0.775, 12]
+        Placement['Crop']['ButtonDelete'] = [0.895, 0.775, 12]
+        Placement['Resize']['ButtonCont'] = [0.997, 0.975, 10]
+        Placement['Resize']['ButtonBack'] = [0.942, 0.975, 10]
+        Placement['Resize']['Help'] = [0.001, 0.975, 7, 0.05]
+
+
     # 1536 x 960
     if res == "1536x960":
         # -- Main Page
@@ -180,6 +217,24 @@ def Placement(self, res):
         Placement['Resize']['ButtonLoad'] = [0.15, 0.775, 10]
         Placement['Resize']['Scrollbar1'] = [0.25, 0.2, 445]
         Placement['Resize']['Listbox1'] = [0.15, 0.2, 20, 31]
+        Placement['FileSelect']['ButtonCont'] = [0.999, 0.965, 10]
+        Placement['FileSelect']['ButtonBack'] = [0.909, 0.965, 10]
+        Placement['FileSelect']['Help'] = [0.001, 0.965, 7, 0.05]
+
+        # -- Crop
+        Placement['Crop']['Canvas1'] = [0.5, 0.175, 1.25]
+        Placement['Crop']['Toolbar1'] = [0.5, 0.8]
+        Placement['Crop']['LabelCrop'] = [0.45, 0.86]
+        Placement['Crop']['EntryCrop'] = [0.55, 0.86, 10]
+        Placement['Crop']['LabelCover'] = [0.5, 0.86, 10]
+        Placement['Crop']['LabelTitle'] = [0.5, 0.125]
+        Placement['Crop']['Scrollbar1'] = [0.25, 0.2, 445]
+        Placement['Crop']['Listbox1'] = [0.15, 0.2, 20, 31]
+        Placement['Crop']['Scrollbar2'] = [0.9425, 0.2, 445]
+        Placement['Crop']['Listbox2'] = [0.8425, 0.2, 20, 31]
+        Placement['Crop']['ButtonLoad'] = [0.15, 0.775, 10]
+        Placement['Crop']['ButtonView'] = [0.795, 0.775, 12]
+        Placement['Crop']['ButtonDelete'] = [0.9, 0.775, 12]
         Placement['FileSelect']['ButtonCont'] = [0.999, 0.965, 10]
         Placement['FileSelect']['ButtonBack'] = [0.909, 0.965, 10]
         Placement['FileSelect']['Help'] = [0.001, 0.965, 7, 0.05]
