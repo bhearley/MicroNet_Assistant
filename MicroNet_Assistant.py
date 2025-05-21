@@ -140,9 +140,11 @@ class MicroNetAssistant:
                                 compound='left',                                 
                                 command = self.save,
                                 style = "Modern2.TButton",
-                                width = 8
+                                width = self.Placement['MainPage']['Save'][2]
                                 )
-            self.btn_save.place(anchor = 'w', relx = 0.05425, rely = 0.975)
+            self.btn_save.place(anchor = 'w', 
+                                relx = self.Placement['MainPage']['Save'][0], 
+                                rely = self.Placement['MainPage']['Save'][1])
             
 
     # Function to create a new project

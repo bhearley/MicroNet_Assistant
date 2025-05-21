@@ -21,8 +21,32 @@ def Placement(self, res):
                                 'Label2':[],
                                 'Button3':[],
                                 'Button4':[],
+                                'Help':[],
+                                'Save':[]
+                                },
+                    'FileSelect':{
+                                'LabelT':[],
+                                'Canvas1':[],
+                                'Toolbar1':[],
+                                'ButtonLeftW':[],
+                                'ButtonRightW':[],
+                                'Scrollbar1':[],
+                                'Label1':[],
+                                'Listbox1':[],
+                                'Scrollbar2':[],
+                                'Label2':[],
+                                'Listbox2':[],
+                                'ButtonLeft':[],
+                                'ButtonRight':[],
+                                'ButtonAllLeft':[],
+                                'ButtonAllRight':[],
+                                'ButtonView':[],
+                                'LabelTitle':[],
+                                'ButtonFldr':[],
+                                'ButtonCont':[],
+                                'ButtonBack':[],
                                 'Help':[]
-                                }
+                                },
     }
     
     # 2560 x 1440
@@ -39,6 +63,30 @@ def Placement(self, res):
         Placement['MainPage']['Button3'] = [0.5, 0.4, 18]
         Placement['MainPage']['Button4'] = [0.5, 0.75, 18]
         Placement['MainPage']['Help'] = [0.001, 0.975, 7, 0.05]
+        Placement['MainPage']['Save'] = [0.05425, 0.975, 8]
+
+        # -- CreateFileSelection
+        Placement['FileSelect']['LabelT'] = [0.5, 0.0075]
+        Placement['FileSelect']['Canvas1'] = [0.5, 0.1]
+        Placement['FileSelect']['Toolbar1'] = [0.5, 0.82]
+        Placement['FileSelect']['ButtonLeftW'] = [0.45, 0.9, 3]
+        Placement['FileSelect']['ButtonRightW'] = [0.55, 0.9, 3]
+        Placement['FileSelect']['Scrollbar1'] = [0.4, 0.29, 752]
+        Placement['FileSelect']['Label1'] = [0.3, 0.25]
+        Placement['FileSelect']['Listbox1'] = [0.3, 0.29, 34, 54]
+        Placement['FileSelect']['Scrollbar2'] = [0.8, 0.29, 752]
+        Placement['FileSelect']['Label2'] = [0.7, 0.25]
+        Placement['FileSelect']['Listbox2'] = [0.7, 0.29, 34, 54]
+        Placement['FileSelect']['ButtonRight'] = [0.5, 0.475, 3]
+        Placement['FileSelect']['ButtonLeft'] = [0.5, 0.65, 3]
+        Placement['FileSelect']['ButtonAllRight'] = [0.3, 0.85, 18]
+        Placement['FileSelect']['ButtonAllLeft'] = [0.7, 0.85, 18]
+        Placement['FileSelect']['ButtonView'] = [0.5, 0.85, 22]
+        Placement['FileSelect']['LabelTitle'] = [0.5, 0.125]
+        Placement['FileSelect']['ButtonFldr'] = [0.5, 0.18, 18]
+        Placement['FileSelect']['ButtonCont'] = [0.997, 0.975, 10]
+        Placement['FileSelect']['ButtonBack'] = [0.942, 0.975, 10]
+        Placement['FileSelect']['Help'] = [0.001, 0.975, 7, 0.05]
 
     # 1536 x 960
     if res == "1536x960":
@@ -54,6 +102,30 @@ def Placement(self, res):
         Placement['MainPage']['Button3'] = [0.5, 0.4, 15]
         Placement['MainPage']['Button4'] = [0.5, 0.75, 15]
         Placement['MainPage']['Help'] = [0.001, 0.965, 7, 0.05]
+        Placement['MainPage']['Save'] = [0.089, 0.965, 8]
+
+        # -- CreateFileSelection
+        Placement['FileSelect']['LabelT'] = [0.5, 0.0075]
+        Placement['FileSelect']['Canvas1'] = [0.5, 0.08]
+        Placement['FileSelect']['Toolbar1'] = [0.5, 0.82]
+        Placement['FileSelect']['ButtonLeftW'] = [0.45, 0.9, 3]
+        Placement['FileSelect']['ButtonRightW'] = [0.55, 0.9, 3]
+        Placement['FileSelect']['Scrollbar1'] = [0.4, 0.325, 445]
+        Placement['FileSelect']['Label1'] = [0.3, 0.285]
+        Placement['FileSelect']['Listbox1'] = [0.3, 0.325, 20, 31]
+        Placement['FileSelect']['Scrollbar2'] = [0.8, 0.325, 445]
+        Placement['FileSelect']['Label2'] = [0.7, 0.285]
+        Placement['FileSelect']['Listbox2'] = [0.7, 0.325, 20, 31]
+        Placement['FileSelect']['ButtonRight'] = [0.5, 0.45, 3]
+        Placement['FileSelect']['ButtonLeft'] = [0.5, 0.7, 3]
+        Placement['FileSelect']['ButtonAllRight'] = [0.3, 0.85, 15]
+        Placement['FileSelect']['ButtonAllLeft'] = [0.7, 0.85, 15]
+        Placement['FileSelect']['ButtonView'] = [0.5, 0.85, 17]
+        Placement['FileSelect']['LabelTitle'] = [0.5, 0.125]
+        Placement['FileSelect']['ButtonFldr'] = [0.5, 0.225, 18]
+        Placement['FileSelect']['ButtonCont'] = [0.999, 0.965, 10]
+        Placement['FileSelect']['ButtonBack'] = [0.909, 0.965, 10]
+        Placement['FileSelect']['Help'] = [0.001, 0.965, 7, 0.05]
 
 
     # Set to self

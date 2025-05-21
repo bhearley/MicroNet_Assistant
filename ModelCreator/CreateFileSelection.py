@@ -207,7 +207,7 @@ def CreateFileSelection(self,window):
                                 text=self.all_files_v[self.ct],
                                 style = "ModernT.TLabel"
                                 )
-                self.label_title_v.place(anchor="n", relx = 0.5, rely = 0.0075)
+                self.label_title_v.place(anchor="n", relx = self.Placement['FileSelect']['LabelT'][0], rely = self.Placement['FileSelect']['LabelT'][1])
 
                 # Show the image
                 self.img_view = Image.open(os.path.join(self.file_path, self.all_files_v[self.ct])).convert('RGBA')
@@ -222,7 +222,7 @@ def CreateFileSelection(self,window):
                 self.canvas_widget = self.canvas.get_tk_widget()
                 self.canvas_widget.config(width=int(self.figv.get_figwidth() * self.figv.get_dpi()),
                                         height=int(self.figv.get_figheight() * self.figv.get_dpi()))
-                self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.1)
+                self.canvas_widget.place(anchor='n', relx = self.Placement['FileSelect']['Canvas1'][0], rely = self.Placement['FileSelect']['Canvas1'][1])
                 self.loc_att_list.append('self.canvas')
                 self.loc_att_list.append('self.canvas_widget')
 
@@ -235,7 +235,7 @@ def CreateFileSelection(self,window):
                 # Add the Matplotlib navigation toolbar
                 self.toolbar = NavigationToolbar2Tk(self.canvas, view_window)
                 self.toolbar.update()
-                self.toolbar.place(anchor='n', relx = 0.5, rely = 0.82)
+                self.toolbar.place(anchor='n', relx = self.Placement['FileSelect']['Toolbar1'][0], rely = self.Placement['FileSelect']['Toolbar1'][1])
                 self.loc_att_list.append('self.toolbar')
 
             # Get All Selected Files
@@ -267,9 +267,9 @@ def CreateFileSelection(self,window):
                                         text = "\u2190", 
                                         command = lambda:show_image('l'), 
                                         style = "Modern4.TButton",
-                                        width = 3
+                                        width = self.Placement['FileSelect']['ButtonLeftW'][2]
                                         )
-                btn_left.place(anchor = 'n', relx = 0.45, rely = 0.9)
+                btn_left.place(anchor = 'n', relx = self.Placement['FileSelect']['ButtonLeftW'][0], rely = self.Placement['FileSelect']['ButtonLeftW'][1])
 
                 # Create button to scroll right
                 btn_right = ttk.Button(
@@ -277,9 +277,9 @@ def CreateFileSelection(self,window):
                                         text = "\u2192", 
                                         command = lambda:show_image('r'),
                                         style = "Modern4.TButton",
-                                        width = 3
+                                        width = self.Placement['FileSelect']['ButtonRightW'][2]
                                         )
-                btn_right.place(anchor = 'n', relx = 0.55, rely = 0.9)
+                btn_right.place(anchor = 'n', relx = self.Placement['FileSelect']['ButtonRightW'][0], rely = self.Placement['FileSelect']['ButtonRightW'][1])
 
                 # Initialize
                 self.ct = -1
@@ -300,17 +300,22 @@ def CreateFileSelection(self,window):
                                         orient= 'vertical', 
                                         style = "Vertical.TScrollbar"
                                         )
-        self.scrollbar_01.place(anchor='n', relx = 0.4, rely = 0.29, height = 752)
+        self.scrollbar_01.place(anchor='n', 
+                                relx = self.Placement['FileSelect']['Scrollbar1'][0], 
+                                rely = self.Placement['FileSelect']['Scrollbar1'][1], 
+                                height = self.Placement['FileSelect']['Scrollbar1'][2])
         self.loc_att_list.append('self.scrollbar_01')
 
         # Create a label for all images
-        self.label_02 = ttk.Label(
+        self.label_01 = ttk.Label(
                                 window,
                                 text='All Images',
                                 style = "Modern3.TLabel"
                                 )
-        self.label_02.place(anchor='n', relx = 0.3, rely = 0.25)
-        self.loc_att_list.append('self.label_02')
+        self.label_01.place(anchor='n', 
+                            relx = self.Placement['FileSelect']['Label1'][0], 
+                            rely = self.Placement['FileSelect']['Label1'][1])
+        self.loc_att_list.append('self.label_01')
 
         # Get list of all files
         all_images = self.Segment['Files']['All Files']
@@ -322,8 +327,8 @@ def CreateFileSelection(self,window):
                                     window, 
                                     listvariable=items,
                                     selectmode='multiple',
-                                    height = 34,
-                                    width = 54,
+                                    height = self.Placement['FileSelect']['Listbox1'][2],
+                                    width = self.Placement['FileSelect']['Listbox1'][3],
                                     bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                     fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                     font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -332,7 +337,9 @@ def CreateFileSelection(self,window):
                                     highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                     bd=self.style_man['ListBox']['ListBox1']['bd']
                                     )
-        self.listbox_01.place(anchor='n', relx = 0.3, rely = 0.29)
+        self.listbox_01.place(anchor='n', 
+                              relx = self.Placement['FileSelect']['Listbox1'][0], 
+                              rely = self.Placement['FileSelect']['Listbox1'][1])
         self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
         self.loc_att_list.append('self.listbox_01')
 
@@ -345,17 +352,22 @@ def CreateFileSelection(self,window):
                                         orient= 'vertical', 
                                         style = "Vertical.TScrollbar"
                                         )
-        self.scrollbar_02.place(anchor='n', relx = 0.8, rely = 0.29, height = 752)
+        self.scrollbar_02.place(anchor='n', 
+                                relx = self.Placement['FileSelect']['Scrollbar2'][0], 
+                                rely = self.Placement['FileSelect']['Scrollbar2'][1], 
+                                height = self.Placement['FileSelect']['Scrollbar2'][2])
         self.loc_att_list.append('self.scrollbar_02')
 
         # Create the label for project images
-        self.label_03 = ttk.Label(
+        self.label_02 = ttk.Label(
                                 window,
                                 text='Manual Segmentation Images',
                                 style = "Modern3.TLabel"
                                 )
-        self.label_03.place(anchor='n', relx = 0.7, rely = 0.25)
-        self.loc_att_list.append('self.label_03')
+        self.label_02.place(anchor='n', 
+                            relx = self.Placement['FileSelect']['Label2'][0], 
+                            rely = self.Placement['FileSelect']['Label2'][1])
+        self.loc_att_list.append('self.label_02')
 
         # Get list of project images
         seg_images = self.Segment['Files']['Segment Files']
@@ -367,8 +379,8 @@ def CreateFileSelection(self,window):
                                     window, 
                                     listvariable=items2,
                                     selectmode='multiple',
-                                    height = 34,
-                                    width = 54,
+                                    height = self.Placement['FileSelect']['Listbox2'][2],
+                                    width = self.Placement['FileSelect']['Listbox2'][3],
                                     bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                     fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                     font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -377,7 +389,9 @@ def CreateFileSelection(self,window):
                                     highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                     bd=self.style_man['ListBox']['ListBox1']['bd']
                                     )
-        self.listbox_02.place(anchor='n', relx = 0.7, rely = 0.29)
+        self.listbox_02.place(anchor='n', 
+                              relx = self.Placement['FileSelect']['Listbox2'][0], 
+                              rely = self.Placement['FileSelect']['Listbox2'][1])
         self.listbox_02.config(yscrollcommand= self.scrollbar_02.set)
         self.loc_att_list.append('self.listbox_02')
 
@@ -390,9 +404,11 @@ def CreateFileSelection(self,window):
                                     text = "\u2192", 
                                     command = move_right, 
                                     style = "Modern4.TButton",
-                                    width = 3
+                                    width = self.Placement['FileSelect']['ButtonRight'][2]
                                     )
-        self.btn_right.place(anchor = 'c', relx = 0.5, rely = 0.475)
+        self.btn_right.place(anchor = 'c', 
+                             relx = self.Placement['FileSelect']['ButtonRight'][0], 
+                             rely = self.Placement['FileSelect']['ButtonRight'][1])
         self.loc_att_list.append('self.btn_right')
 
         # Create button to move items left
@@ -401,9 +417,11 @@ def CreateFileSelection(self,window):
                                   text = "\u2190", 
                                   command = move_left, 
                                   style = "Modern4.TButton",
-                                  width = 3
+                                  width = self.Placement['FileSelect']['ButtonLeft'][2]
                                     )
-        self.btn_left.place(anchor = 'c', relx = 0.5, rely = 0.65)
+        self.btn_left.place(anchor = 'c', 
+                            relx = self.Placement['FileSelect']['ButtonLeft'][0], 
+                            rely = self.Placement['FileSelect']['ButtonLeft'][1])
         self.loc_att_list.append('self.btn_left')
 
         # Create button to move all items right
@@ -412,9 +430,11 @@ def CreateFileSelection(self,window):
                                        text = "Add All Images", 
                                        command = move_all_right, 
                                        style = "Modern3.TButton",
-                                       width = 15
+                                       width = self.Placement['FileSelect']['ButtonAllRight'][2]
                                         )
-        self.btn_all_right.place(anchor = 'n', relx = 0.3, rely = 0.85)
+        self.btn_all_right.place(anchor = 'n', 
+                                 relx = self.Placement['FileSelect']['ButtonAllRight'][0], 
+                                 rely = self.Placement['FileSelect']['ButtonAllRight'][1])
         self.loc_att_list.append('self.btn_all_right')
 
         # Create button to move all items left
@@ -423,9 +443,11 @@ def CreateFileSelection(self,window):
                                       text = "Remove All Images", 
                                       command = move_all_left, 
                                       style = "Modern3.TButton",
-                                      width = 15
+                                      width = self.Placement['FileSelect']['ButtonAllLeft'][2]
                                         )
-        self.btn_all_left.place(anchor = 'n', relx = 0.7, rely = 0.85)
+        self.btn_all_left.place(anchor = 'n', 
+                                relx = self.Placement['FileSelect']['ButtonAllLeft'][0], 
+                                rely = self.Placement['FileSelect']['ButtonAllLeft'][1])
         self.loc_att_list.append('self.btn_all_left')
 
         # Create button to view an image
@@ -434,9 +456,11 @@ def CreateFileSelection(self,window):
                                       text = "View Selected Images", 
                                       command = view_selected, 
                                       style = "Modern3.TButton",
-                                      width = 20
+                                      width = self.Placement['FileSelect']['ButtonView'][0]
                                         )
-        self.btn_view_sel.place(anchor = 'n', relx = 0.5, rely = 0.85)
+        self.btn_view_sel.place(anchor = 'n', 
+                                relx = self.Placement['FileSelect']['ButtonView'][0], 
+                                rely = self.Placement['FileSelect']['ButtonView'][1])
         self.loc_att_list.append('self.btn_view_sel')
 
     # Function to continue to next page
@@ -616,41 +640,49 @@ def CreateFileSelection(self,window):
                                 text='Image Selection',
                                 style = "ModernT.TLabel"
                                 )
-    self.label_title.place(anchor = 'center', relx = 0.5, rely = 0.125)
+    self.label_title.place(anchor = 'center', 
+                           relx = self.Placement['FileSelect']['LabelTitle'][0], 
+                           rely = self.Placement['FileSelect']['LabelTitle'][1])
     self.att_list.append('self.label_title')
 
     # Create Folder Selection Button
-    self.btn1 = ttk.Button(
+    self.btn_fldr = ttk.Button(
                             window, 
                             text = "Set Image Directory", 
                             command = set_path, 
                             style = 'Modern.TButton',
-                            width = 18
+                            width = self.Placement['FileSelect']['ButtonFldr'][2]
                             )
-    self.btn1.place(anchor = 'center', relx = 0.5, rely = 0.18)
-    self.att_list.append('self.btn1')
+    self.btn_fldr.place(anchor = 'center', 
+                        relx = self.Placement['FileSelect']['ButtonFldr'][0], 
+                        rely = self.Placement['FileSelect']['ButtonFldr'][1])
+    self.att_list.append('self.btn_fldr')
     
     # Create Continue Button
-    self.btn_cont1 = ttk.Button(
+    self.btn_cont = ttk.Button(
                                 window, 
                                 text = "Continue", 
                                 command = next_page, 
                                 style = 'Modern2.TButton',
-                                width = 10
+                                width = self.Placement['FileSelect']['ButtonCont'][2]
                                 )
-    self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
-    self.att_list.append('self.btn_cont1')
+    self.btn_cont.place(anchor = 'e', 
+                        relx = self.Placement['FileSelect']['ButtonCont'][0], 
+                        rely = self.Placement['FileSelect']['ButtonCont'][1])
+    self.att_list.append('self.btn_cont')
     
     # Create Back Button
-    self.btn_back1 = ttk.Button(
+    self.btn_back = ttk.Button(
                                 window, 
                                 text = "Back", 
                                 command = back_page, 
                                 style = 'Modern2.TButton',
-                                width = 10
+                                width = self.Placement['FileSelect']['ButtonBack'][2]
                                 )
-    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
-    self.att_list.append('self.btn_back1')
+    self.btn_back.place(anchor = 'e', 
+                         relx = self.Placement['FileSelect']['ButtonBack'][0], 
+                         rely = self.Placement['FileSelect']['ButtonBack'][1])
+    self.att_list.append('self.btn_back')
 
     # Create Help Button
     # -- Load an image using PIL
@@ -670,9 +702,11 @@ def CreateFileSelection(self,window):
                                 compound='left',                                 
                                 command = helper,
                                 style = "Modern2.TButton",
-                                width = 7
+                                width = self.Placement['FileSelect']['Help'][2]
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
+    self.btn_help.place(anchor = 'w', 
+                        relx = self.Placement['FileSelect']['Help'][0], 
+                        rely = self.Placement['FileSelect']['Help'][1])
     self.att_list.append('self.btn_help')
 
     # Load Files
