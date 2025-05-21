@@ -47,6 +47,25 @@ def Placement(self, res):
                                 'ButtonBack':[],
                                 'Help':[]
                                 },
+                    'Resize':{
+                                'Canvas1':[],
+                                'Toolbar1':[],
+                                'LabelX':[],
+                                'LabelY':[],
+                                'LabelS':[],
+                                'EntryX':[],
+                                'EntryY':[],
+                                'EntryS':[],
+                                'ButtonS':[],
+                                'Check1':[],
+                                'LabelTitle':[],
+                                'ButtonLoad':[],
+                                'Scrollbar1':[],
+                                'Listbox1':[],
+                                'ButtonCont':[],
+                                'ButtonBack':[],
+                                'Help':[]
+                                },
     }
     
     # 2560 x 1440
@@ -88,6 +107,25 @@ def Placement(self, res):
         Placement['FileSelect']['ButtonBack'] = [0.942, 0.975, 10]
         Placement['FileSelect']['Help'] = [0.001, 0.975, 7, 0.05]
 
+        # -- ResizeImage
+        Placement['Resize']['Canvas1'] = [0.5, 0.2, 0.8]
+        Placement['Resize']['Toolbar1'] = [0.5, 0.8]
+        Placement['Resize']['LabelX'] = [0.755, 0.4]
+        Placement['Resize']['LabelY'] = [0.8275, 0.4]
+        Placement['Resize']['LabelS'] = [0.9025, 0.4]
+        Placement['Resize']['EntryX'] = [0.7875, 0.4, 10]
+        Placement['Resize']['EntryY'] = [0.86, 0.4, 10]
+        Placement['Resize']['EntryS'] = [0.94, 0.4, 10]
+        Placement['Resize']['ButtonS'] = [0.86, 0.5, 10]
+        Placement['Resize']['Check1'] = [0.86, 0.57]
+        Placement['Resize']['LabelTitle'] = [0.5, 0.125]
+        Placement['Resize']['ButtonLoad'] = [0.125, 0.775, 10]
+        Placement['Resize']['Scrollbar1'] = [0.225, 0.2, 752]
+        Placement['Resize']['Listbox1'] = [0.125, 0.2, 34, 54]
+        Placement['Resize']['ButtonCont'] = [0.997, 0.975, 10]
+        Placement['Resize']['ButtonBack'] = [0.942, 0.975, 10]
+        Placement['Resize']['Help'] = [0.001, 0.975, 7, 0.05]
+
     # 1536 x 960
     if res == "1536x960":
         # -- Main Page
@@ -123,6 +161,25 @@ def Placement(self, res):
         Placement['FileSelect']['ButtonView'] = [0.5, 0.85, 17]
         Placement['FileSelect']['LabelTitle'] = [0.5, 0.125]
         Placement['FileSelect']['ButtonFldr'] = [0.5, 0.225, 18]
+        Placement['FileSelect']['ButtonCont'] = [0.999, 0.965, 10]
+        Placement['FileSelect']['ButtonBack'] = [0.909, 0.965, 10]
+        Placement['FileSelect']['Help'] = [0.001, 0.965, 7, 0.05]
+
+        # -- ResizeImage
+        Placement['Resize']['Canvas1'] = [0.5, 0.15, 1.25]
+        Placement['Resize']['Toolbar1'] = [0.5, 0.8]
+        Placement['Resize']['LabelX'] = [0.7525, 0.399]
+        Placement['Resize']['LabelY'] = [0.825, 0.399]
+        Placement['Resize']['LabelS'] = [0.9, 0.399]
+        Placement['Resize']['EntryX'] = [0.7875, 0.4, 6]
+        Placement['Resize']['EntryY'] = [0.86, 0.4, 6]
+        Placement['Resize']['EntryS'] = [0.94, 0.4, 6]
+        Placement['Resize']['ButtonS'] = [0.86, 0.5, 10]
+        Placement['Resize']['Check1'] = [0.86, 0.57]
+        Placement['Resize']['LabelTitle'] = [0.5, 0.125]
+        Placement['Resize']['ButtonLoad'] = [0.15, 0.775, 10]
+        Placement['Resize']['Scrollbar1'] = [0.25, 0.2, 445]
+        Placement['Resize']['Listbox1'] = [0.15, 0.2, 20, 31]
         Placement['FileSelect']['ButtonCont'] = [0.999, 0.965, 10]
         Placement['FileSelect']['ButtonBack'] = [0.909, 0.965, 10]
         Placement['FileSelect']['Help'] = [0.001, 0.965, 7, 0.05]
