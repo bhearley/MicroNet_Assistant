@@ -4,11 +4,13 @@
 #
 # Brandon Hearley - LMS
 # brandon.l.hearley@nasa.gov
-# 4/25/2025
+# 5/21/2025
+# https://github.com/bhearley/MicroNet_Assistant
 #
-# PURPOSE: Prepare images for segmentation using MicroNet. Images
-#          can be scaled, cropped, and labelled for segmentation
-#          manually or using the Segment Anything Model from Meta.
+# PURPOSE: Create, Train, and Use a MicroNet Segmentation model through a graphical user interface (GUI).
+#          Users have the option to load images, manual segment them for data labelling, define MicroNet
+#          model parameters, train a mdoel, and build geometric models for analysis. Further information
+#          is provided in the README.mf on the github
 #
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -51,36 +53,52 @@ class MicroNetAssistant:
         # Set global variales
         global window
 
-        #Create Background Window
+        # Create Background Window
         window = tk.Tk()
         window.title("MicroNet Assistant")
         window.state('zoomed')
         window.configure(bg='white')
 
-        # Placement Information
+        # Get Placement Information
         screen_width = window.winfo_screenwidth()
         screen_height = window.winfo_screenheight()
         Placement(self, str(screen_width) + "x" + str(screen_height))
 
         # Define Images
-        title_img = os.path.join(os.getcwd(),'GUI','General','TitleHeader.png') # Set the title image path
-        logo_img = os.path.join(os.getcwd(),'GUI','General','NasaLogo.png')     # Set the logo image path
+        title_img = os.path.join(os.getcwd(),'GUI','General','TitleHeader.png') 
+        logo_img = os.path.join(os.getcwd(),'GUI','General','NasaLogo.png')     
 
-        #Add the Title
+        # Add the Title
         img = Image.open(title_img)
         scale = self.Placement['MainPage']['Title'][2]
         img = img.resize((int(img.width*scale), int(img.height*scale)))
         self.img_hdr = ImageTk.PhotoImage(img)
-        self.panel_hdr = tk.Label(window, image = self.img_hdr, bg = 'white')
-        self.panel_hdr.place(anchor = 'n', relx = self.Placement['MainPage']['Title'][0], rely = self.Placement['MainPage']['Title'][1])
+        self.panel_hdr = tk.Label(
+                                    window, 
+                                    image = self.img_hdr, 
+                                    bg = 'white'
+                                    )
+        self.panel_hdr.place(  
+                                anchor = 'n', 
+                                relx = self.Placement['MainPage']['Title'][0], 
+                                rely = self.Placement['MainPage']['Title'][1]
+                                )
 
-        #Add the NASA Logo
+        # Add the NASA Logo
         img = Image.open(logo_img)
         scale = self.Placement['MainPage']['Logo'][2]
         img = img.resize((int(img.width*scale), int(img.height*scale)))
         self.img_nasa = ImageTk.PhotoImage(img)
-        self.panel_nasa = tk.Label(window, image = self.img_nasa, bg = 'white')
-        self.panel_nasa.place(anchor = 'e', relx = self.Placement['MainPage']['Logo'][0], rely = self.Placement['MainPage']['Logo'][1])
+        self.panel_nasa = tk.Label(
+                                    window, 
+                                    image = self.img_nasa, 
+                                    bg = 'white'
+                                    )
+        self.panel_nasa.place(
+                                anchor = 'e', 
+                                relx = self.Placement['MainPage']['Logo'][0], 
+                                rely = self.Placement['MainPage']['Logo'][1]
+                                )
 
         # Load the style
         GetStyles(self)
@@ -142,10 +160,11 @@ class MicroNetAssistant:
                                 style = "Modern2.TButton",
                                 width = self.Placement['MainPage']['Save'][2]
                                 )
-            self.btn_save.place(anchor = 'w', 
+            self.btn_save.place(
+                                anchor = 'w', 
                                 relx = self.Placement['MainPage']['Save'][0], 
-                                rely = self.Placement['MainPage']['Save'][1])
-            
+                                rely = self.Placement['MainPage']['Save'][1]
+                                )          
 
     # Function to create a new project
     def new_project(self):
@@ -189,15 +208,15 @@ class MicroNetAssistant:
             # Load the page
             self.load_page()
 
-    # Function to load an existing model
+    # Function to load an existing model for segmentation
     def segment_image(self):
         #--------------------------------------------------------------------------
         #
-        #   PURPOSE: Load a trained model and segment an imate
+        #   PURPOSE: Load a trained model and segment an image.
         #
         #--------------------------------------------------------------------------
 
-        # Load the data structure
+        # Set the page number
         self.Segment = {'GUI':{'CurrentPage':8}}
 
         # Delete the Previous Page
@@ -214,7 +233,7 @@ class MicroNetAssistant:
         #
         #--------------------------------------------------------------------------
 
-        # Load the data structure
+        # Set the page number
         self.Segment = {'GUI':{'CurrentPage':9}}
 
         # Delete the Previous Page
@@ -223,12 +242,11 @@ class MicroNetAssistant:
         # Load the page
         self.load_page()
 
-            
     # Function to load a GUI Page
     def load_page(self):
         #--------------------------------------------------------------------------
         #
-        #   PURPOSE: Load the correct page of the GUI
+        #   PURPOSE: Load the correct page of the GUI.
         #
         #--------------------------------------------------------------------------
 
@@ -332,12 +350,18 @@ class MicroNetAssistant:
             loading.protocol("WM_DELETE_WINDOW", lambda:on_closing_saving(self))
 
             # Create the label
-            ttk.Label(loading, 
+            ttk.Label(
+                        loading, 
                         text="Saving Project File - Please Wait.", 
-                        style = "Modern1.TLabel").pack(pady=10)
+                        style = "Modern1.TLabel"
+                        ).pack(pady=10)
 
             # Create the progress bar
-            pb = ttk.Progressbar(loading, mode='indeterminate',style = "Modern.Horizontal.TProgressbar")
+            pb = ttk.Progressbar(
+                                    loading, 
+                                    mode='indeterminate',
+                                    style = "Modern.Horizontal.TProgressbar"
+                                    )
             pb.pack(fill='x', padx=20, pady=10)
             pb.start(10)
 
@@ -358,11 +382,11 @@ class MicroNetAssistant:
         # Show save message to user
         messagebox.showinfo(title = 'Save', message = 'Project Saved!')
 
-    # Function to save the current segmentation
+    # Function to save the current manual segmentation
     def save_image(self):
         #--------------------------------------------------------------------------
         #
-        #   PURPOSE: Save the current segmentation.
+        #   PURPOSE: Save the current manual segmentation for data labelling.
         #
         #--------------------------------------------------------------------------
 
@@ -375,15 +399,16 @@ class MicroNetAssistant:
             except:
                 pass
 
-    # Function to save the current segmentation
+    # Function to save the current model information
     def save_model(self):
         #--------------------------------------------------------------------------
         #
-        #   PURPOSE: Save the current segmentation.
+        #   PURPOSE: Save the current model information for defining a new model
+        #            to train.
         #
         #--------------------------------------------------------------------------
 
-        # Save the image
+        # Get the model information
         if hasattr(self,"sheet_7_01"):
             self.Segment['Model Information'] = [
                 self.sheet_7_01.data,
