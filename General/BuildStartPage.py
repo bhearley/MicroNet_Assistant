@@ -98,13 +98,13 @@ def BuildStartPage(self,window):
     # Create the frame for defining a new model
     self.box_frame1 = tk.Frame(
                             window, 
-                            bd=3, 
+                            bd=self.Placement['MainPage']['Frame1'][2], 
                             relief="ridge", 
-                            width = 400,
-                            height = 400,
+                            width = self.Placement['MainPage']['Frame1'][3],
+                            height = self.Placement['MainPage']['Frame1'][4],
                             bg="white"
                             )
-    self.box_frame1.place(anchor = 'c', relx=0.35, rely=0.5)
+    self.box_frame1.place(anchor = 'c', relx = self.Placement['MainPage']['Frame1'][0], rely = self.Placement['MainPage']['Frame1'][1])
     self.att_list.append('self.box_frame1')
 
     # Create a label for creating a model
@@ -113,7 +113,7 @@ def BuildStartPage(self,window):
                             text='Create a Model',
                             style = "Modern3.TLabel"
                             )
-    self.label_01.place(anchor='n', relx = 0.5, rely = 0.1)
+    self.label_01.place(anchor='n', relx = self.Placement['MainPage']['Label1'][0], rely = self.Placement['MainPage']['Label1'][1])
     self.att_list.append('self.label_02')
 
     # Create button to start a new project
@@ -122,9 +122,9 @@ def BuildStartPage(self,window):
                             text = "New Model", 
                             command = self.new_project,
                             style="Modern.TButton", 
-                            width = 18
+                            width = self.Placement['MainPage']['Button1'][2]
                             )
-    self.btn1.place(anchor = 'center', relx = 0.5, rely = 0.4)
+    self.btn1.place(anchor = 'center', relx = self.Placement['MainPage']['Button1'][0], rely = self.Placement['MainPage']['Button1'][1])
     self.att_list.append('self.btn1')
 
 
@@ -134,21 +134,21 @@ def BuildStartPage(self,window):
                             text = "Edit Model", 
                             command = self.load_project, 
                             style="Modern.TButton", 
-                            width = 18
+                            width = self.Placement['MainPage']['Button2'][2]
                             )
-    self.btn2.place(anchor = 'center', relx = 0.5, rely = 0.75)
+    self.btn2.place(anchor = 'center', relx = self.Placement['MainPage']['Button2'][0], rely = self.Placement['MainPage']['Button2'][1])
     self.att_list.append('self.btn2')
 
     # # Create Frame for Using a Model
     self.box_frame2 = tk.Frame(
                             window, 
-                            bd=3, 
+                            bd=self.Placement['MainPage']['Frame2'][2], 
                             relief="ridge", 
-                            width = 400,
-                            height = 400,
+                            width = self.Placement['MainPage']['Frame2'][3],
+                            height = self.Placement['MainPage']['Frame2'][4],
                             bg="white"
                             )
-    self.box_frame2.place(anchor = 'c', relx=0.65, rely=0.5)
+    self.box_frame2.place(anchor = 'c', relx = self.Placement['MainPage']['Frame2'][0], rely = self.Placement['MainPage']['Frame2'][1])
     self.att_list.append('self.box_frame2')
 
     # Create a label for creating a model
@@ -157,19 +157,19 @@ def BuildStartPage(self,window):
                             text='Load a Model',
                             style = "Modern3.TLabel"
                             )
-    self.label_02.place(anchor='n', relx = 0.5, rely = 0.1)
+    self.label_02.place(anchor='n', relx = self.Placement['MainPage']['Label2'][0], rely = self.Placement['MainPage']['Label2'][1])
     self.att_list.append('self.label_02')
 
     # Create button to load a project
-    self.btn4 = ttk.Button(
+    self.btn3 = ttk.Button(
                             self.box_frame2, 
                             text = "Use Model", 
                             command = self.segment_image, 
                             style="Modern.TButton", 
-                            width = 18
+                            width = self.Placement['MainPage']['Button3'][2]
                             )
-    self.btn4.place(anchor = 'center', relx = 0.5, rely = 0.4)
-    self.att_list.append('self.btn4')
+    self.btn3.place(anchor = 'center', relx = self.Placement['MainPage']['Button3'][0], rely = self.Placement['MainPage']['Button3'][1])
+    self.att_list.append('self.btn3')
     
     # Create button to export ruc data
     self.btn4 = ttk.Button(
@@ -177,16 +177,16 @@ def BuildStartPage(self,window):
                             text = "Export Data", 
                             command = self.start_export, 
                             style="Modern.TButton", 
-                            width = 18
+                            width = self.Placement['MainPage']['Button4'][2]
                             )
-    self.btn4.place(anchor = 'center', relx = 0.5, rely = 0.75)
+    self.btn4.place(anchor = 'center', relx = self.Placement['MainPage']['Button4'][0], rely = self.Placement['MainPage']['Button4'][1])
     self.att_list.append('self.btn4')
 
     # Create Help Button
     # -- Load an image using PIL
     self.image_path_help = os.path.join(os.getcwd(),'GUI','General','help.png') 
     self.image_help = Image.open(self.image_path_help)
-    scale = 0.05
+    scale = self.Placement['MainPage']['Help'][3]
     self.image_help = self.image_help.resize((int(self.image_help.width*scale), int(self.image_help.height*scale)))
 
     # -- Convert the image to a Tkinter-compatible format
@@ -200,7 +200,7 @@ def BuildStartPage(self,window):
                                 compound='left',                                 
                                 command = helper,
                                 style = "Modern2.TButton",
-                                width = 7
+                                width = self.Placement['MainPage']['Help'][2]
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
+    self.btn_help.place(anchor = 'w', relx = self.Placement['MainPage']['Help'][0], rely = self.Placement['MainPage']['Help'][1])
     self.att_list.append('self.btn_help')

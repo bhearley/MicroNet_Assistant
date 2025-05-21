@@ -26,6 +26,7 @@ import zstandard as zstd
 from General.BuildStartPage import *
 from General.DeleteWidgets import *
 from GUI.GetStyles import *
+from GUI.Placement import *
 from ModelCreator.CreateFileSelection import *
 from ModelCreator.CropImages import *
 from ModelCreator.DataDefinition import *
@@ -54,8 +55,12 @@ class MicroNetAssistant:
         window = tk.Tk()
         window.title("MicroNet Assistant")
         window.state('zoomed')
-        #window.resizable(False, False)
         window.configure(bg='white')
+
+        # Placement Information
+        screen_width = window.winfo_screenwidth()
+        screen_height = window.winfo_screenheight()
+        Placement(self, str(screen_width) + "x" + str(screen_height))
 
         # Define Images
         title_img = os.path.join(os.getcwd(),'GUI','General','TitleHeader.png') # Set the title image path
@@ -63,19 +68,19 @@ class MicroNetAssistant:
 
         #Add the Title
         img = Image.open(title_img)
-        scale = 1.75
+        scale = self.Placement['MainPage']['Title'][2]
         img = img.resize((int(img.width*scale), int(img.height*scale)))
         self.img_hdr = ImageTk.PhotoImage(img)
         self.panel_hdr = tk.Label(window, image = self.img_hdr, bg = 'white')
-        self.panel_hdr.place(anchor = 'n', relx = 0.5, rely = 0.015)
+        self.panel_hdr.place(anchor = 'n', relx = self.Placement['MainPage']['Title'][0], rely = self.Placement['MainPage']['Title'][1])
 
         #Add the NASA Logo
         img = Image.open(logo_img)
-        scale = 1
+        scale = self.Placement['MainPage']['Logo'][2]
         img = img.resize((int(img.width*scale), int(img.height*scale)))
         self.img_nasa = ImageTk.PhotoImage(img)
         self.panel_nasa = tk.Label(window, image = self.img_nasa, bg = 'white')
-        self.panel_nasa.place(anchor = 'e', relx = 0.999, rely = 0.045)
+        self.panel_nasa.place(anchor = 'e', relx = self.Placement['MainPage']['Logo'][0], rely = self.Placement['MainPage']['Logo'][1])
 
         # Load the style
         GetStyles(self)

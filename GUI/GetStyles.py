@@ -1,6 +1,6 @@
 #-----------------------------------------------------------------------------------------
 #
-#   Getself.btn_style1s.py
+#   GetStyles.py
 #
 #   PURPOSE: Set the self.btn_style1s for the GUI
 #
