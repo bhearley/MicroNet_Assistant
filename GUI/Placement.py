@@ -133,6 +133,36 @@ def Placement(self, res):
                                 'ButtonBack':[],
                                 'Help':[]
                                 },
+                    'Train':{
+                                'Combo3':[],
+                                'LabelTitle':[],
+                                'Frame1':[],
+                                'Label1':[],
+                                'Label2':[],
+                                'Combo1':[],
+                                'Label3':[],
+                                'Combo2':[],
+                                'Label4':[],
+                                'Check1':[],
+                                'Frame2':[],
+                                'Label5':[],
+                                'Label6':[],
+                                'Combo4':[],
+                                'Sheet1':[],
+                                'Label4':[],
+                                'Frame3':[],
+                                'Label7':[],
+                                'Sheet2':[],
+                                'Check2':[],
+                                'Check3':[],
+                                'Frame4':[],
+                                'Label8':[],
+                                'Sheet3':[],
+                                'ButtonTrain':[],
+                                'ButtonCont':[],
+                                'ButtonBack':[],
+                                'Help':[]
+                                }
     }
     
     # 2560 x 1440
@@ -260,6 +290,35 @@ def Placement(self, res):
         Placement['DataDef']['ButtonCont'] = [0.997, 0.975, 10]
         Placement['DataDef']['ButtonBack'] = [0.942, 0.975, 10]
         Placement['DataDef']['Help'] = [0.001, 0.975, 7, 0.05]
+
+        # -- Train
+        Placement['Train']['Combo3'] = [0.55, 0.625]
+        Placement['Train']['LabelTitle'] = [0.5, 0.125]
+        Placement['Train']['Frame1'] = [0.2, 0.175, 3, 450, 400]
+        Placement['Train']['Label1'] = [0.5, 0.05]
+        Placement['Train']['Label2'] = [0.075, 0.225]
+        Placement['Train']['Combo1'] = [0.55, 0.225]
+        Placement['Train']['Label3'] = [0.075, 0.425]
+        Placement['Train']['Combo2'] = [0.55, 0.425]
+        Placement['Train']['Label4'] = [0.075, 0.625]
+        Placement['Train']['Check1'] = [0.5, 0.8]
+        Placement['Train']['Frame2'] = [0.5, 0.175, 3, 550, 700]
+        Placement['Train']['Label5'] = [0.5, 0.03]
+        Placement['Train']['Label6'] = [0.5, 0.15]
+        Placement['Train']['Combo4'] = [0.5, 0.2]
+        Placement['Train']['Sheet1'] = [0.5, 0.275, 435, 375, 232, 100, 100]
+        Placement['Train']['Frame3'] = [0.8, 0.175, 3, 400, 500]
+        Placement['Train']['Label7'] = [0.5, 0.03]
+        Placement['Train']['Sheet2'] = [0.5, 0.2, 335, 375, 232, 100]
+        Placement['Train']['Check2'] = [0.5, 0.75]
+        Placement['Train']['Check3'] = [0.5, 0.85]
+        Placement['Train']['Frame4'] = [0.2, 0.5, 3, 450, 250]
+        Placement['Train']['Label8'] = [0.5, 0.05]
+        Placement['Train']['Sheet3'] = [0.5, 0.275, 350, 155, 115, 200, 25]
+        Placement['Train']['ButtonTrain'] = [0.5, 0.75, 10]
+        Placement['Train']['ButtonCont'] = [0.997, 0.975, 10]
+        Placement['Train']['ButtonBack'] = [0.942, 0.975, 10]
+        Placement['Train']['Help'] = [0.001, 0.975, 7, 0.05]
         
 
 
@@ -388,6 +447,35 @@ def Placement(self, res):
         Placement['DataDef']['ButtonCont'] = [0.999, 0.965, 10]
         Placement['DataDef']['ButtonBack'] = [0.909, 0.965, 10]
         Placement['DataDef']['Help'] = [0.001, 0.965, 7, 0.05]
+
+        # -- Train
+        Placement['Train']['Combo3'] = [0.55, 0.625]
+        Placement['Train']['LabelTitle'] = [0.5, 0.125]
+        Placement['Train']['Frame1'] = [0.15, 0.175, 3, 375, 325]
+        Placement['Train']['Label1'] = [0.5, 0.05]
+        Placement['Train']['Label2'] = [0.05, 0.225]
+        Placement['Train']['Combo1'] = [0.55, 0.225]
+        Placement['Train']['Label3'] = [0.05, 0.425]
+        Placement['Train']['Combo2'] = [0.55, 0.425]
+        Placement['Train']['Label4'] = [0.05, 0.625]
+        Placement['Train']['Check1'] = [0.5, 0.8]
+        Placement['Train']['Frame2'] = [0.5, 0.175, 3, 450, 560]
+        Placement['Train']['Label5'] = [0.5, 0.03]
+        Placement['Train']['Label6'] = [0.5, 0.16]
+        Placement['Train']['Combo4'] = [0.5, 0.225]
+        Placement['Train']['Sheet1'] = [0.5, 0.325, 435, 375, 232, 100, 100]
+        Placement['Train']['Frame3'] = [0.85, 0.175, 3, 375, 500]
+        Placement['Train']['Label7'] = [0.5, 0.03]
+        Placement['Train']['Sheet2'] = [0.5, 0.2, 335, 375, 232, 100]
+        Placement['Train']['Check2'] = [0.5, 0.75]
+        Placement['Train']['Check3'] = [0.5, 0.85]
+        Placement['Train']['Frame4'] = [0.15, 0.55, 3, 375, 225]
+        Placement['Train']['Label8'] = [0.5, 0.05]
+        Placement['Train']['Sheet3'] = [0.5, 0.225, 350, 155, 115, 200, 25]
+        Placement['Train']['ButtonTrain'] = [0.5, 0.825, 10]
+        Placement['Train']['ButtonCont'] = [0.999, 0.965, 10]
+        Placement['Train']['ButtonBack'] = [0.909, 0.965, 10]
+        Placement['Train']['Help'] = [0.001, 0.965, 7, 0.05]
 
 
     # Set to self

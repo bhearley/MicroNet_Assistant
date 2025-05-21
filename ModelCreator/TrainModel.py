@@ -61,7 +61,11 @@ def TrainModel(self,window):
                             style="Modern.TCombobox",
                             state="readonly"
                             )
-        self.combo_7_03.place(anchor='w', relx = 0.55, rely = 0.625)
+        self.combo_7_03.place(
+                                anchor='w', 
+                                relx = self.Placement['Train']['Combo3'][0], 
+                                rely = self.Placement['Train']['Combo3'][1]
+                                )
         self.combo_7_03.set(values[0]) 
         self.loc_att_list.append('self.combo_7_03')
 
@@ -477,19 +481,27 @@ def TrainModel(self,window):
                                 text='MicroNet Model Definition',
                                 style = "ModernT.TLabel"
                                 )
-    self.label_title.place(anchor = 'center', relx = 0.5, rely = 0.125)
+    self.label_title.place(
+                            anchor = 'center', 
+                            relx = self.Placement['Train']['LabelTitle'][0], 
+                            rely = self.Placement['Train']['LabelTitle'][1]
+                            )
     self.att_list.append('self.label_title')
 
     # Create the frame for model architecture/encoder
     self.box_frame_7_01 = tk.Frame(
                             window, 
-                            bd=3, 
+                            bd=self.Placement['Train']['Frame1'][2], 
                             relief="ridge", 
-                            width = 450,
-                            height = 400,
+                            width = self.Placement['Train']['Frame1'][3],
+                            height = self.Placement['Train']['Frame1'][4],
                             bg="white"
                             )
-    self.box_frame_7_01.place(anchor = 'n', relx=0.2, rely=0.175)
+    self.box_frame_7_01.place(
+                                anchor = 'n', 
+                                relx=self.Placement['Train']['Frame1'][0], 
+                                rely=self.Placement['Train']['Frame1'][1]
+                                )
     self.att_list.append('self.box_frame_7_01')
 
     # Create a label for the model architecture
@@ -498,7 +510,11 @@ def TrainModel(self,window):
                             text='Model Definition',
                             style = "Modern3.TLabel",
                             )
-    self.label_7_01.place(anchor='n', relx = 0.5, rely = 0.05)
+    self.label_7_01.place(
+                            anchor='n', 
+                            relx = self.Placement['Train']['Label1'][0], 
+                            rely = self.Placement['Train']['Label1'][1]
+                            )
     self.att_list.append('self.label_7_01')
 
     # Create label for architecture
@@ -508,7 +524,11 @@ def TrainModel(self,window):
                             style = "Modern2.TLabel",
                             anchor='w'
                             )
-    self.label_7_02.place(anchor='w', relx = 0.075, rely = 0.225)
+    self.label_7_02.place(
+                            anchor='w', 
+                            relx = self.Placement['Train']['Label2'][0], 
+                            rely = self.Placement['Train']['Label2'][1]
+                            )
     self.att_list.append('self.label_7_02')
 
     # Create drop down for architecture
@@ -518,7 +538,11 @@ def TrainModel(self,window):
                         style="Modern.TCombobox",
                         state="readonly"
                         )
-    self.combo_7_01.place(anchor='w', relx = 0.55, rely = 0.225)
+    self.combo_7_01.place(
+                            anchor='w', 
+                            relx = self.Placement['Train']['Combo1'][0], 
+                            rely = self.Placement['Train']['Combo1'][1]
+                            )
     self.combo_7_01.set(self.architecture[0]) 
     self.loc_att_list.append('self.combo_7_01')
 
@@ -532,7 +556,11 @@ def TrainModel(self,window):
                             style = "Modern2.TLabel",
                             anchor='w'
                             )
-    self.label_7_03.place(anchor='w', relx = 0.075, rely = 0.425)
+    self.label_7_03.place(
+                            anchor='w', 
+                            relx = self.Placement['Train']['Label3'][0], 
+                            rely = self.Placement['Train']['Label3'][1]
+                            )
     self.att_list.append('self.label_7_03')
 
     # Create drop down for encoder
@@ -543,7 +571,11 @@ def TrainModel(self,window):
                             state="readonly"
                             )
     self.combo_7_02.bind("<<ComboboxSelected>>", create_weights_drop)
-    self.combo_7_02.place(anchor='w', relx = 0.55, rely = 0.425)
+    self.combo_7_02.place(
+                            anchor='w', 
+                            relx = self.Placement['Train']['Combo2'][0], 
+                            rely = self.Placement['Train']['Combo2'][1]
+                            )
     self.combo_7_02.set(list(self.models.keys())[0]) 
     self.loc_att_list.append('self.combo_7_02')
 
@@ -557,7 +589,11 @@ def TrainModel(self,window):
                             style = "Modern2.TLabel",
                             anchor='w'
                             )
-    self.label_7_04.place(anchor='w', relx = 0.075, rely = 0.625)
+    self.label_7_04.place(
+                            anchor='w', 
+                            relx = self.Placement['Train']['Label4'][0], 
+                            rely = self.Placement['Train']['Label4'][1]
+                            )
     self.att_list.append('self.label_7_04')
 
     # Create the drop down for pretrained weights
@@ -571,19 +607,27 @@ def TrainModel(self,window):
                                     variable=self.var_7_01,
                                     style="TCheckbutton"
                                     )
-    self.checkbutton_7_01.place(anchor = 'n', relx = 0.5, rely = 0.8)
+    self.checkbutton_7_01.place(
+                                anchor = 'n', 
+                                relx = self.Placement['Train']['Check1'][0], 
+                                rely = self.Placement['Train']['Check1'][1]
+                                )
     self.loc_att_list.append('self.checkbutton_7_01')
 
     # Create the frame for image augementation
     self.box_frame_7_02 = tk.Frame(
                             window, 
-                            bd=3, 
+                            bd=self.Placement['Train']['Frame2'][2], 
                             relief="ridge", 
-                            width = 550,
-                            height = 700,
+                            width = self.Placement['Train']['Frame2'][3],
+                            height = self.Placement['Train']['Frame2'][4],
                             bg="white"
                             )
-    self.box_frame_7_02.place(anchor = 'n', relx=0.5, rely=0.175)
+    self.box_frame_7_02.place(
+                                anchor = 'n', 
+                                relx=self.Placement['Train']['Frame2'][0], 
+                                rely=self.Placement['Train']['Frame2'][1]
+                                )
     self.att_list.append('self.box_frame_7_02')
 
     # Create label for Image Augmentation
@@ -592,7 +636,11 @@ def TrainModel(self,window):
                             text='Image Augmentation',
                             style = "Modern3.TLabel",
                             )
-    self.label_7_05.place(anchor='n', relx = 0.5, rely = 0.03)
+    self.label_7_05.place(
+                            anchor='n', 
+                            relx = self.Placement['Train']['Label5'][0], 
+                            rely = self.Placement['Train']['Label5'][1]
+                            )
     self.att_list.append('self.label_7_05')
 
     # Create Label for Window Size
@@ -601,7 +649,11 @@ def TrainModel(self,window):
                             text='Crop Window: ',
                             style = "Modern2.TLabel",
                             )
-    self.label_7_06.place(anchor='n', relx = 0.5, rely = 0.15)
+    self.label_7_06.place(
+                            anchor='n', 
+                            relx = self.Placement['Train']['Label6'][0], 
+                            rely = self.Placement['Train']['Label6'][1]
+                            )
     self.att_list.append('self.label_7_06')
 
     # Get Crop Window Options
@@ -623,7 +675,11 @@ def TrainModel(self,window):
                             style="Modern.TCombobox",
                             state="readonly"
                             )
-    self.combo_7_04.place(anchor='n', relx = 0.5, rely = 0.2)
+    self.combo_7_04.place(
+                            anchor='n', 
+                            relx = self.Placement['Train']['Combo4'][0], 
+                            rely = self.Placement['Train']['Combo4'][1]
+                            )
     self.combo_7_04.set(size_opts[-1]) 
     self.loc_att_list.append('self.combo_7_04')
 
@@ -650,21 +706,25 @@ def TrainModel(self,window):
                             total_rows = len(Rows1), 
                             total_columns = len(Cols1), 
                             headers = Cols1,
-                            width = 435, 
-                            height = 375, 
+                            width = self.Placement['Train']['Sheet1'][2], 
+                            height = self.Placement['Train']['Sheet1'][3], 
                             show_x_scrollbar = False, 
                             show_y_scrollbar = False,
                             font = ('Segoe UI',12,"normal"),
                             header_font = ('Segoe UI',12,"bold")
                             )
-    self.sheet_7_01.place(anchor = 'n', relx = 0.5, rely = 0.275)
+    self.sheet_7_01.place(
+                            anchor = 'n', 
+                            relx = self.Placement['Train']['Sheet1'][0], 
+                            rely = self.Placement['Train']['Sheet1'][1]
+                            )
     self.loc_att_list.append('self.sheet_7_01')
 
     # format sheet
     self.sheet_7_01.set_index_width(0)
-    self.sheet_7_01.column_width(column = 0, width = 232, redraw = True)
-    self.sheet_7_01.column_width(column = 1, width = 100, redraw = True)
-    self.sheet_7_01.column_width(column = 2, width = 100, redraw = True)
+    self.sheet_7_01.column_width(column = 0, width = self.Placement['Train']['Sheet1'][4], redraw = True)
+    self.sheet_7_01.column_width(column = 1, width = self.Placement['Train']['Sheet1'][5], redraw = True)
+    self.sheet_7_01.column_width(column = 2, width = self.Placement['Train']['Sheet1'][6], redraw = True)
     self.sheet_7_01.table_align(align = 'c',redraw=True)
 
     # Enable Bindings
@@ -691,13 +751,17 @@ def TrainModel(self,window):
     # Create the frame for model architecture/encoder
     self.box_frame_7_03 = tk.Frame(
                             window, 
-                            bd=3, 
+                            bd=self.Placement['Train']['Frame3'][2], 
                             relief="ridge", 
-                            width = 400,
-                            height = 500,
+                            width = self.Placement['Train']['Frame3'][3],
+                            height = self.Placement['Train']['Frame3'][4],
                             bg="white"
                             )
-    self.box_frame_7_03.place(anchor = 'n', relx=0.8, rely=0.175)
+    self.box_frame_7_03.place(
+                                anchor = 'n', 
+                                relx=self.Placement['Train']['Frame3'][0], 
+                                rely=self.Placement['Train']['Frame3'][1]
+                                )
     self.att_list.append('self.box_frame_7_03')
 
     # Create label for Image Augmentation
@@ -706,7 +770,11 @@ def TrainModel(self,window):
                             text='Training Settings',
                             style = "Modern3.TLabel",
                             )
-    self.label_7_07.place(anchor='n', relx = 0.5, rely = 0.03)
+    self.label_7_07.place(
+                            anchor='n', 
+                            relx = self.Placement['Train']['Label7'][0], 
+                            rely = self.Placement['Train']['Label7'][1]
+                            )
     self.att_list.append('self.label_7_07')
 
     # Create the Image Augmentation Sheet
@@ -723,20 +791,24 @@ def TrainModel(self,window):
                             total_rows = len(Rows2), 
                             total_columns = len(Cols2), 
                             headers = Cols2,
-                            width = 335, 
-                            height = 375, 
+                            width = self.Placement['Train']['Sheet2'][2], 
+                            height = self.Placement['Train']['Sheet2'][3], 
                             show_x_scrollbar = False, 
                             show_y_scrollbar = False,
                             font = ('Segoe UI',12,"normal"),
                             header_font = ('Segoe UI',12,"bold")
                             )
-    self.sheet_7_02.place(anchor = 'n', relx = 0.5, rely = 0.2)
+    self.sheet_7_02.place(
+                            anchor = 'n', 
+                            relx = self.Placement['Train']['Sheet2'][0], 
+                            rely = self.Placement['Train']['Sheet2'][1]
+                            )
     self.loc_att_list.append('self.sheet_7_01')
 
     # format sheet
     self.sheet_7_02.set_index_width(0)
-    self.sheet_7_02.column_width(column = 0, width = 232, redraw = True)
-    self.sheet_7_02.column_width(column = 1, width = 100, redraw = True)
+    self.sheet_7_02.column_width(column = 0, width = self.Placement['Train']['Sheet2'][4], redraw = True)
+    self.sheet_7_02.column_width(column = 1, width = self.Placement['Train']['Sheet2'][5], redraw = True)
     self.sheet_7_02.table_align(align = 'c',redraw=True)
 
     # Enable Bindings
@@ -771,7 +843,11 @@ def TrainModel(self,window):
                                     variable=self.var_7_02,
                                     style="TCheckbutton"
                                     )
-    self.checkbutton_7_02.place(anchor = 'n', relx = 0.5, rely = 0.75)
+    self.checkbutton_7_02.place(
+                                anchor = 'n', 
+                                relx = self.Placement['Train']['Check2'][0], 
+                                rely = self.Placement['Train']['Check2'][1]
+                                )
     self.loc_att_list.append('self.checkbutton_7_02')
 
     # Visualize Validation Data
@@ -782,19 +858,27 @@ def TrainModel(self,window):
                                     variable=self.var_7_03,
                                     style="TCheckbutton"
                                     )
-    self.checkbutton_7_03.place(anchor = 'n', relx = 0.5, rely = 0.85)
+    self.checkbutton_7_03.place(
+                                anchor = 'n', 
+                                relx = self.Placement['Train']['Check3'][0], 
+                                rely = self.Placement['Train']['Check3'][1]
+                                )
     self.loc_att_list.append('self.checkbutton_7_03')
 
     # Create the frame for model architecture/encoder
     self.box_frame_7_04 = tk.Frame(
                             window, 
-                            bd=3, 
+                            bd=self.Placement['Train']['Frame4'][2], 
                             relief="ridge", 
-                            width = 450,
-                            height = 250,
+                            width = self.Placement['Train']['Frame4'][3],
+                            height = self.Placement['Train']['Frame4'][4],
                             bg="white"
                             )
-    self.box_frame_7_04.place(anchor = 'n', relx=0.2, rely=0.5)
+    self.box_frame_7_04.place(
+                                anchor = 'n', 
+                                relx=self.Placement['Train']['Frame4'][0], 
+                                rely=self.Placement['Train']['Frame4'][1]
+                                )
     self.att_list.append('self.box_frame_7_04')
 
     # Create label for Classification Labels
@@ -803,7 +887,11 @@ def TrainModel(self,window):
                             text='Labels',
                             style = "Modern3.TLabel",
                             )
-    self.label_7_08.place(anchor='n', relx = 0.5, rely = 0.05)
+    self.label_7_08.place(
+                            anchor='n', 
+                            relx = self.Placement['Train']['Label8'][0], 
+                            rely = self.Placement['Train']['Label8'][1]
+                            )
     self.att_list.append('self.label_7_08')
 
     # Create the Image Augmentation Sheet
@@ -823,21 +911,25 @@ def TrainModel(self,window):
                             total_rows = len(Rows3)+1, 
                             total_columns = len(Cols3), 
                             headers = Cols3,
-                            width = 350, 
-                            height = 155, 
+                            width = self.Placement['Train']['Sheet3'][2], 
+                            height = self.Placement['Train']['Sheet3'][3], 
                             show_x_scrollbar = False, 
                             show_y_scrollbar = False,
                             font = ('Segoe UI',12,"normal"),
                             header_font = ('Segoe UI',12,"bold")
                             )
-    self.sheet_7_03.place(anchor = 'n', relx = 0.5, rely = 0.275)
+    self.sheet_7_03.place(
+                            anchor = 'n', 
+                            relx = self.Placement['Train']['Sheet3'][0], 
+                            rely = self.Placement['Train']['Sheet3'][1]
+                            )
     self.loc_att_list.append('self.sheet_7_03')
 
     # format sheet
     self.sheet_7_03.set_index_width(0)
-    self.sheet_7_03.column_width(column = 0, width = 115, redraw = True)
-    self.sheet_7_03.column_width(column = 1, width = 200, redraw = True)
-    self.sheet_7_03.column_width(column = 2, width = 25, redraw = True)
+    self.sheet_7_03.column_width(column = 0, width = self.Placement['Train']['Sheet3'][4], redraw = True)
+    self.sheet_7_03.column_width(column = 1, width = self.Placement['Train']['Sheet3'][5], redraw = True)
+    self.sheet_7_03.column_width(column = 2, width = self.Placement['Train']['Sheet3'][6], redraw = True)
     self.sheet_7_03.table_align(align = 'c',redraw=True)
     self.sheet_7_03.checkbox('C', checked=True)
 
@@ -869,30 +961,40 @@ def TrainModel(self,window):
                                text = "Train Model", 
                                command = lambda:begin_train(self), 
                                style = 'Modern2.TButton',
-                               width = 10
+                               width = self.Placement['Train']['ButtonTrain'][2]
                                )
-    self.train_btn.place(anchor = 'n', relx = 0.5, rely = 0.75)
+    self.train_btn.place(
+                            anchor = 'n', 
+                            relx = self.Placement['Train']['ButtonTrain'][0], 
+                            rely = self.Placement['Train']['ButtonTrain'][1]
+                            )
     self.att_list.append('self.train_btn')
     
     # Create Continue Button
-    self.btn_cont1 = ttk.Button(
-                               window, 
-                               text = "Continue", 
-                               command = next_page, 
-                               style = 'Modern2.TButton',
-                               width = 10
-                               )
-    self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
-    self.att_list.append('self.btn_cont1')
-
+    self.btn_cont = ttk.Button(
+                                window, 
+                                text = "Continue", 
+                                command = next_page, 
+                                style = 'Modern2.TButton',
+                                width = self.Placement['Train']['ButtonCont'][2]
+                                )
+    self.btn_cont.place(anchor = 'e', 
+                        relx = self.Placement['Train']['ButtonCont'][0], 
+                        rely = self.Placement['Train']['ButtonCont'][1])
+    self.att_list.append('self.btn_cont')
+    
     # Create Back Button
-    self.btn_back1 = ttk.Button(window, 
-                               text = "Back", 
-                               command = back_page, 
-                               style = 'Modern2.TButton',
-                               width = 10)
-    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
-    self.att_list.append('self.btn_back1')
+    self.btn_back = ttk.Button(
+                                window, 
+                                text = "Back", 
+                                command = back_page, 
+                                style = 'Modern2.TButton',
+                                width = self.Placement['Train']['ButtonBack'][2]
+                                )
+    self.btn_back.place(anchor = 'e', 
+                         relx = self.Placement['Train']['ButtonBack'][0], 
+                         rely = self.Placement['Train']['ButtonBack'][1])
+    self.att_list.append('self.btn_back')
 
     # Create Help Button
     # -- Load an image using PIL
@@ -912,7 +1014,9 @@ def TrainModel(self,window):
                                 compound='left',                                 
                                 command = helper,
                                 style = "Modern2.TButton",
-                                width = 7
+                                width = self.Placement['Train']['Help'][2]
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
+    self.btn_help.place(anchor = 'w', 
+                        relx = self.Placement['Train']['Help'][0], 
+                        rely = self.Placement['Train']['Help'][1])
     self.att_list.append('self.btn_help')
