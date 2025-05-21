@@ -23,9 +23,9 @@ from tkinter import ttk
 import zstandard as zstd
 
 # Import Functions
+from General.BuildStartPage import *
 from General.DeleteWidgets import *
 from GUI.GetStyles import *
-from ModelCreator.BuildStartPage import *
 from ModelCreator.CreateFileSelection import *
 from ModelCreator.CropImages import *
 from ModelCreator.DataDefinition import *
@@ -34,6 +34,7 @@ from ModelCreator.ResizeImages import *
 from ModelCreator.ReviewImages import *
 from ModelCreator.SegmentImages import *
 from ModelCreator.TrainModel import *
+from ModelInference.UseModel import *
 from RUCGenerator.BuildRUCGenerator import *
 
 #Create the GUI
@@ -206,8 +207,14 @@ class MicroNetAssistant:
         #
         #--------------------------------------------------------------------------
 
-        # !!!! -------------- NOT STARTED  -------------- !!!!
-        temp = 1
+        # Load the data structure
+        self.Segment = {'GUI':{'CurrentPage':9}}
+
+        # Delete the Previous Page
+        DeletePages(self)
+
+        # Load the page
+        self.load_page()
             
     # Function to load a GUI Page
     def load_page(self):
@@ -246,8 +253,13 @@ class MicroNetAssistant:
             TrainModel(self, window)
 
         if self.Segment['GUI']['CurrentPage'] == 8:
-            if hasattr(self, "save_btn"):
-                self.save_btn.destroy()
+            if hasattr(self,'btn_save'):
+                self.btn_save.destroy()
+            UseModel(self, window)
+
+        if self.Segment['GUI']['CurrentPage'] == 9:
+            if hasattr(self,'btn_save'):
+                self.btn_save.destroy()
             BuildRUCGenerator(self, window)
 
     # Function to save the project file

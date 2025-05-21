@@ -332,7 +332,6 @@ def TrainModel(self,window):
 
         start_training()
 
-
     # Function to continue to next page
     def next_page():
         # Delete the page
