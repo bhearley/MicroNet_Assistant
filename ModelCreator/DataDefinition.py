@@ -236,7 +236,11 @@ def DataDefinition(self,window):
                                 text='Data Definition',
                                 style = "ModernT.TLabel"
                                 )
-    self.label_title.place(anchor = 'center', relx = 0.5, rely = 0.125)
+    self.label_title.place(
+                            anchor = 'center', 
+                            relx = self.Placement['DataDef']['LabelTitle'][0], 
+                            rely = self.Placement['DataDef']['LabelTitle'][1]
+                            )
     self.att_list.append('self.label_title')
 
     # Create a vertical scrollbar for All images
@@ -245,7 +249,12 @@ def DataDefinition(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_6_01.place(anchor='n', relx = 0.25, rely = 0.2, height = 752)
+    self.scrollbar_6_01.place(
+                                anchor='n', 
+                                relx = self.Placement['DataDef']['Scrollbar1'][0], 
+                                rely = self.Placement['DataDef']['Scrollbar1'][1], 
+                                height = self.Placement['DataDef']['Scrollbar1'][2]
+                                )
     self.loc_att_list.append('self.scrollbar_6_01')
 
     # Create the label for All Images
@@ -254,7 +263,11 @@ def DataDefinition(self,window):
                             text='All Images',
                             style = "Modern3.TLabel"
                             )
-    self.label_6_01.place(anchor='n', relx = 0.15, rely = 0.16)
+    self.label_6_01.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Label1'][0], 
+                            rely = self.Placement['DataDef']['Label1'][1]
+                            )
     self.loc_att_list.append('self.label_6_01')
 
     # Create All Images List Box
@@ -263,8 +276,8 @@ def DataDefinition(self,window):
                                 window, 
                                 listvariable=items1,
                                 selectmode='multiple',
-                                height = 34,
-                                width = 54,
+                                height = self.Placement['DataDef']['Listbox1'][2],
+                                width = self.Placement['DataDef']['Listbox1'][3],
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -273,7 +286,11 @@ def DataDefinition(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_6_01.place(anchor='n', relx = 0.15, rely = 0.2)
+    self.listbox_6_01.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Listbox1'][0], 
+                            rely = self.Placement['DataDef']['Listbox1'][1]
+                            )
     self.listbox_6_01.config(yscrollcommand= self.scrollbar_6_01.set)
     self.loc_att_list.append('self.listbox_6_01')
 
@@ -283,9 +300,13 @@ def DataDefinition(self,window):
                                 text = "Add to Unused", 
                                 command = lambda : add_to_list(self,'self.listbox_6_01'), 
                                 style = "Modern3.TButton",
-                                width = 15
+                                width = self.Placement['DataDef']['Button1'][0]
                                 )
-    self.btn_6_01.place(anchor = 'c', relx = 0.15, rely = 0.775)
+    self.btn_6_01.place(
+                        anchor = 'c', 
+                        relx = self.Placement['DataDef']['Button1'][0], 
+                        rely = self.Placement['DataDef']['Button1'][1]
+                        )
     self.loc_att_list.append('self.btn_6_01')
 
     # Create a vertical scrollbar for Training Data
@@ -294,7 +315,12 @@ def DataDefinition(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_6_02.place(anchor='n', relx = 0.483, rely = 0.2, height = 752)
+    self.scrollbar_6_02.place(
+                                anchor='n', 
+                                relx = self.Placement['DataDef']['Scrollbar2'][0], 
+                                rely = self.Placement['DataDef']['Scrollbar2'][1], 
+                                height = self.Placement['DataDef']['Scrollbar2'][2]
+                                )
     self.loc_att_list.append('self.scrollbar_6_02')
 
     # Create the label for Training Data
@@ -303,7 +329,11 @@ def DataDefinition(self,window):
                             text='Training Data',
                             style = "Modern3.TLabel"
                             )
-    self.label_6_02.place(anchor='n', relx = 0.383, rely = 0.16)
+    self.label_6_02.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Label2'][0], 
+                            rely = self.Placement['DataDef']['Label2'][1]
+                            )
     self.loc_att_list.append('self.label_6_02')
 
     # Create Training Data List Box
@@ -312,8 +342,8 @@ def DataDefinition(self,window):
                                 window, 
                                 listvariable=items2,
                                 selectmode='multiple',
-                                height = 34,
-                                width = 54,
+                                height = self.Placement['DataDef']['Listbox2'][2],
+                                width = self.Placement['DataDef']['Listbox2'][3],
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -322,7 +352,11 @@ def DataDefinition(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_6_02.place(anchor='n', relx = 0.383, rely = 0.2)
+    self.listbox_6_02.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Listbox2'][0], 
+                            rely = self.Placement['DataDef']['Listbox2'][1]
+                            )
     self.listbox_6_02.config(yscrollcommand= self.scrollbar_6_02.set)
     self.loc_att_list.append('self.listbox_6_02')
 
@@ -332,9 +366,13 @@ def DataDefinition(self,window):
                                 text = "Add to Training", 
                                 command = lambda : add_to_list(self,'self.listbox_6_02'), 
                                 style = "Modern3.TButton",
-                                width = 15
+                                width = self.Placement['DataDef']['Button2'][2]
                                 )
-    self.btn_6_02.place(anchor = 'c', relx = 0.383, rely = 0.775)
+    self.btn_6_02.place(
+                        anchor = 'c', 
+                        relx = self.Placement['DataDef']['Button2'][0], 
+                        rely = self.Placement['DataDef']['Button2'][1]
+                        )
     self.loc_att_list.append('self.btn_6_02')
 
     # Create a vertical scrollbar for Validation Data
@@ -343,7 +381,12 @@ def DataDefinition(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_6_03.place(anchor='n', relx = 0.716, rely = 0.2, height = 752)
+    self.scrollbar_6_03.place(
+                                anchor='n', 
+                                relx = self.Placement['DataDef']['Scrollbar3'][0], 
+                                rely = self.Placement['DataDef']['Scrollbar3'][1], 
+                                height = self.Placement['DataDef']['Scrollbar3'][2]
+                                )
     self.loc_att_list.append('self.scrollbar_6_03')
 
     # Create the label for Validation Data
@@ -352,7 +395,11 @@ def DataDefinition(self,window):
                             text='Validation Data',
                             style = "Modern3.TLabel"
                             )
-    self.label_6_03.place(anchor='n', relx = 0.616, rely = 0.16)
+    self.label_6_03.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Label3'][0], 
+                            rely = self.Placement['DataDef']['Label3'][1]
+                            )
     self.loc_att_list.append('self.label_6_03')
 
     # Create Validation Data List Box
@@ -361,8 +408,8 @@ def DataDefinition(self,window):
                                 window, 
                                 listvariable=items3,
                                 selectmode='multiple',
-                                height = 34,
-                                width = 54,
+                                height = self.Placement['DataDef']['Listbox3'][2],
+                                width = self.Placement['DataDef']['Listbox3'][3],
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -371,7 +418,11 @@ def DataDefinition(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_6_03.place(anchor='n', relx = 0.616, rely = 0.2)
+    self.listbox_6_03.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Listbox3'][0], 
+                            rely = self.Placement['DataDef']['Listbox3'][1]
+                            )
     self.listbox_6_03.config(yscrollcommand= self.scrollbar_6_03.set)
     self.loc_att_list.append('self.listbox_6_03')
 
@@ -381,9 +432,13 @@ def DataDefinition(self,window):
                                 text = "Add to Valdiation", 
                                 command = lambda : add_to_list(self,'self.listbox_6_03'), 
                                 style = "Modern3.TButton",
-                                width = 15
+                                width = self.Placement['DataDef']['Button3'][2]
                                 )
-    self.btn_6_03.place(anchor = 'c', relx = 0.616, rely = 0.775)
+    self.btn_6_03.place(
+                        anchor = 'c', 
+                        relx = self.Placement['DataDef']['Button3'][0], 
+                        rely = self.Placement['DataDef']['Button3'][1]
+                        )
     self.loc_att_list.append('self.btn_6_03')
 
     # Create a vertical scrollbar for Test Data
@@ -392,7 +447,12 @@ def DataDefinition(self,window):
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_6_04.place(anchor='n', relx = 0.95, rely = 0.2, height = 752)
+    self.scrollbar_6_04.place(
+                                anchor='n', 
+                                relx = self.Placement['DataDef']['Scrollbar4'][0], 
+                                rely = self.Placement['DataDef']['Scrollbar4'][1], 
+                                height = self.Placement['DataDef']['Scrollbar4'][2]
+                                )
     self.loc_att_list.append('self.scrollbar_6_04')
 
     # Create the label for All Images
@@ -401,7 +461,11 @@ def DataDefinition(self,window):
                             text='Test Data',
                             style = "Modern3.TLabel"
                             )
-    self.label_6_04.place(anchor='n', relx = 0.85, rely = 0.16)
+    self.label_6_04.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Label4'][0], 
+                            rely = self.Placement['DataDef']['Label4'][1]
+                            )
     self.loc_att_list.append('self.label_6_04')
 
     # Create All Images List Box
@@ -410,8 +474,8 @@ def DataDefinition(self,window):
                                 window, 
                                 listvariable=items4,
                                 selectmode='multiple',
-                                height = 34,
-                                width = 54,
+                                height = self.Placement['DataDef']['Listbox4'][2],
+                                width = self.Placement['DataDef']['Listbox4'][3],
                                 bg=self.style_man['ListBox']['ListBox1']['bg'],            
                                 fg=self.style_man['ListBox']['ListBox1']['fg'],            
                                 font=self.style_man['ListBox']['ListBox1']['font'],    
@@ -420,7 +484,11 @@ def DataDefinition(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_6_04.place(anchor='n', relx = 0.85, rely = 0.2)
+    self.listbox_6_04.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Listbox4'][0], 
+                            rely = self.Placement['DataDef']['Listbox4'][1]
+                            )
     self.listbox_6_04.config(yscrollcommand= self.scrollbar_6_04.set)
     self.loc_att_list.append('self.listbox_6_04')
 
@@ -430,30 +498,40 @@ def DataDefinition(self,window):
                                 text = "Add to Test", 
                                 command = lambda : add_to_list(self,'self.listbox_6_04'), 
                                 style = "Modern3.TButton",
-                                width = 15
+                                width = self.Placement['DataDef']['Button4'][2]
                                 )
-    self.btn_6_04.place(anchor = 'c', relx = 0.85, rely = 0.775)
+    self.btn_6_04.place(
+                        anchor = 'c', 
+                        relx = self.Placement['DataDef']['Button4'][0], 
+                        rely = self.Placement['DataDef']['Button4'][1]
+                        )
     self.loc_att_list.append('self.btn_6_04')
 
     # Create Continue Button
-    self.btn_cont1 = ttk.Button(
-                               window, 
-                               text = "Continue", 
-                               command = next_page, 
-                               style = 'Modern2.TButton',
-                               width = 10
-                               )
-    self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
-    self.att_list.append('self.btn_cont1')
-
+    self.btn_cont = ttk.Button(
+                                window, 
+                                text = "Continue", 
+                                command = next_page, 
+                                style = 'Modern2.TButton',
+                                width = self.Placement['DataDef']['ButtonCont'][2]
+                                )
+    self.btn_cont.place(anchor = 'e', 
+                        relx = self.Placement['DataDef']['ButtonCont'][0], 
+                        rely = self.Placement['DataDef']['ButtonCont'][1])
+    self.att_list.append('self.btn_cont')
+    
     # Create Back Button
-    self.btn_back1 = ttk.Button(window, 
-                               text = "Back", 
-                               command = back_page, 
-                               style = 'Modern2.TButton',
-                               width = 10)
-    self.btn_back1.place(anchor = 'e', relx = 0.942, rely = 0.975)
-    self.att_list.append('self.btn_back1')
+    self.btn_back = ttk.Button(
+                                window, 
+                                text = "Back", 
+                                command = back_page, 
+                                style = 'Modern2.TButton',
+                                width = self.Placement['DataDef']['ButtonBack'][2]
+                                )
+    self.btn_back.place(anchor = 'e', 
+                         relx = self.Placement['DataDef']['ButtonBack'][0], 
+                         rely = self.Placement['DataDef']['ButtonBack'][1])
+    self.att_list.append('self.btn_back')
 
     # Create Help Button
     # -- Load an image using PIL
@@ -473,7 +551,9 @@ def DataDefinition(self,window):
                                 compound='left',                                 
                                 command = helper,
                                 style = "Modern2.TButton",
-                                width = 7
+                                width = self.Placement['DataDef']['Help'][2]
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
+    self.btn_help.place(anchor = 'w', 
+                        relx = self.Placement['DataDef']['Help'][0], 
+                        rely = self.Placement['DataDef']['Help'][1])
     self.att_list.append('self.btn_help')

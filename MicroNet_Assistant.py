@@ -278,6 +278,10 @@ class MicroNetAssistant:
         #
         #--------------------------------------------------------------------------
 
+        # Check the max page number corresponds to the Train Model Page
+        if self.Segment['GUI']['CurrentPage'] > 7:
+            self.Segment['GUI']['CurrentPage'] = 7
+
         # Save the current segmentation image
         try:
             self.save_image()

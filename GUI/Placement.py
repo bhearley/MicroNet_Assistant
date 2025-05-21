@@ -111,6 +111,28 @@ def Placement(self, res):
                                 'ButtonBack':[],
                                 'Help':[]
                                 },
+                    'DataDef':{
+                                'LabelTitle':[],
+                                'Scrollbar1':[],
+                                'Label1':[],
+                                'Listbox1':[],
+                                'Button1':[],
+                                'Scrollbar2':[],
+                                'Label2':[],
+                                'Listbox2':[],
+                                'Button2':[],
+                                'Scrollbar3':[],
+                                'Label3':[],
+                                'Listbox3':[],
+                                'Button3':[],
+                                'Scrollbar4':[],
+                                'Label4':[],
+                                'Listbox4':[],
+                                'Button4':[],
+                                'ButtonCont':[],
+                                'ButtonBack':[],
+                                'Help':[]
+                                },
     }
     
     # 2560 x 1440
@@ -216,6 +238,28 @@ def Placement(self, res):
         Placement['Review']['ButtonCont'] = [0.997, 0.975, 10]
         Placement['Review']['ButtonBack'] = [0.942, 0.975, 10]
         Placement['Review']['Help'] = [0.001, 0.975, 7, 0.05]
+
+        # -- Data Definition
+        Placement['DataDef']['LabelTitle'] = [0.5, 0.125]
+        Placement['DataDef']['Scrollbar1'] = [0.25, 0.2, 752]
+        Placement['DataDef']['Label1'] = [0.15, 0.16]
+        Placement['DataDef']['Listbox1'] = [0.15, 0.2, 34, 54]
+        Placement['DataDef']['Button1'] = [0.15, 0.775, 15]
+        Placement['DataDef']['Scrollbar2'] = [0.483, 0.2, 752]
+        Placement['DataDef']['Label2'] = [0.383, 0.16]
+        Placement['DataDef']['Listbox2'] = [0.383, 0.2, 34, 54]
+        Placement['DataDef']['Button2'] = [0.383, 0.775, 15]
+        Placement['DataDef']['Scrollbar3'] = [0.716, 0.2, 752]
+        Placement['DataDef']['Label3'] = [0.616, 0.16]
+        Placement['DataDef']['Listbox3'] = [0.616, 0.2, 34, 54]
+        Placement['DataDef']['Button3'] = [0.616, 0.775, 15]
+        Placement['DataDef']['Scrollbar4'] = [0.95, 0.2, 752]
+        Placement['DataDef']['Label4'] = [0.85, 0.16]
+        Placement['DataDef']['Listbox4'] = [0.85, 0.2, 34 ,54]
+        Placement['DataDef']['Button4'] = [0.85, 0.775, 15]
+        Placement['DataDef']['ButtonCont'] = [0.997, 0.975, 10]
+        Placement['DataDef']['ButtonBack'] = [0.942, 0.975, 10]
+        Placement['DataDef']['Help'] = [0.001, 0.975, 7, 0.05]
         
 
 
@@ -322,6 +366,28 @@ def Placement(self, res):
         Placement['Review']['ButtonCont'] = [0.999, 0.965, 10]
         Placement['Review']['ButtonBack'] = [0.909, 0.965, 10]
         Placement['Review']['Help'] = [0.001, 0.965, 7, 0.05]
+
+        # -- Data Definition
+        Placement['DataDef']['LabelTitle'] = [0.5, 0.125]
+        Placement['DataDef']['Scrollbar1'] = [0.25, 0.2, 445]
+        Placement['DataDef']['Label1'] = [0.15, 0.16]
+        Placement['DataDef']['Listbox1'] = [0.15, 0.2, 20, 31]
+        Placement['DataDef']['Button1'] = [0.15, 0.75, 15]
+        Placement['DataDef']['Scrollbar2'] = [0.483, 0.2, 445]
+        Placement['DataDef']['Label2'] = [0.383, 0.16]
+        Placement['DataDef']['Listbox2'] = [0.383, 0.2, 20, 31]
+        Placement['DataDef']['Button2'] = [0.383, 0.75, 15]
+        Placement['DataDef']['Scrollbar3'] = [0.716, 0.2, 445]
+        Placement['DataDef']['Label3'] = [0.616, 0.16]
+        Placement['DataDef']['Listbox3'] = [0.616, 0.2, 20, 31]
+        Placement['DataDef']['Button3'] = [0.616, 0.75, 15]
+        Placement['DataDef']['Scrollbar4'] = [0.95, 0.2, 445]
+        Placement['DataDef']['Label4'] = [0.85, 0.16]
+        Placement['DataDef']['Listbox4'] = [0.85, 0.2, 20, 31]
+        Placement['DataDef']['Button4'] = [0.85, 0.75, 15]
+        Placement['DataDef']['ButtonCont'] = [0.999, 0.965, 10]
+        Placement['DataDef']['ButtonBack'] = [0.909, 0.965, 10]
+        Placement['DataDef']['Help'] = [0.001, 0.965, 7, 0.05]
 
 
     # Set to self
