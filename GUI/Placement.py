@@ -102,16 +102,11 @@ def Placement(self, res):
                                 },
                     'Review':{
                                 'Image1':[],
-                                'Canvas1':[],
-                                'Toolbar1':[],
                                 'LabelTitle':[],
-                                'ButtonAdd':[],
-                                'ButtonRemove':[],
-                                'Slider1':[],
-                                'Combo1':[],
                                 'Scrollbar1':[],
                                 'Listbox1':[],
-                                'Combo2':[],
+                                'ButtonLoad':[],
+                                'ButtonExport':[],
                                 'ButtonCont':[],
                                 'ButtonBack':[],
                                 'Help':[]
@@ -190,9 +185,9 @@ def Placement(self, res):
         Placement['Crop']['ButtonLoad'] = [0.125, 0.775, 10]
         Placement['Crop']['ButtonView'] = [0.795, 0.775, 12]
         Placement['Crop']['ButtonDelete'] = [0.895, 0.775, 12]
-        Placement['Resize']['ButtonCont'] = [0.997, 0.975, 10]
-        Placement['Resize']['ButtonBack'] = [0.942, 0.975, 10]
-        Placement['Resize']['Help'] = [0.001, 0.975, 7, 0.05]
+        Placement['Crop']['ButtonCont'] = [0.997, 0.975, 10]
+        Placement['Crop']['ButtonBack'] = [0.942, 0.975, 10]
+        Placement['Crop']['Help'] = [0.001, 0.975, 7, 0.05]
 
         # -- Segment
         Placement['Segment']['Image1'] = [0.845, 0.375, 0.3]
@@ -210,6 +205,17 @@ def Placement(self, res):
         Placement['Segment']['ButtonCont'] = [0.997, 0.975, 10]
         Placement['Segment']['ButtonBack'] = [0.942, 0.975, 10]
         Placement['Segment']['Help'] = [0.001, 0.975, 7, 0.05]
+
+        # -- Review
+        Placement['Review']['Image1'] = [0.5, 0.2, 1.2]
+        Placement['Review']['LabelTitle'] = [0.5, 0.125]
+        Placement['Review']['Scrollbar1'] = [0.225, 0.2, 752]
+        Placement['Review']['Listbox1'] = [0.125, 0.2, 34, 54]
+        Placement['Review']['ButtonLoad'] = [0.08, 0.775, 12]
+        Placement['Review']['ButtonExport'] = [0.17, 0.775, 12]
+        Placement['Review']['ButtonCont'] = [0.997, 0.975, 10]
+        Placement['Review']['ButtonBack'] = [0.942, 0.975, 10]
+        Placement['Review']['Help'] = [0.001, 0.975, 7, 0.05]
         
 
 
@@ -305,6 +311,17 @@ def Placement(self, res):
         Placement['Segment']['ButtonCont'] = [0.999, 0.965, 10]
         Placement['Segment']['ButtonBack'] = [0.909, 0.965, 10]
         Placement['Segment']['Help'] = [0.001, 0.965, 7, 0.05]
+
+        # -- Review
+        Placement['Review']['Image1'] = [0.5, 0.2, 0.8]
+        Placement['Review']['LabelTitle'] = [0.5, 0.125]
+        Placement['Review']['Scrollbar1'] = [0.25, 0.2, 445]
+        Placement['Review']['Listbox1'] = [0.15, 0.2, 20, 31]
+        Placement['Review']['ButtonLoad'] = [0.1025, 0.775, 12]
+        Placement['Review']['ButtonExport'] = [0.2074, 0.775, 12]
+        Placement['Review']['ButtonCont'] = [0.999, 0.965, 10]
+        Placement['Review']['ButtonBack'] = [0.909, 0.965, 10]
+        Placement['Review']['Help'] = [0.001, 0.965, 7, 0.05]
 
 
     # Set to self
