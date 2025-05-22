@@ -95,16 +95,33 @@ def ResizeImages(self,window):
         self.image_full = self.Segment['Files']['Resized Images'][self.img_full_name]
 
         # Create a Matplotlib figure
-        if hasattr(self,"fig1") == False:
-            scale_im = self.Placement['Resize']['Canvas1'][2]
-            self.fig1, self.ax1 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
-            self.fig1.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
+        # -- Get the image dimensions in pixels
+        img_width = self.image_full.width
+        img_height = self.image_full.height
+
+        # -- Get the DPI
+        dpi = window.winfo_fpixels('1i')  # pixels per inch
+        
+        # -- Convert max size to pixels
+        max_width_px = int(self.Placement['Resize']['Canvas1'][2] * dpi)
+        max_height_px = int(self.Placement['Resize']['Canvas1'][3] * dpi)
+
+        # -- Get the scale
+        scale = min(max_width_px / img_width, max_height_px / img_height)
+
+        # -- Get the figure size
+        new_width = int(img_width * scale)/dpi
+        new_height = int(img_height * scale)/dpi
+
+        # -- Create the figure
+        self.fig_2_01, self.ax_2_01 = plt.subplots(figsize=(new_width, new_height))
+        self.fig_2_01.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
-        self.canvas = FigureCanvasTkAgg(self.fig1, master=window)
+        self.canvas = FigureCanvasTkAgg(self.fig_2_01, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.config(width=int(self.fig1.get_figwidth() * self.fig1.get_dpi()),
-                                height=int(self.fig1.get_figheight() * self.fig1.get_dpi()))
+        self.canvas_widget.config(width=int(self.fig_2_01.get_figwidth() * self.fig_2_01.get_dpi()),
+                                height=int(self.fig_2_01.get_figheight() * self.fig_2_01.get_dpi()))
         self.canvas_widget.place(anchor='n', 
                                  relx = self.Placement['Resize']['Canvas1'][0], 
                                  rely = self.Placement['Resize']['Canvas1'][1])
@@ -112,9 +129,9 @@ def ResizeImages(self,window):
         self.loc_att_list.append('self.canvas_widget')
 
         # Display the image
-        self.ax1.clear()  # Clear previous image
-        self.ax1.imshow(self.image_full)
-        self.ax1.axis('off')  # Hide axes
+        self.ax_2_01.clear()  # Clear previous image
+        self.ax_2_01.imshow(self.image_full)
+        self.ax_2_01.axis('off')  # Hide axes
         self.canvas.draw()
 
         # Add the Matplotlib navigation toolbar

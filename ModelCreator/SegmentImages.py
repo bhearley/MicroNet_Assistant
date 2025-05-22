@@ -75,11 +75,11 @@ def SegmentImages(self,window):
         self.brush_size = int(self.slider.get())*2
 
         # Convert image pixels to data units in x/y
-        xlim = self.ax.get_xlim()
-        ylim = self.ax.get_ylim()
+        xlim = self.ax_4_01.get_xlim()
+        ylim = self.ax_4_01.get_ylim()
 
         # Axes size in pixels
-        bbox = self.ax.get_window_extent()
+        bbox = self.ax_4_01.get_window_extent()
         ax_width_px = bbox.width
         ax_height_px = bbox.height
 
@@ -103,7 +103,7 @@ def SegmentImages(self,window):
                 # Check for mouse click only
                 if event.button == 1 or event.button == 3:
 
-                    if event.inaxes == self.ax:
+                    if event.inaxes == self.ax_4_01:
                         # Get the selected point
                         x, y = int(event.xdata), int(event.ydata)
 
@@ -145,17 +145,17 @@ def SegmentImages(self,window):
                             self.combined = Image.alpha_composite(self.combined_all, self.mask_image)
 
                             # Get the limits
-                            xlim = self.ax.get_xlim()
-                            ylim = self.ax.get_ylim()
+                            xlim = self.ax_4_01.get_xlim()
+                            ylim = self.ax_4_01.get_ylim()
 
                             # Display the image
-                            self.ax.clear()
-                            self.ax.imshow(self.combined)
-                            self.ax.axis('off')  # Hide axes
+                            self.ax_4_01.clear()
+                            self.ax_4_01.imshow(self.combined)
+                            self.ax_4_01.axis('off')  # Hide axes
                             
                             # Remove Previous Selection Points
-                            while len(self.ax.lines) > 0:
-                                self.ax.lines[len(self.ax.lines)-1].remove()
+                            while len(self.ax_4_01.lines) > 0:
+                                self.ax_4_01.lines[len(self.ax_4_01.lines)-1].remove()
 
                             # Plot Points
                             for i in range(len(self.mask_in)):
@@ -164,11 +164,11 @@ def SegmentImages(self,window):
                                     color = 'go'
                                 else:
                                     color = 'ro'
-                                self.ax.plot(pt[0], pt[1], color)
+                                self.ax_4_01.plot(pt[0], pt[1], color)
 
                             # Set the axes limits
-                            self.ax.set_xlim(xlim)
-                            self.ax.set_ylim(ylim)
+                            self.ax_4_01.set_xlim(xlim)
+                            self.ax_4_01.set_ylim(ylim)
 
                             # Redraw the canas
                             self.canvas.draw()
@@ -180,7 +180,7 @@ def SegmentImages(self,window):
             # Manaully adding/removing points is off
             elif self.add_selected == True or self.rem_selected == True:
                 # Check for left mouse click and event in axes
-                if event.button == 1 and event.inaxes == self.ax:
+                if event.button == 1 and event.inaxes == self.ax_4_01:
                     # Turn on drawing and save the points
                     self.drawing = True
 
@@ -209,17 +209,17 @@ def SegmentImages(self,window):
                 self.combined_all = Image.alpha_composite(self.combined_all, self.mask_image_f)
 
             # Get the limits
-            xlim = self.ax.get_xlim()
-            ylim = self.ax.get_ylim()
+            xlim = self.ax_4_01.get_xlim()
+            ylim = self.ax_4_01.get_ylim()
 
             # Display the image
-            self.ax.clear()
-            self.ax.imshow(self.combined_all)
-            self.ax.axis('off')  # Hide axes
+            self.ax_4_01.clear()
+            self.ax_4_01.imshow(self.combined_all)
+            self.ax_4_01.axis('off')  # Hide axes
             
             # Set the axes limits
-            self.ax.set_xlim(xlim)
-            self.ax.set_ylim(ylim)
+            self.ax_4_01.set_xlim(xlim)
+            self.ax_4_01.set_ylim(ylim)
 
             # Draw the canvas
             self.canvas.draw()
@@ -237,7 +237,7 @@ def SegmentImages(self,window):
             # Remove Hover Point
             try:
                 # Remove the brush
-                for patch in self.ax2.patches: 
+                for patch in self.ax_4_012.patches: 
                     patch.remove()
                 self.canvas.draw_idle()
             except:
@@ -263,7 +263,7 @@ def SegmentImages(self,window):
             # Remove Hover Point
             try:
                 # Remove the brush
-                for patch in self.ax2.patches: 
+                for patch in self.ax_4_012.patches: 
                     patch.remove()
                 self.canvas.draw_idle()
             except:
@@ -329,10 +329,10 @@ def SegmentImages(self,window):
                         return  
 
                     # Check that point is on canvas
-                    if event.inaxes != self.ax:
+                    if event.inaxes != self.ax_4_01:
                         try:
                             # Remove the brush
-                            for patch in self.ax2.patches: 
+                            for patch in self.ax_4_012.patches: 
                                 patch.remove()
                             self.canvas.draw_idle()
                             self.canvas.draw_idle()
@@ -344,29 +344,29 @@ def SegmentImages(self,window):
                     GetEllipse()
 
                     # Get the limits
-                    xlim = self.ax.get_xlim()
-                    ylim = self.ax.get_ylim()
+                    xlim = self.ax_4_01.get_xlim()
+                    ylim = self.ax_4_01.get_ylim()
 
                     # Plot a circle using a patch for pixel-perfect control
                     self.hover_dot = Ellipse((event.xdata, event.ydata),
                                         width=self.brush_size * self.pixel_radius_x, height=self.brush_size * self.pixel_radius_y,
                                         edgecolor='white', facecolor='none', linewidth=1.5)
-                    self.ax.add_patch(self.hover_dot)
+                    self.ax_4_01.add_patch(self.hover_dot)
                     self.canvas.draw_idle()
 
                     # Set the axes limits
-                    self.ax.set_xlim(xlim)
-                    self.ax.set_ylim(ylim)
+                    self.ax_4_01.set_xlim(xlim)
+                    self.ax_4_01.set_ylim(ylim)
                 
                 # Add/Remove points
                 else:
-                    if self.drawing and event.inaxes == self.ax:
+                    if self.drawing and event.inaxes == self.ax_4_01:
 
-                        #self.ax.plot(event.xdata, event.ydata, 'o', color='white', markersize=self.brush_size*3)
+                        #self.ax_4_01.plot(event.xdata, event.ydata, 'o', color='white', markersize=self.brush_size*3)
                         new_point = Ellipse((event.xdata, event.ydata),
                                         width=self.brush_size * self.pixel_radius_x, height=self.brush_size * self.pixel_radius_y,
                                         edgecolor='white', facecolor='white', linewidth=1.5)
-                        self.ax.add_patch(new_point)
+                        self.ax_4_01.add_patch(new_point)
 
                         # Redraw the canvas
                         self.canvas.draw_idle()
@@ -412,7 +412,7 @@ def SegmentImages(self,window):
                     mask = np.zeros((h, w), dtype=bool)
 
                     # Loop through patches
-                    for patch in self.ax.patches:
+                    for patch in self.ax_4_01.patches:
                         # Get Ellipse parameters
                         cx, cy = patch.center
                         width = patch.width
@@ -457,16 +457,16 @@ def SegmentImages(self,window):
                     self.combined_all = Image.alpha_composite(self.combined_all, self.mask_image_f)
 
                     # Get the limits
-                    xlim = self.ax.get_xlim()
-                    ylim = self.ax.get_ylim()
+                    xlim = self.ax_4_01.get_xlim()
+                    ylim = self.ax_4_01.get_ylim()
 
                     # Display the image
-                    self.ax.clear()
-                    self.ax.imshow(self.combined_all)
-                    self.ax.axis('off')  # Hide axes
+                    self.ax_4_01.clear()
+                    self.ax_4_01.imshow(self.combined_all)
+                    self.ax_4_01.axis('off')  # Hide axes
                     
-                    self.ax.set_xlim(xlim)
-                    self.ax.set_ylim(ylim)
+                    self.ax_4_01.set_xlim(xlim)
+                    self.ax_4_01.set_ylim(ylim)
 
                     self.canvas.draw()
 
@@ -488,7 +488,7 @@ def SegmentImages(self,window):
 
             try:
                 # Remove previous point if it exists
-                for patch in self.ax2.patches:  
+                for patch in self.ax_4_012.patches:  
                     patch.remove()
             except:
                 pass
@@ -538,16 +538,33 @@ def SegmentImages(self,window):
         self.prev_img = self.img_name
 
         # Create a Matplotlib figure
-        if hasattr(self,"fig") == False:
-            scale_im = self.Placement['Segment']['Canvas1'][2]
-            self.fig, self.ax = plt.subplots(figsize=(6/scale_im, 6/scale_im))
-            self.fig.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
+        # -- Get the image dimensions in pixels
+        img_width = self.combined_all.width
+        img_height = self.combined_all.height
+
+        # -- Get the DPI
+        dpi = window.winfo_fpixels('1i')  # pixels per inch
+        
+        # -- Convert max size to pixels
+        max_width_px = int(self.Placement['Segment']['Canvas1'][2] * dpi)
+        max_height_px = int(self.Placement['Segment']['Canvas1'][3] * dpi)
+
+        # -- Get the scale
+        scale = min(max_width_px / img_width, max_height_px / img_height)
+
+        # -- Get the figure size
+        new_width = int(img_width * scale)/dpi
+        new_height = int(img_height * scale)/dpi
+
+        # -- Create the figure
+        self.fig_4_01, self.ax_4_01 = plt.subplots(figsize=(new_width, new_height))
+        self.fig_4_01.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
-        self.canvas = FigureCanvasTkAgg(self.fig, master=window)
+        self.canvas = FigureCanvasTkAgg(self.fig_4_01, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.config(width=int(self.fig.get_figwidth() * self.fig.get_dpi()),
-                                  height=int(self.fig.get_figheight() * self.fig.get_dpi()))
+        self.canvas_widget.config(width=int(self.fig_4_01.get_figwidth() * self.fig_4_01.get_dpi()),
+                                  height=int(self.fig_4_01.get_figheight() * self.fig_4_01.get_dpi()))
         self.canvas_widget.place(anchor='n', 
                                  relx = self.Placement['Segment']['Canvas1'][0], 
                                  rely = self.Placement['Segment']['Canvas1'][1])
@@ -555,9 +572,9 @@ def SegmentImages(self,window):
         self.loc_att_list.append('self.canvas_widget')
 
         # Display the image
-        self.ax.clear()  # Clear previous image
-        self.ax.imshow(self.combined_all)
-        self.ax.axis('off')  # Hide axes
+        self.ax_4_01.clear()  # Clear previous image
+        self.ax_4_01.imshow(self.combined_all)
+        self.ax_4_01.axis('off')  # Hide axes
         self.canvas.draw()
 
         # Add the Matplotlib navigation toolbar

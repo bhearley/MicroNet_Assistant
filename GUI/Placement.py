@@ -263,7 +263,7 @@ def Placements(self, res):
         Placement['FileSelect']['Help'] = [0.001, 0.975, 7, 0.05]
 
         # -- ResizeImage
-        Placement['Resize']['Canvas1'] = [0.5, 0.2, 0.8]
+        Placement['Resize']['Canvas1'] = [0.5, 0.2, 10, 7]
         Placement['Resize']['Toolbar1'] = [0.5, 0.8]
         Placement['Resize']['LabelX'] = [0.755, 0.4]
         Placement['Resize']['LabelY'] = [0.8275, 0.4]
@@ -282,7 +282,7 @@ def Placements(self, res):
         Placement['Resize']['Help'] = [0.001, 0.975, 7, 0.05]
 
         # -- Crop
-        Placement['Crop']['Canvas1'] = [0.5, 0.2, 0.8]
+        Placement['Crop']['Canvas1'] = [0.5, 0.2, 10, 7]
         Placement['Crop']['Toolbar1'] = [0.5, 0.8]
         Placement['Crop']['LabelCrop'] = [0.47, 0.86]
         Placement['Crop']['EntryCrop'] = [0.53, 0.86, 10]
@@ -301,7 +301,7 @@ def Placements(self, res):
 
         # -- Segment
         Placement['Segment']['Image1'] = [0.845, 0.375, 0.3]
-        Placement['Segment']['Canvas1'] = [0.5, 0.2, 0.8]
+        Placement['Segment']['Canvas1'] = [0.5, 0.2, 10, 8]
         Placement['Segment']['Toolbar1'] = [0.5, 0.875]
         Placement['Segment']['LabelTitle'] = [0.5, .125]
         Placement['Segment']['ButtonAdd'] = [0.805, 0.2, 5]
@@ -317,7 +317,7 @@ def Placements(self, res):
         Placement['Segment']['Help'] = [0.001, 0.975, 7, 0.05]
 
         # -- Review
-        Placement['Review']['Image1'] = [0.5, 0.2, 1.2]
+        Placement['Review']['Image1'] = [0.5, 0.2, 10, 8]
         Placement['Review']['LabelTitle'] = [0.5, 0.125]
         Placement['Review']['Scrollbar1'] = [0.225, 0.2, 752]
         Placement['Review']['Listbox1'] = [0.125, 0.2, 34, 54]
@@ -383,7 +383,7 @@ def Placements(self, res):
         Placement['UseMod']['LabelM'] = [0.125, 0.335]
         Placement['UseMod']['LabelC'] = [0.125, 0.45]
         Placement['UseMod']['EntryC'] = [0.125, 0.485, 10]
-        Placement['UseMod']['Canvas1'] = [0.5, 0.3, 0.8]
+        Placement['UseMod']['Canvas1'] = [0.5, 0.3, 10, 7]
         Placement['UseMod']['Toolbar1'] = [0.5, 0.875]
         Placement['UseMod']['LabelX'] = [0.77, 0.4]
         Placement['UseMod']['LabelY'] = [0.8425, 0.4]
@@ -403,10 +403,10 @@ def Placements(self, res):
         Placement['UseMod']['Help'] = [0.001, 0.975, 7, 0.05]
 
         # -- Build RUC
-        Placement['RUC']['LabelCol'] = [0.175, 0.8, 10]
-        Placement['RUC']['LabelCol2'] = [0.175, 0.825, 10]
+        Placement['RUC']['LabelCol'] = [0.175, 0.825, 10]
+        Placement['RUC']['LabelCol2'] = [0.175, 0.85, 10]
         Placement['RUC']['SheetCol'] = [0.505, 0.675, 220, 250, 100, 100]
-        Placement['RUC']['Canvas2'] = [0.825, 0.25, 0.9]
+        Placement['RUC']['Canvas2'] = [0.825, 0.225, 8, 8]
         Placement['RUC']['Toolbar2'] = [0.825, 0.85]
         Placement['RUC']['SliderX'] = [0.5, 0.335, 200]
         Placement['RUC']['SliderY'] = [0.5, 0.485, 200]
@@ -419,7 +419,7 @@ def Placements(self, res):
         Placement['RUC']['EntryConvY'] = [0.5, 0.65, 10]
         Placement['RUC']['ButtonExpW'] = [0.5, 0.8, 12]
         Placement['RUC']['LabelSeg'] = [0.175, 0.175,]
-        Placement['RUC']['Canvas1'] = [0.175, 0.25, 0.9]
+        Placement['RUC']['Canvas1'] = [0.175, 0.225, 8, 8]
         Placement['RUC']['LabelRUC'] = [0.825, .175]
         Placement['RUC']['LabelSubX'] = [0.5, 0.2]
         Placement['RUC']['EntryXL'] = [0.425, 0.329, 10]
@@ -478,7 +478,7 @@ def Placements(self, res):
         Placement['FileSelect']['Help'] = [0.001, 0.965, 7, 0.05]
 
         # -- ResizeImage
-        Placement['Resize']['Canvas1'] = [0.5, 0.15, 1.25]
+        Placement['Resize']['Canvas1'] = [0.5, 0.2, 6, 4.5]
         Placement['Resize']['Toolbar1'] = [0.5, 0.8]
         Placement['Resize']['LabelX'] = [0.7525, 0.399]
         Placement['Resize']['LabelY'] = [0.825, 0.399]
@@ -497,7 +497,7 @@ def Placements(self, res):
         Placement['Resize']['Help'] = [0.001, 0.965, 7, 0.05]
 
         # -- Crop
-        Placement['Crop']['Canvas1'] = [0.5, 0.175, 1.25]
+        Placement['Crop']['Canvas1'] = [0.5, 0.2, 6, 4.5]
         Placement['Crop']['Toolbar1'] = [0.5, 0.8]
         Placement['Crop']['LabelCrop'] = [0.45, 0.86]
         Placement['Crop']['EntryCrop'] = [0.55, 0.86, 10]
@@ -516,7 +516,7 @@ def Placements(self, res):
 
         # -- Segment
         Placement['Segment']['Image1'] = [0.845, 0.5, 0.3]
-        Placement['Segment']['Canvas1'] = [0.5, 0.2, 1.25]
+        Placement['Segment']['Canvas1'] = [0.5, 0.2, 6, 5]
         Placement['Segment']['Toolbar1'] = [0.5, 0.875]
         Placement['Segment']['LabelTitle'] = [0.5, .125]
         Placement['Segment']['ButtonAdd'] = [0.7775, 0.2, 5]
@@ -532,7 +532,7 @@ def Placements(self, res):
         Placement['Segment']['Help'] = [0.001, 0.965, 7, 0.05]
 
         # -- Review
-        Placement['Review']['Image1'] = [0.5, 0.2, 0.8]
+        Placement['Review']['Image1'] = [0.5, 0.2, 6, 5]
         Placement['Review']['LabelTitle'] = [0.5, 0.125]
         Placement['Review']['Scrollbar1'] = [0.25, 0.2, 445]
         Placement['Review']['Listbox1'] = [0.15, 0.2, 20, 31]
@@ -598,7 +598,7 @@ def Placements(self, res):
         Placement['UseMod']['LabelM'] = [0.125, 0.335]
         Placement['UseMod']['LabelC'] = [0.125, 0.45]
         Placement['UseMod']['EntryC'] = [0.125, 0.485, 10]
-        Placement['UseMod']['Canvas1'] = [0.5, 0.3, 1.25]
+        Placement['UseMod']['Canvas1'] = [0.5, 0.3, 6, 4.5]
         Placement['UseMod']['Toolbar1'] = [0.5, 0.825]
         Placement['UseMod']['LabelX'] = [0.77, 0.4]
         Placement['UseMod']['LabelY'] = [0.8425, 0.4]
@@ -614,14 +614,14 @@ def Placements(self, res):
         Placement['UseMod']['ButtonLoadI'] = [0.875, 0.2, 10]
         Placement['UseMod']['ButtonSeg'] = [0.5, 0.2, 15]
         Placement['UseMod']['ButtonCont'] = [0.999, 0.965, 10]
-        Placement['UseMod']['ButtonHome'] = [0.909, 0.965, 7]
+        Placement['UseMod']['ButtonHome'] = [0.909, 0.965, 7, 1]
         Placement['UseMod']['Help'] = [0.001, 0.965, 7, 0.05]
 
         # -- Build RUC
         Placement['RUC']['LabelCol'] = [0.175, 0.8, 10]
         Placement['RUC']['LabelCol2'] = [0.175, 0.825, 10]
         Placement['RUC']['SheetCol'] = [0.505, 0.675, 220, 250, 100, 100]
-        Placement['RUC']['Canvas2'] = [0.825, 0.25, 1.5]
+        Placement['RUC']['Canvas2'] = [0.825, 0.225, 5, 5]
         Placement['RUC']['Toolbar2'] = [0.825, 0.825]
         Placement['RUC']['SliderX'] = [0.5, 0.335, 150]
         Placement['RUC']['SliderY'] = [0.5, 0.485, 150]
@@ -634,7 +634,7 @@ def Placements(self, res):
         Placement['RUC']['EntryConvY'] = [0.5, 0.65, 10]
         Placement['RUC']['ButtonExpW'] = [0.5, 0.8, 10]
         Placement['RUC']['LabelSeg'] = [0.175, 0.175]
-        Placement['RUC']['Canvas1'] = [0.175, 0.25, 1.5]
+        Placement['RUC']['Canvas1'] = [0.175, 0.225, 5, 5]
         Placement['RUC']['LabelRUC'] = [0.825, .175]
         Placement['RUC']['LabelSubX'] = [0.5, 0.25]
         Placement['RUC']['EntryXL'] = [0.425, 0.329, 6]

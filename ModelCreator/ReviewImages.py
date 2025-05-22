@@ -70,8 +70,27 @@ def ReviewImages(self,window):
 
             # Dispaly the image 
             self.img_f = self.Segment['Final'][[self.listbox_01.get(idx) for idx in self.listbox_01.curselection()][0]]
-            scale = self.Placement['Review']['Image1'][2]
-            self.img_f = self.img_f.resize((int(self.img_f.width*scale), int(self.img_f.height*scale)))
+           
+            # -- Get the image dimensions in pixels
+            img_width = self.img_f.width
+            img_height = self.img_f.height
+
+            # -- Get the DPI
+            dpi = window.winfo_fpixels('1i')  # pixels per inch
+            
+            # -- Convert max size to pixels
+            max_width_px = int(self.Placement['Review']['Image1'][2] * dpi)
+            max_height_px = int(self.Placement['Review']['Image1'][3] * dpi)
+
+            # -- Get the scale
+            scale = min(max_width_px / img_width, max_height_px / img_height)
+
+            # -- Get the figure size
+            new_width = int(img_width * scale)
+            new_height = int(img_height * scale)
+
+            # -- Resize the image
+            self.img_f = self.img_f.resize((new_width, new_height))
             self.imgtk_f = ImageTk.PhotoImage(self.img_f)
             self.img_final = tk.Label(window, image = self.imgtk_f, bg = 'white')
             self.img_final.place(

@@ -193,16 +193,33 @@ def UseModel(self,window):
             self.pass_in = False
 
         # Create a Matplotlib figure
-        if hasattr(self,"fig4") == False:
-            scale_im = self.Placement['UseMod']['Canvas1'][2]
-            self.fig4, self.ax4 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
-            self.fig4.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
+        # -- Get the image dimensions in pixels
+        img_width = self.image_inf.width
+        img_height = self.image_inf.height
+
+        # -- Get the DPI
+        dpi = window.winfo_fpixels('1i')  # pixels per inch
+
+        # -- Convert max size to pixels
+        max_width_px = int(self.Placement['UseMod']['Canvas1'][2] * dpi)
+        max_height_px = int(self.Placement['UseMod']['Canvas1'][3] * dpi)
+
+        # -- Get the scale
+        scale = min(max_width_px / img_width, max_height_px / img_height)
+
+        # -- Get the figure size
+        new_width = int(img_width * scale)/dpi
+        new_height = int(img_height * scale)/dpi
+
+        # -- Create the figure
+        self.fig_8_01, self.ax_8_01 = plt.subplots(figsize=(new_width, new_height))
+        self.fig_8_01.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
-        self.canvas = FigureCanvasTkAgg(self.fig4, master=window)
+        self.canvas = FigureCanvasTkAgg(self.fig_8_01, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.config(width=int(self.fig4.get_figwidth() * self.fig4.get_dpi()),
-                                height=int(self.fig4.get_figheight() * self.fig4.get_dpi()))
+        self.canvas_widget.config(width=int(self.fig_8_01.get_figwidth() * self.fig_8_01.get_dpi()),
+                                height=int(self.fig_8_01.get_figheight() * self.fig_8_01.get_dpi()))
         self.canvas_widget.place(
                                     anchor='n', 
                                     relx = self.Placement['UseMod']['Canvas1'][0], 
@@ -212,9 +229,9 @@ def UseModel(self,window):
         self.loc_att_list.append('self.canvas_widget')
 
         # Display the image
-        self.ax4.clear()  # Clear previous image
-        self.ax4.imshow(self.image_inf)
-        self.ax4.axis('off')  # Hide axes
+        self.ax_8_01.clear()  # Clear previous image
+        self.ax_8_01.imshow(self.image_inf)
+        self.ax_8_01.axis('off')  # Hide axes
         self.canvas.draw()
 
         # Add the Matplotlib navigation toolbar
@@ -442,16 +459,33 @@ def UseModel(self,window):
         self.entry_C.destroy()
 
         # Create a Matplotlib figure
-        if hasattr(self,"fig4") == False:
-            scale_im = self.Placement['UseMod']['Canvas1'][2]
-            self.fig4, self.ax4 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
-            self.fig4.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
+        # -- Get the image dimensions in pixels
+        img_width = self.combined_inf.width
+        img_height = self.combined_inf.height
+
+        # -- Get the DPI
+        dpi = window.winfo_fpixels('1i')  # pixels per inch
+
+        # -- Convert max size to pixels
+        max_width_px = int(self.Placement['UseMod']['Canvas1'][2] * dpi)
+        max_height_px = int(self.Placement['UseMod']['Canvas1'][3] * dpi)
+
+        # -- Get the scale
+        scale = min(max_width_px / img_width, max_height_px / img_height)
+
+        # -- Get the figure size
+        new_width = int(img_width * scale)/dpi
+        new_height = int(img_height * scale)/dpi
+
+        # -- Create the figure
+        self.fig_8_01, self.ax_8_01 = plt.subplots(figsize=(new_width, new_height))
+        self.fig_8_01.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
-        self.canvas = FigureCanvasTkAgg(self.fig4, master=window)
+        self.canvas = FigureCanvasTkAgg(self.fig_8_01, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.config(width=int(self.fig4.get_figwidth() * self.fig4.get_dpi()),
-                                height=int(self.fig4.get_figheight() * self.fig4.get_dpi()))
+        self.canvas_widget.config(width=int(self.fig_8_01.get_figwidth() * self.fig_8_01.get_dpi()),
+                                height=int(self.fig_8_01.get_figheight() * self.fig_8_01.get_dpi()))
         self.canvas_widget.place(
                                     anchor='n', 
                                     relx = self.Placement['UseMod']['Canvas1'][0], 
@@ -461,9 +495,9 @@ def UseModel(self,window):
         self.loc_att_list.append('self.canvas_widget')
 
         # Display the image
-        self.ax4.clear()  # Clear previous image
-        self.ax4.imshow(self.combined_inf)
-        self.ax4.axis('off')  # Hide axes
+        self.ax_8_01.clear()  # Clear previous image
+        self.ax_8_01.imshow(self.combined_inf)
+        self.ax_8_01.axis('off')  # Hide axes
         self.canvas.draw()
 
         # Create button to save image
@@ -759,7 +793,7 @@ def UseModel(self,window):
     # -- Load an image using PIL
     self.image_path_home = os.path.join(os.getcwd(),'GUI','General','home.png') 
     self.image_home = Image.open(self.image_path_home)
-    scale = self.Placement['FileSelect']['ButtonHome'][3]
+    scale = self.Placement['UseMod']['ButtonHome'][3]
     self.image_home = self.image_home.resize((int(self.image_help.width*scale), int(self.image_help.height*scale)))
 
     # -- Convert the image to a Tkinter-compatible format
@@ -800,11 +834,11 @@ def UseModel(self,window):
                                 compound='left',                                 
                                 command = helper,
                                 style = "Modern2.TButton",
-                                width = self.Placement['FileSelect']['Help'][2]
+                                width = self.Placement['UseMod']['Help'][2]
                                 )
     self.btn_help.place(
                         anchor = 'w', 
-                        relx = self.Placement['FileSelect']['Help'][0], 
-                        rely = self.Placement['FileSelect']['Help'][1]
+                        relx = self.Placement['UseMod']['Help'][0], 
+                        rely = self.Placement['UseMod']['Help'][1]
                         )
     self.att_list.append('self.btn_help')

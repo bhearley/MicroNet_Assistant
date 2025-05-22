@@ -40,13 +40,13 @@ def CropImages(self,window):
         def on_mouse_move(self, event):
             if self.allow_motion == True:
                 # Remove previous crop area
-                for patch in self.ax2.patches:  
+                for patch in self.ax_3_01.patches:  
                     patch.remove()
 
                 if self.toolbar.mode == 'zoom rect':
                     return  # Don't show hover point while zooming
 
-                if event.inaxes != self.ax2:
+                if event.inaxes != self.ax_3_01:
                     return  # Ignore if outside axes
 
                 # Plot a rectangle using a patch for pixel-perfect control
@@ -58,13 +58,13 @@ def CropImages(self,window):
                                                     linestyle='--',
                                                     edgecolor='red', 
                                                     facecolor='none')
-                self.ax2.add_patch(self.hover_rect)
+                self.ax_3_01.add_patch(self.hover_rect)
                 self.canvas.draw_idle()
 
         # Function to Lock Hovering Cursor Rectangle
         def mouse_click(self, event):
             # Check if event is in axes
-            if event.inaxes == self.ax2:
+            if event.inaxes == self.ax_3_01:
                 # Check if full square is in the image
                 if 0 <= event.xdata - self.crop_window/2 and  self.image_full.width >= event.xdata + self.crop_window/2 and 0 <= event.ydata - self.crop_window/2 and  self.image_full.height >= event.ydata + self.crop_window/2:
                     # Check that zoom is off
@@ -73,10 +73,10 @@ def CropImages(self,window):
                         # Function to Confirm Crop Window
                         def save_image(self, event):
                             # Get the box 
-                            x = self.ax2.patches[0].get_x()
-                            y = self.ax2.patches[0].get_y()
-                            width = self.ax2.patches[0].get_width()
-                            height = self.ax2.patches[0].get_height()
+                            x = self.ax_3_01.patches[0].get_x()
+                            y = self.ax_3_01.patches[0].get_y()
+                            width = self.ax_3_01.patches[0].get_width()
+                            height = self.ax_3_01.patches[0].get_height()
 
                             # Get the image
                             self.image_crop = copy.deepcopy(self.image_full)
@@ -109,7 +109,7 @@ def CropImages(self,window):
                             update_listbox(self)
 
                             # Remove the rectangle
-                            for patch in self.ax2.patches: 
+                            for patch in self.ax_3_01.patches: 
                                 patch.remove()
                             self.canvas.draw_idle()
 
@@ -126,7 +126,7 @@ def CropImages(self,window):
                         # Function to discard image
                         def no_save_image(self, event):
                             # Remove the rectangle
-                            for patch in self.ax2.patches:
+                            for patch in self.ax_3_01.patches:
                                 patch.remove()
                             self.canvas.draw_idle()
 
@@ -144,7 +144,7 @@ def CropImages(self,window):
                         self.allow_motion = False
 
                         # Change to solid lines
-                        self.ax2.patches[0].set_linestyle('-')
+                        self.ax_3_01.patches[0].set_linestyle('-')
                         self.canvas.draw_idle()
 
                         # Unbind crop window entry
@@ -159,7 +159,7 @@ def CropImages(self,window):
             if self.allow_motion == True:
                 try:
                     # Remove previous point if it exists
-                    for patch in self.ax2.patches:  
+                    for patch in self.ax_3_01.patches:  
                         patch.remove()
                 except:
                     pass
@@ -190,16 +190,33 @@ def CropImages(self,window):
         self.image_full = self.Segment['Files']['Resized Images'][self.img_full_name]
 
         # Create a Matplotlib figure
-        if hasattr(self,"fig2") == False:
-            scale_im = self.Placement['Crop']['Canvas1'][2]
-            self.fig2, self.ax2 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
-            self.fig2.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
+        # -- Get the image dimensions in pixels
+        img_width = self.image_full.width
+        img_height = self.image_full.height
+
+        # -- Get the DPI
+        dpi = window.winfo_fpixels('1i')  # pixels per inch
+        
+        # -- Convert max size to pixels
+        max_width_px = int(self.Placement['Crop']['Canvas1'][2] * dpi)
+        max_height_px = int(self.Placement['Crop']['Canvas1'][3] * dpi)
+
+        # -- Get the scale
+        scale = min(max_width_px / img_width, max_height_px / img_height)
+
+        # -- Get the figure size
+        new_width = int(img_width * scale)/dpi
+        new_height = int(img_height * scale)/dpi
+
+        # -- Create the figure
+        self.fig_3_01, self.ax_3_01 = plt.subplots(figsize=(new_width, new_height))
+        self.fig_3_01.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
-        self.canvas = FigureCanvasTkAgg(self.fig2, master=window)
+        self.canvas = FigureCanvasTkAgg(self.fig_3_01, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.config(width=int(self.fig2.get_figwidth() * self.fig2.get_dpi()),
-                                height=int(self.fig2.get_figheight() * self.fig2.get_dpi()))
+        self.canvas_widget.config(width=int(self.fig_3_01.get_figwidth() * self.fig_3_01.get_dpi()),
+                                height=int(self.fig_3_01.get_figheight() * self.fig_3_01.get_dpi()))
         self.canvas_widget.place(anchor='n', 
                                  relx = self.Placement['Crop']['Canvas1'][0], 
                                  rely = self.Placement['Crop']['Canvas1'][1])
@@ -207,9 +224,9 @@ def CropImages(self,window):
         self.loc_att_list.append('self.canvas_widget')
 
         # Display the image
-        self.ax2.clear()  # Clear previous image
-        self.ax2.imshow(self.image_full)
-        self.ax2.axis('off')  # Hide axes
+        self.ax_3_01.clear()  # Clear previous image
+        self.ax_3_01.imshow(self.image_full)
+        self.ax_3_01.axis('off')  # Hide axes
         self.canvas.draw()
 
         # Add the Matplotlib navigation toolbar
@@ -301,16 +318,33 @@ def CropImages(self,window):
         self.image_view = self.Segment['Data'][self.img_view_name]['Original Image']
 
         # Create a Matplotlib figure
-        if hasattr(self,"fig3") == False:
-            scale_im = self.Placement['Crop']['Canvas1'][2]
-            self.fig3, self.ax3 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
-            self.fig3.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
+        # -- Get the image dimensions in pixels
+        img_width = self.image_view.width
+        img_height = self.image_view.height
+
+        # -- Get the DPI
+        dpi = window.winfo_fpixels('1i')  # pixels per inch
+        
+        # -- Convert max size to pixels
+        max_width_px = int(self.Placement['Crop']['Canvas1'][2] * dpi)
+        max_height_px = int(self.Placement['Crop']['Canvas1'][3] * dpi)
+
+        # -- Get the scale
+        scale = min(max_width_px / img_width, max_height_px / img_height)
+
+        # -- Get the figure size
+        new_width = int(img_width * scale)/dpi
+        new_height = int(img_height * scale)/dpi
+
+        # -- Create the figure
+        self.fig_3_02, self.ax_3_02 = plt.subplots(figsize=(new_width, new_height))
+        self.fig_3_02.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
-        self.canvas = FigureCanvasTkAgg(self.fig3, master=window)
+        self.canvas = FigureCanvasTkAgg(self.fig_3_02, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.config(width=int(self.fig3.get_figwidth() * self.fig3.get_dpi()),
-                                height=int(self.fig3.get_figheight() * self.fig3.get_dpi()))
+        self.canvas_widget.config(width=int(self.fig_3_02.get_figwidth() * self.fig_3_02.get_dpi()),
+                                height=int(self.fig_3_02.get_figheight() * self.fig_3_02.get_dpi()))
         self.canvas_widget.place(anchor='n', 
                                  relx = self.Placement['Crop']['Canvas1'][0], 
                                  rely = self.Placement['Crop']['Canvas1'][1])
@@ -318,9 +352,9 @@ def CropImages(self,window):
         self.loc_att_list.append('self.canvas_widget')
 
         # Display the image
-        self.ax3.clear()  # Clear previous image
-        self.ax3.imshow(self.image_view)
-        self.ax3.axis('off')  # Hide axes
+        self.ax_3_02.clear()  # Clear previous image
+        self.ax_3_02.imshow(self.image_view)
+        self.ax_3_02.axis('off')  # Hide axes
         self.canvas.draw()
 
         # Add the Matplotlib navigation toolbar

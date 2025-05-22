@@ -40,6 +40,11 @@ def BuildRUCGenerator(self,window):
         except:
             pass
 
+        # Remove all canvases
+        for widget in window.winfo_children():
+            if isinstance(widget, tk.Canvas):
+                widget.destroy()
+
         # Preallocate file path
         file_path = ''
 
@@ -343,8 +348,8 @@ def BuildRUCGenerator(self,window):
                     pixels[x,y] = (255,255,255,255)
 
                 # Get the limits
-                self.xlim = self.ax2.get_xlim()
-                self.ylim = self.ax2.get_ylim()
+                self.xlim = self.ax_9_02.get_xlim()
+                self.ylim = self.ax_9_02.get_ylim()
 
                 # Redraw the canvas
                 redraw_ruc()
@@ -380,21 +385,38 @@ def BuildRUCGenerator(self,window):
                 # Delete old canvas
                 try:
                     self.toolbar.destory()
+                    self.canvas_widget2.destroy()
                     del self.canvas2
                 except:
                     pass
                 
                 # Create the Matplotlib Figure
-                if hasattr(self,"fig2") == False:
-                    img_scale = self.Placement['RUC']['Canvas2'][2]
-                    self.fig2, self.ax2 = plt.subplots(figsize=(8/img_scale, 6/img_scale))
-                    self.fig2.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
+                # -- Get the image dimensions in pixels
+                img_width = self.image.width
+                img_height = self.image.height
+
+                # -- Get the DPI
+                dpi = window.winfo_fpixels('1i')  # pixels per inch
+                # -- Convert max size to pixels
+                max_width_px = int(self.Placement['RUC']['Canvas2'][2] * dpi)
+                max_height_px = int(self.Placement['RUC']['Canvas2'][3] * dpi)
+
+                # -- Get the scale
+                scale = min(max_width_px / img_width, max_height_px / img_height)
+
+                # -- Get the figure size
+                new_width = int(img_width * scale)/dpi
+                new_height = int(img_height * scale)/dpi
+
+                # -- Create the figure
+                self.fig_9_02, self.ax_9_02 = plt.subplots(figsize=(new_width, new_height))
+                self.fig_9_02.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
                 # Embed the Matplotlib figure in Tkinter
-                self.canvas2 = FigureCanvasTkAgg(self.fig2, master=window)
+                self.canvas2 = FigureCanvasTkAgg(self.fig_9_02, master=window)
                 self.canvas_widget2 = self.canvas2.get_tk_widget()
-                self.canvas_widget2.config(width=int(self.fig1.get_figheight() * self.image.width/self.image.height  * self.fig1.get_dpi()),
-                                        height=int(self.fig1.get_figheight() * self.fig1.get_dpi()))
+                self.canvas_widget2.config(width=int(self.fig_9_01.get_figheight() * self.image.width/self.image.height  * self.fig_9_01.get_dpi()),
+                                        height=int(self.fig_9_01.get_figheight() * self.fig_9_01.get_dpi()))
                 self.canvas_widget2.place(
                                             anchor='n', 
                                             relx = self.Placement['RUC']['Canvas2'][0], 
@@ -404,13 +426,13 @@ def BuildRUCGenerator(self,window):
                 self.loc_att_list.append('self.canvas_widget2')
 
                 # Display the image
-                self.ax2.clear()  # Clear previous image
-                self.ax2.imshow(self.ruc_image, aspect=self.ruc_image.width/self.ruc_image.height)
-                self.ax2.set_aspect('auto')
+                self.ax_9_02.clear()  # Clear previous image
+                self.ax_9_02.imshow(self.ruc_image, aspect=self.ruc_image.width/self.ruc_image.height)
+                self.ax_9_02.set_aspect('auto')
 
                 # SAVE the original limits
-                original_xlim = self.ax2.get_xlim()
-                original_ylim = self.ax2.get_ylim()
+                original_xlim = self.ax_9_02.get_xlim()
+                original_ylim = self.ax_9_02.get_ylim()
 
                 if hasattr(self,"toolbar"):
                     self.toolbar.destroy()
@@ -427,19 +449,19 @@ def BuildRUCGenerator(self,window):
                 # Draw borders (grid lines)
                 # -- Vertical lines
                 for x in range(self.xsub + 1):
-                    self.ax2.axvline(x - 0.5, color='black', linewidth=0.1)
+                    self.ax_9_02.axvline(x - 0.5, color='black', linewidth=0.1)
 
                 # -- Horizontal lines
                 for y in range(self.ysub + 1):
-                    self.ax2.axhline(y - 0.5, color='black', linewidth=0.1)
+                    self.ax_9_02.axhline(y - 0.5, color='black', linewidth=0.1)
                 self.canvas2.draw()
 
                 # Draw the canvas
-                self.ax2.axis('off')  # Hide axes
+                self.ax_9_02.axis('off')  # Hide axes
                 # Set the axes limits
                 if self.xlim is not None:
-                    self.ax2.set_xlim(self.xlim)
-                    self.ax2.set_ylim(self.ylim)
+                    self.ax_9_02.set_xlim(self.xlim)
+                    self.ax_9_02.set_ylim(self.ylim)
                 self.canvas2.draw()
 
                 # Bind Mouse Click Event
@@ -810,16 +832,33 @@ def BuildRUCGenerator(self,window):
         self.att_list.append('self.label_01')
 
         # Create the canvas to display the image
-        if hasattr(self,"fig1") == False:
-            img_scale = self.Placement['RUC']['Canvas1'][2]
-            self.fig1, self.ax1 = plt.subplots(figsize=(8/img_scale, 6/img_scale))
-            self.fig1.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
+        # -- Get the image dimensions in pixels
+        img_width = self.image.width
+        img_height = self.image.height
+
+        # -- Get the DPI
+        dpi = window.winfo_fpixels('1i')  # pixels per inch
+        
+        # -- Convert max size to pixels
+        max_width_px = int(self.Placement['RUC']['Canvas1'][2] * dpi)
+        max_height_px = int(self.Placement['RUC']['Canvas1'][3] * dpi)
+
+        # -- Get the scale
+        scale = min(max_width_px / img_width, max_height_px / img_height)
+
+        # -- Get the figure size
+        new_width = int(img_width * scale)/dpi
+        new_height = int(img_height * scale)/dpi
+
+        # -- Create the figure
+        self.fig_9_01, self.ax_9_01 = plt.subplots(figsize=(new_width, new_height))
+        self.fig_9_01.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
-        self.canvas = FigureCanvasTkAgg(self.fig1, master=window)
+        self.canvas = FigureCanvasTkAgg(self.fig_9_01, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.config(width=int(self.fig1.get_figwidth() * self.fig1.get_dpi()),
-                                height=int(self.fig1.get_figheight() * self.fig1.get_dpi()))
+        self.canvas_widget.config(width=int(self.fig_9_01.get_figwidth() * self.fig_9_01.get_dpi()),
+                                height=int(self.fig_9_01.get_figheight() * self.fig_9_01.get_dpi()))
         self.canvas_widget.place(
                                     anchor='n', 
                                     relx = self.Placement['RUC']['Canvas1'][0], 
@@ -829,9 +868,9 @@ def BuildRUCGenerator(self,window):
         self.loc_att_list.append('self.canvas_widget')
 
         # Display the image
-        self.ax1.clear()  # Clear previous image
-        self.ax1.imshow(self.image)
-        self.ax1.axis('off')  # Hide axes
+        self.ax_9_01.clear()  # Clear previous image
+        self.ax_9_01.imshow(self.image)
+        self.ax_9_01.axis('off')  # Hide axes
         self.canvas.draw()
 
         # Create the label for the RUC
