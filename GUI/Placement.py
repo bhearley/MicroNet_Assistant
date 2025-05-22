@@ -162,6 +162,30 @@ def Placement(self, res):
                                 'ButtonCont':[],
                                 'ButtonBack':[],
                                 'Help':[]
+                                },
+                    'UseMod':{
+                                'LabelMT':[],
+                                'LabelM':[],
+                                'LabelC':[],
+                                'EntryC':[],
+                                'Canvas1':[],
+                                'Toolbar1':[],
+                                'LabelX':[],
+                                'LabelY':[],
+                                'LabelS':[],
+                                'EntryX':[],
+                                'EntryY':[],
+                                'EntryS':[],
+                                'ButtonS':[],
+                                'ButtonSave':[],
+                                'ButtonDisc':[],
+                                'LabelTitle':[],
+                                'ButtonLoadM':[],
+                                'ButtonLoadI':[],
+                                'ButtonSeg':[],
+                                'ButtonCont':[],
+                                'ButtonBack':[],
+                                'Help':[]
                                 }
     }
     
@@ -319,6 +343,30 @@ def Placement(self, res):
         Placement['Train']['ButtonCont'] = [0.997, 0.975, 10]
         Placement['Train']['ButtonBack'] = [0.942, 0.975, 10]
         Placement['Train']['Help'] = [0.001, 0.975, 7, 0.05]
+
+        # -- Use Model
+        Placement['UseMod']['LabelMT'] = [0.125, 0.3]
+        Placement['UseMod']['LabelM'] = [0.125, 0.335]
+        Placement['UseMod']['LabelC'] = [0.125, 0.45]
+        Placement['UseMod']['EntryC'] = [0.125, 0.485, 10]
+        Placement['UseMod']['Canvas1'] = [0.5, 0.3, 0.8]
+        Placement['UseMod']['Toolbar1'] = [0.5, 0.875]
+        Placement['UseMod']['LabelX'] = [0.77, 0.4]
+        Placement['UseMod']['LabelY'] = [0.8425, 0.4]
+        Placement['UseMod']['LabelS'] = [0.9175, 0.4]
+        Placement['UseMod']['EntryX'] = [0.8025, 0.4, 10]
+        Placement['UseMod']['EntryY'] = [0.875, 0.4, 10]
+        Placement['UseMod']['EntryS'] = [0.955, 0.4, 10]
+        Placement['UseMod']['ButtonS'] = [0.875, 0.5, 10]
+        Placement['UseMod']['ButtonSave'] = [0.44, 0.2, 12]
+        Placement['UseMod']['ButtonDisc'] = [0.56, 0.2, 12]
+        Placement['UseMod']['LabelTitle'] = [0.5, 0.125]
+        Placement['UseMod']['ButtonLoadM'] = [0.125, 0.2, 10]
+        Placement['UseMod']['ButtonLoadI'] = [0.875, 0.2, 10]
+        Placement['UseMod']['ButtonSeg'] = [0.5, 0.2, 15]
+        Placement['UseMod']['ButtonCont'] = [0.997, 0.975, 10]
+        Placement['UseMod']['ButtonHome'] = [0.942, 0.975, 7]
+        Placement['UseMod']['Help'] = [0.001, 0.975, 7, 0.05]
         
 
 
@@ -476,6 +524,30 @@ def Placement(self, res):
         Placement['Train']['ButtonCont'] = [0.999, 0.965, 10]
         Placement['Train']['ButtonBack'] = [0.909, 0.965, 10]
         Placement['Train']['Help'] = [0.001, 0.965, 7, 0.05]
+
+        # -- Use Model
+        Placement['UseMod']['LabelMT'] = [0.125, 0.3]
+        Placement['UseMod']['LabelM'] = [0.125, 0.335]
+        Placement['UseMod']['LabelC'] = [0.125, 0.45]
+        Placement['UseMod']['EntryC'] = [0.125, 0.485, 10]
+        Placement['UseMod']['Canvas1'] = [0.5, 0.3, 1.25]
+        Placement['UseMod']['Toolbar1'] = [0.5, 0.875]
+        Placement['UseMod']['LabelX'] = [0.77, 0.4]
+        Placement['UseMod']['LabelY'] = [0.8425, 0.4]
+        Placement['UseMod']['LabelS'] = [0.9175, 0.4]
+        Placement['UseMod']['EntryX'] = [0.8025, 0.4, 6]
+        Placement['UseMod']['EntryY'] = [0.875, 0.4, 6]
+        Placement['UseMod']['EntryS'] = [0.955, 0.4, 6]
+        Placement['UseMod']['ButtonS'] = [0.875, 0.5, 10]
+        Placement['UseMod']['ButtonSave'] = [0.425, 0.2, 12]
+        Placement['UseMod']['ButtonDisc'] = [0.575, 0.2, 12]
+        Placement['UseMod']['LabelTitle'] = [0.5, 0.125]
+        Placement['UseMod']['ButtonLoadM'] = [0.125, 0.2, 10]
+        Placement['UseMod']['ButtonLoadI'] = [0.875, 0.2, 10]
+        Placement['UseMod']['ButtonSeg'] = [0.5, 0.2, 15]
+        Placement['UseMod']['ButtonCont'] = [0.999, 0.965, 10]
+        Placement['UseMod']['ButtonHome'] = [0.909, 0.965, 7]
+        Placement['UseMod']['Help'] = [0.001, 0.965, 7, 0.05]
 
 
     # Set to self

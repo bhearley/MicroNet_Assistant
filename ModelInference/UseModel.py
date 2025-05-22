@@ -86,7 +86,11 @@ def UseModel(self,window):
                             style = "Modern2.TLabel",
                             anchor = 'w'
                             )
-            self.mod_title.place(anchor = 'n', relx = 0.125, rely = 0.3)
+            self.mod_title.place(
+                                    anchor = 'n', 
+                                    relx = self.Placement['UseMod']['LabelMT'][0], 
+                                    rely = self.Placement['UseMod']['LabelMT'][1]
+                                    )
             self.att_list.append('self.mod_title')
 
             # Create label
@@ -96,7 +100,11 @@ def UseModel(self,window):
                             style = "Modern2.TLabel",
                             anchor = 'w'
                             )
-            self.mod_label.place(anchor = 'n', relx = 0.125, rely = 0.335)
+            self.mod_label.place(
+                                    anchor = 'n', 
+                                    relx = self.Placement['UseMod']['LabelM'][0], 
+                                    rely = self.Placement['UseMod']['LabelM'][1]
+                                    )
             self.att_list.append('self.mod_label')
 
             # Create classes label
@@ -106,7 +114,11 @@ def UseModel(self,window):
                             style = "Modern2.TLabel",
                             anchor = 'w'
                             )
-            self.class_label.place(anchor = 'n', relx = 0.125, rely = 0.45)
+            self.class_label.place(
+                                    anchor = 'n', 
+                                    relx = self.Placement['UseMod']['LabelC'][0], 
+                                    rely = self.Placement['UseMod']['LabelC'][1]
+                                    )
             self.att_list.append('self.class_label')
 
             # Register the validation function
@@ -118,11 +130,15 @@ def UseModel(self,window):
                                 validatecommand=vcmd, 
                                 style="Custom.TEntry",
                                 justify='center',
-                                width = 10,
+                                width = self.Placement['UseMod']['EntryC'][2],
                                 font = tkfont.Font(family="Segoe UI", size=14)
                                 )
             self.entry_C.insert(0, "2")
-            self.entry_C.place(anchor = 'n', relx = 0.125, rely = 0.485)
+            self.entry_C.place(
+                                anchor = 'n', 
+                                relx = self.Placement['UseMod']['EntryC'][0], 
+                                rely = self.Placement['UseMod']['EntryC'][1]
+                                )
             self.att_list.append('self.entry_C')
 
     # Function to load an image
@@ -178,7 +194,7 @@ def UseModel(self,window):
 
         # Create a Matplotlib figure
         if hasattr(self,"fig4") == False:
-            scale_im = 0.8
+            scale_im = self.Placement['UseMod']['Canvas1'][2]
             self.fig4, self.ax4 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
             self.fig4.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
@@ -187,7 +203,11 @@ def UseModel(self,window):
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig4.get_figwidth() * self.fig4.get_dpi()),
                                 height=int(self.fig4.get_figheight() * self.fig4.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.3)
+        self.canvas_widget.place(
+                                    anchor='n', 
+                                    relx = self.Placement['UseMod']['Canvas1'][0], 
+                                    rely = self.Placement['UseMod']['Canvas1'][1]
+                                    )
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -200,7 +220,11 @@ def UseModel(self,window):
         # Add the Matplotlib navigation toolbar
         self.toolbar = NavigationToolbar2Tk(self.canvas, window)
         self.toolbar.update()
-        self.toolbar.place(anchor='n', relx = 0.5, rely = 0.875)
+        self.toolbar.place(
+                            anchor='n', 
+                            relx = self.Placement['UseMod']['Toolbar1'][0], 
+                            rely = self.Placement['UseMod']['Toolbar1'][1]
+                            )
         self.loc_att_list.append('self.toolbar')
 
         # Create the x label
@@ -209,7 +233,11 @@ def UseModel(self,window):
                         text="X:", 
                         style = "Modern2.TLabel"
                         )
-        self.x_label.place(anchor = 'n', relx = 0.77, rely = 0.4)
+        self.x_label.place(
+                            anchor = 'n', 
+                            relx = self.Placement['UseMod']['LabelX'][0], 
+                            rely = self.Placement['UseMod']['LabelX'][1]
+                            )
         self.loc_att_list.append('self.x_label')
 
         # Create the y label
@@ -218,7 +246,11 @@ def UseModel(self,window):
                         text="Y:", 
                         style = "Modern2.TLabel"
                         )
-        self.y_label.place(anchor = 'n', relx = 0.8425, rely = 0.4)
+        self.y_label.place(
+                            anchor = 'n', 
+                            relx = self.Placement['UseMod']['LabelY'][0], 
+                            rely = self.Placement['UseMod']['LabelY'][1]
+                            )
         self.loc_att_list.append('self.y_label')
 
         #Load an image using PIL
@@ -234,7 +266,11 @@ def UseModel(self,window):
         self.label_scale = ttk.Label(window, 
                                     image=self.photo_scale,
                                     background="white")
-        self.label_scale.place(anchor = 'n', relx = 0.9175, rely = 0.4)
+        self.label_scale.place(
+                            anchor = 'n', 
+                            relx = self.Placement['UseMod']['LabelS'][0], 
+                            rely = self.Placement['UseMod']['LabelS'][1]
+                            )
         self.loc_att_list.append('self.label_scale')
 
         # Register the validation function
@@ -246,11 +282,15 @@ def UseModel(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10,
+                            width = self.Placement['UseMod']['EntryX'][2],
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_X.insert(0, str(int(self.image_inf.width)))
-        self.entry_X.place(anchor = 'n', relx = 0.8025, rely = 0.4)
+        self.entry_X.place(
+                            anchor = 'n', 
+                            relx = self.Placement['UseMod']['EntryX'][0], 
+                            rely = self.Placement['UseMod']['EntryX'][1]
+                            )
         self.entry_X.config(state='disabled')
         self.loc_att_list.append('self.entry_X')
 
@@ -260,11 +300,15 @@ def UseModel(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10,
+                            width = self.Placement['UseMod']['EntryY'][2],
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_Y.insert(0, str(int(self.image_inf.height)))
-        self.entry_Y.place(anchor = 'n', relx = 0.875, rely = 0.4)
+        self.entry_Y.place(
+                            anchor = 'n', 
+                            relx = self.Placement['UseMod']['EntryY'][0], 
+                            rely = self.Placement['UseMod']['EntryY'][1]
+                            )
         self.entry_Y.config(state='disabled')
         self.loc_att_list.append('self.entry_Y')
 
@@ -274,20 +318,30 @@ def UseModel(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10,
+                            width = self.Placement['UseMod']['EntryS'][2],
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_S.insert(0, "1")
-        self.entry_S.place(anchor = 'n', relx = 0.955, rely = 0.4)
+        self.entry_S.place(
+                            anchor = 'n', 
+                            relx = self.Placement['UseMod']['EntryS'][0], 
+                            rely = self.Placement['UseMod']['EntryS'][1]
+                            )
         self.loc_att_list.append('self.entry_S')
 
         # Create Scale Button
-        self.btn_scale = ttk.Button(window, 
-                                text = "Scale", 
-                                command = lambda: scale_img(self), 
-                                style = 'Modern2.TButton',
-                                width = 10)
-        self.btn_scale.place(anchor = 'n', relx = 0.875, rely = 0.5)
+        self.btn_scale = ttk.Button(
+                                    window, 
+                                    text = "Scale", 
+                                    command = lambda: scale_img(self), 
+                                    style = 'Modern2.TButton',
+                                    width = self.Placement['UseMod']['ButtonS'][2]
+                                    )
+        self.btn_scale.place(
+                            anchor = 'n', 
+                            relx = self.Placement['UseMod']['ButtonS'][0], 
+                            rely = self.Placement['UseMod']['ButtonS'][1]
+                            )
         self.loc_att_list.append('self.btn_scale')
 
     # Function to segment an image
@@ -389,7 +443,7 @@ def UseModel(self,window):
 
         # Create a Matplotlib figure
         if hasattr(self,"fig4") == False:
-            scale_im = 0.8
+            scale_im = self.Placement['UseMod']['Canvas1'][2]
             self.fig4, self.ax4 = plt.subplots(figsize=(8/scale_im, 6/scale_im))
             self.fig4.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
@@ -398,7 +452,11 @@ def UseModel(self,window):
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig4.get_figwidth() * self.fig4.get_dpi()),
                                 height=int(self.fig4.get_figheight() * self.fig4.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.5, rely = 0.3)
+        self.canvas_widget.place(
+                                    anchor='n', 
+                                    relx = self.Placement['UseMod']['Canvas1'][0], 
+                                    rely = self.Placement['UseMod']['Canvas1'][1]
+                                    )
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -414,9 +472,13 @@ def UseModel(self,window):
                                     text = "Save Image", 
                                     command = lambda:save_seg(self, 'Save'), 
                                     style = 'Modern.TButton',
-                                    width = 12
+                                    width = self.Placement['UseMod']['ButtonSave'][2]
                                     )
-        self.save_seg_btn.place(anchor = 'n', relx = 0.44, rely = 0.2)
+        self.save_seg_btn.place(
+                                anchor = 'n', 
+                                relx = self.Placement['UseMod']['ButtonSave'][0], 
+                                rely = self.Placement['UseMod']['ButtonSave'][1]
+                                )
         self.loc_att_list.append('self.save_seg_btn')
 
         # Create button to save image
@@ -425,9 +487,13 @@ def UseModel(self,window):
                                     text = "Discard Image", 
                                     command = lambda:save_seg(self, 'Discard'), 
                                     style = 'Modern.TButton',
-                                    width = 12
+                                    width = self.Placement['UseMod']['ButtonDisc'][2]
                                     )
-        self.disc_seg_btn.place(anchor = 'n', relx = 0.56, rely = 0.2)
+        self.disc_seg_btn.place(
+                                anchor = 'n', 
+                                relx = self.Placement['UseMod']['ButtonDisc'][0], 
+                                rely = self.Placement['UseMod']['ButtonDisc'][1]
+                                )
         self.loc_att_list.append('self.disc_seg_btn')
 
     # Function to save/discard an image
@@ -622,7 +688,11 @@ def UseModel(self,window):
                                 text='Segment Image',
                                 style = "ModernT.TLabel"
                                 )
-    self.label_title.place(anchor = 'center', relx = 0.5, rely = 0.125)
+    self.label_title.place(
+                            anchor = 'center', 
+                            relx = self.Placement['UseMod']['LabelTitle'][0], 
+                            rely = self.Placement['UseMod']['LabelTitle'][1]
+                            )
     self.att_list.append('self.label_title')
 
     # Create button to load a model
@@ -631,9 +701,13 @@ def UseModel(self,window):
                                 text = "Load Model", 
                                 command = lambda:load_model(self, 'New'), 
                                 style = 'Modern.TButton',
-                                width = 10
+                                width = self.Placement['UseMod']['ButtonLoadM'][2]
                                 )
-    self.load_mod_btn.place(anchor = 'n', relx = 0.125, rely = 0.2)
+    self.load_mod_btn.place(
+                            anchor = 'n', 
+                            relx = self.Placement['UseMod']['ButtonLoadM'][0], 
+                            rely = self.Placement['UseMod']['ButtonLoadM'][1]
+                            )
     self.att_list.append('self.load_mod_btn')
     
     # Create button to load an image
@@ -642,9 +716,13 @@ def UseModel(self,window):
                                 text = "Load Image", 
                                 command = lambda:load_image(self), 
                                 style = 'Modern.TButton',
-                                width = 10
+                                width = self.Placement['UseMod']['ButtonLoadI'][2]
                                 )
-    self.load_btn.place(anchor = 'n', relx = 0.875, rely = 0.2)
+    self.load_btn.place(
+                        anchor = 'n', 
+                        relx = self.Placement['UseMod']['ButtonLoadI'][0], 
+                        rely = self.Placement['UseMod']['ButtonLoadI'][1]
+                        )
     self.att_list.append('self.load_btn')
 
     # Create button to segment an image
@@ -653,21 +731,29 @@ def UseModel(self,window):
                                 text = "Segment Image", 
                                 command = lambda:segment_image(self), 
                                 style = 'Modern.TButton',
-                                width = 15
+                                width = self.Placement['UseMod']['ButtonSeg'][2]
                                 )
-    self.seg_btn.place(anchor = 'n', relx = 0.5, rely = 0.2)
+    self.seg_btn.place(
+                        anchor = 'n', 
+                        relx = self.Placement['UseMod']['ButtonSeg'][0], 
+                        rely = self.Placement['UseMod']['ButtonSeg'][1]
+                        )
     self.att_list.append('self.seg_btn')
 
     # Create Continue Button
-    self.btn_cont1 = ttk.Button(
-                               window, 
-                               text = "Continue", 
-                               command = next_page, 
-                               style = 'Modern2.TButton',
-                               width = 10
-                               )
-    self.btn_cont1.place(anchor = 'e', relx = 0.997, rely = 0.975)
-    self.att_list.append('self.btn_cont1')
+    self.btn_cont = ttk.Button(
+                                window, 
+                                text = "Continue", 
+                                command = next_page, 
+                                style = 'Modern2.TButton',
+                                width = self.Placement['UseMod']['ButtonCont'][2]
+                                )
+    self.btn_cont.place(
+                        anchor = 'e', 
+                        relx = self.Placement['UseMod']['ButtonCont'][0], 
+                        rely = self.Placement['UseMod']['ButtonCont'][1]
+                        )
+    self.att_list.append('self.btn_cont')
 
     # Create Home Button
     # -- Load an image using PIL
@@ -687,9 +773,13 @@ def UseModel(self,window):
                                 compound='left',                                 
                                 command = home,
                                 style = "Modern2.TButton",
-                                width = 7
+                                width = self.Placement['UseMod']['ButtonHome'][2]
                                 )
-    self.btn_home.place(anchor = 'e', relx = 0.942, rely = 0.975)
+    self.btn_home.place(
+                        anchor = 'e', 
+                        relx = self.Placement['UseMod']['ButtonHome'][0], 
+                        rely = self.Placement['UseMod']['ButtonHome'][1]
+                        )
     self.att_list.append('self.btn_home')
 
     # Create Help Button
@@ -710,7 +800,11 @@ def UseModel(self,window):
                                 compound='left',                                 
                                 command = helper,
                                 style = "Modern2.TButton",
-                                width = 7
+                                width = self.Placement['FileSelect']['Help'][2]
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
+    self.btn_help.place(
+                        anchor = 'w', 
+                        relx = self.Placement['FileSelect']['Help'][0], 
+                        rely = self.Placement['FileSelect']['Help'][1]
+                        )
     self.att_list.append('self.btn_help')
