@@ -241,7 +241,7 @@ def Placements(self, res):
 
         # -- CreateFileSelection
         Placement['FileSelect']['LabelT'] = [0.5, 0.0075]
-        Placement['FileSelect']['Canvas1'] = [0.5, 0.1]
+        Placement['FileSelect']['Canvas1'] = [0.5, 0.1, 7, 4.5]
         Placement['FileSelect']['Toolbar1'] = [0.5, 0.82]
         Placement['FileSelect']['ButtonLeftW'] = [0.45, 0.9, 3]
         Placement['FileSelect']['ButtonRightW'] = [0.55, 0.9, 3]
@@ -456,7 +456,7 @@ def Placements(self, res):
 
         # -- CreateFileSelection
         Placement['FileSelect']['LabelT'] = [0.5, 0.0075]
-        Placement['FileSelect']['Canvas1'] = [0.5, 0.08]
+        Placement['FileSelect']['Canvas1'] = [0.5, 0.08, 7, 4.5]
         Placement['FileSelect']['Toolbar1'] = [0.5, 0.82]
         Placement['FileSelect']['ButtonLeftW'] = [0.45, 0.9, 3]
         Placement['FileSelect']['ButtonRightW'] = [0.55, 0.9, 3]

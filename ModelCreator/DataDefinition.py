@@ -26,6 +26,7 @@ def DataDefinition(self,window):
 
     # Preallocate image lists
     if "ML" not in self.Segment.keys():
+
         # Get the Working Directory
         dir_name = os.path.dirname(self.proj_file)
         
@@ -33,40 +34,49 @@ def DataDefinition(self,window):
         save_path = os.path.join(dir_name, 'Temp')
 
         # Create the data structure
-        self.Segment['ML'] = {'Data':{'Unused':[],
-                                      'Train':[],
-                                      'Valid':[],
-                                      'Test':[]},
-                              'Settings':{},
-                              'TempDir':save_path}
+        self.Segment['ML'] = {
+                            'Data':{
+                                    'Unused':[],
+                                    'Train':[],
+                                    'Valid':[],
+                                    'Test':[]
+                                    },
+                            'Settings':{},
+                            'TempDir':save_path
+                            }
+        
+        # Add all files to structure
         files = glob.glob(os.path.join(self.Segment['ML']['TempDir'],'Annotated','*.png'))
         for file in files:
             self.Segment['ML']['Data']['Unused'].append(os.path.basename(file))
 
     # Function to add items to a list
     def add_to_list(self, tag):
+
         # Set Out Tag
         tag_o = tag
 
         # Get All Selected Images
-        values = [self.listbox_6_01.get(idx) for idx in self.listbox_6_01.curselection()]
+        values = [self.listbox_all.get(idx) for idx in self.listbox_all.curselection()]
         if len(values) > 0:
             val_o = values
-            tag_o = 'self.listbox_6_01'
-        values = [self.listbox_6_02.get(idx) for idx in self.listbox_6_02.curselection()]
+            tag_o = 'self.listbox_all'
+        values = [self.listbox_train.get(idx) for idx in self.listbox_train.curselection()]
         if len(values) > 0:
             val_o = values
-            tag_o = 'self.listbox_6_02'
-        values = [self.listbox_6_03.get(idx) for idx in self.listbox_6_03.curselection()]
+            tag_o = 'self.listbox_train'
+        values = [self.listbox_val.get(idx) for idx in self.listbox_val.curselection()]
         if len(values) > 0:
             val_o = values
-            tag_o = 'self.listbox_6_03'
-        values = [self.listbox_6_04.get(idx) for idx in self.listbox_6_04.curselection()]
+            tag_o = 'self.listbox_val'
+        values = [self.listbox_test.get(idx) for idx in self.listbox_test.curselection()]
         if len(values) > 0:
             val_o = values
-            tag_o = 'self.listbox_6_04'
+            tag_o = 'self.listbox_test'
 
+        # Check tags aren't equal
         if tag != tag_o:
+
             # Get all options in both list boxes
             list1 = list(eval(tag_o).get(0, tk.END))
             list2 = list(eval(tag).get(0, tk.END))
@@ -88,18 +98,18 @@ def DataDefinition(self,window):
                 eval(tag).insert(tk.END, item)
 
             # Update Structure
-            self.Segment['ML']['Data']['Unused'] = list(self.listbox_6_01.get(0, tk.END))
-            self.Segment['ML']['Data']['Train'] = list(self.listbox_6_02.get(0, tk.END))
-            self.Segment['ML']['Data']['Valid'] = list(self.listbox_6_03.get(0, tk.END))
-            self.Segment['ML']['Data']['Test'] = list(self.listbox_6_04.get(0, tk.END))
+            self.Segment['ML']['Data']['Unused'] = list(self.listbox_all.get(0, tk.END))
+            self.Segment['ML']['Data']['Train'] = list(self.listbox_train.get(0, tk.END))
+            self.Segment['ML']['Data']['Valid'] = list(self.listbox_val.get(0, tk.END))
+            self.Segment['ML']['Data']['Test'] = list(self.listbox_test.get(0, tk.END))
 
     # Function to continue to next page
     def next_page():
+
         # Delete the page
         DeleteLocal(self)
         DeletePages(self)
 
-                
         # Update the page number
         self.Segment['GUI']['CurrentPage'] = 7
 
@@ -108,6 +118,7 @@ def DataDefinition(self,window):
 
     # Function to go back to previous page
     def back_page():
+
         # Delete the page
         DeleteLocal(self)
         DeletePages(self)
@@ -244,35 +255,35 @@ def DataDefinition(self,window):
     self.att_list.append('self.label_title')
 
     # Create a vertical scrollbar for All images
-    self.scrollbar_6_01= ttk.Scrollbar(
+    self.scrollbar_all= ttk.Scrollbar(
                                     window, 
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_6_01.place(
-                                anchor='n', 
-                                relx = self.Placement['DataDef']['Scrollbar1'][0], 
-                                rely = self.Placement['DataDef']['Scrollbar1'][1], 
-                                height = self.Placement['DataDef']['Scrollbar1'][2]
-                                )
-    self.loc_att_list.append('self.scrollbar_6_01')
+    self.scrollbar_all.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Scrollbar1'][0], 
+                            rely = self.Placement['DataDef']['Scrollbar1'][1], 
+                            height = self.Placement['DataDef']['Scrollbar1'][2]
+                            )
+    self.loc_att_list.append('self.scrollbar_all')
 
     # Create the label for All Images
-    self.label_6_01 = ttk.Label(
+    self.label_all = ttk.Label(
                             window,
                             text='All Images',
                             style = "Modern3.TLabel"
                             )
-    self.label_6_01.place(
-                            anchor='n', 
-                            relx = self.Placement['DataDef']['Label1'][0], 
-                            rely = self.Placement['DataDef']['Label1'][1]
-                            )
-    self.loc_att_list.append('self.label_6_01')
+    self.label_all.place(
+                        anchor='n', 
+                        relx = self.Placement['DataDef']['Label1'][0], 
+                        rely = self.Placement['DataDef']['Label1'][1]
+                        )
+    self.loc_att_list.append('self.label_all')
 
     # Create All Images List Box
     items1 = tk.StringVar(value=self.Segment['ML']['Data']['Unused'])
-    self.listbox_6_01 = tk.Listbox(
+    self.listbox_all = tk.Listbox(
                                 window, 
                                 listvariable=items1,
                                 selectmode='multiple',
@@ -286,125 +297,125 @@ def DataDefinition(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_6_01.place(
-                            anchor='n', 
-                            relx = self.Placement['DataDef']['Listbox1'][0], 
-                            rely = self.Placement['DataDef']['Listbox1'][1]
-                            )
-    self.listbox_6_01.config(yscrollcommand= self.scrollbar_6_01.set)
-    self.loc_att_list.append('self.listbox_6_01')
+    self.listbox_all.place(
+                        anchor='n', 
+                        relx = self.Placement['DataDef']['Listbox1'][0], 
+                        rely = self.Placement['DataDef']['Listbox1'][1]
+                        )
+    self.listbox_all.config(yscrollcommand= self.scrollbar_all.set)
+    self.loc_att_list.append('self.listbox_all')
 
     # Create button to move items right
-    self.btn_6_01 = ttk.Button(
-                                window, 
-                                text = "Add to Unused", 
-                                command = lambda : add_to_list(self,'self.listbox_6_01'), 
-                                style = "Modern3.TButton",
-                                width = self.Placement['DataDef']['Button1'][0]
-                                )
-    self.btn_6_01.place(
-                        anchor = 'c', 
-                        relx = self.Placement['DataDef']['Button1'][0], 
-                        rely = self.Placement['DataDef']['Button1'][1]
-                        )
-    self.loc_att_list.append('self.btn_6_01')
+    self.btn_all = ttk.Button(
+                            window, 
+                            text = "Add to Unused", 
+                            command = lambda : add_to_list(self,'self.listbox_all'), 
+                            style = "Modern3.TButton",
+                            width = self.Placement['DataDef']['Button1'][0]
+                            )
+    self.btn_all.place(
+                    anchor = 'c', 
+                    relx = self.Placement['DataDef']['Button1'][0], 
+                    rely = self.Placement['DataDef']['Button1'][1]
+                    )
+    self.loc_att_list.append('self.btn_all')
 
     # Create a vertical scrollbar for Training Data
-    self.scrollbar_6_02= ttk.Scrollbar(
-                                    window, 
-                                    orient= 'vertical', 
-                                    style = "Vertical.TScrollbar"
-                                    )
-    self.scrollbar_6_02.place(
-                                anchor='n', 
-                                relx = self.Placement['DataDef']['Scrollbar2'][0], 
-                                rely = self.Placement['DataDef']['Scrollbar2'][1], 
-                                height = self.Placement['DataDef']['Scrollbar2'][2]
-                                )
-    self.loc_att_list.append('self.scrollbar_6_02')
+    self.scrollbar_train= ttk.Scrollbar(
+                                        window, 
+                                        orient= 'vertical', 
+                                        style = "Vertical.TScrollbar"
+                                        )
+    self.scrollbar_train.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Scrollbar2'][0], 
+                            rely = self.Placement['DataDef']['Scrollbar2'][1], 
+                            height = self.Placement['DataDef']['Scrollbar2'][2]
+                            )
+    self.loc_att_list.append('self.scrollbar_train')
 
     # Create the label for Training Data
-    self.label_6_02 = ttk.Label(
-                            window,
-                            text='Training Data',
-                            style = "Modern3.TLabel"
-                            )
-    self.label_6_02.place(
-                            anchor='n', 
-                            relx = self.Placement['DataDef']['Label2'][0], 
-                            rely = self.Placement['DataDef']['Label2'][1]
-                            )
-    self.loc_att_list.append('self.label_6_02')
+    self.label_train = ttk.Label(
+                                window,
+                                text='Training Data',
+                                style = "Modern3.TLabel"
+                                )
+    self.label_train.place(
+                        anchor='n', 
+                        relx = self.Placement['DataDef']['Label2'][0], 
+                        rely = self.Placement['DataDef']['Label2'][1]
+                        )
+    self.loc_att_list.append('self.label_train')
 
     # Create Training Data List Box
     items2 = tk.StringVar(value=self.Segment['ML']['Data']['Train'])
-    self.listbox_6_02 = tk.Listbox(
-                                window, 
-                                listvariable=items2,
-                                selectmode='multiple',
-                                height = self.Placement['DataDef']['Listbox2'][2],
-                                width = self.Placement['DataDef']['Listbox2'][3],
-                                bg=self.style_man['ListBox']['ListBox1']['bg'],            
-                                fg=self.style_man['ListBox']['ListBox1']['fg'],            
-                                font=self.style_man['ListBox']['ListBox1']['font'],    
-                                selectbackground=self.style_man['ListBox']['ListBox1']['selectbackground'], 
-                                selectforeground=self.style_man['ListBox']['ListBox1']['selectforeground'],  
-                                highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
-                                bd=self.style_man['ListBox']['ListBox1']['bd']
-                                )
-    self.listbox_6_02.place(
+    self.listbox_train = tk.Listbox(
+                                    window, 
+                                    listvariable=items2,
+                                    selectmode='multiple',
+                                    height = self.Placement['DataDef']['Listbox2'][2],
+                                    width = self.Placement['DataDef']['Listbox2'][3],
+                                    bg=self.style_man['ListBox']['ListBox1']['bg'],            
+                                    fg=self.style_man['ListBox']['ListBox1']['fg'],            
+                                    font=self.style_man['ListBox']['ListBox1']['font'],    
+                                    selectbackground=self.style_man['ListBox']['ListBox1']['selectbackground'], 
+                                    selectforeground=self.style_man['ListBox']['ListBox1']['selectforeground'],  
+                                    highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
+                                    bd=self.style_man['ListBox']['ListBox1']['bd']
+                                    )
+    self.listbox_train.place(
                             anchor='n', 
                             relx = self.Placement['DataDef']['Listbox2'][0], 
                             rely = self.Placement['DataDef']['Listbox2'][1]
                             )
-    self.listbox_6_02.config(yscrollcommand= self.scrollbar_6_02.set)
-    self.loc_att_list.append('self.listbox_6_02')
+    self.listbox_train.config(yscrollcommand= self.scrollbar_train.set)
+    self.loc_att_list.append('self.listbox_train')
 
     # Create button to move items to train
-    self.btn_6_02 = ttk.Button(
+    self.btn_train = ttk.Button(
                                 window, 
                                 text = "Add to Training", 
-                                command = lambda : add_to_list(self,'self.listbox_6_02'), 
+                                command = lambda : add_to_list(self,'self.listbox_train'), 
                                 style = "Modern3.TButton",
                                 width = self.Placement['DataDef']['Button2'][2]
                                 )
-    self.btn_6_02.place(
+    self.btn_train.place(
                         anchor = 'c', 
                         relx = self.Placement['DataDef']['Button2'][0], 
                         rely = self.Placement['DataDef']['Button2'][1]
                         )
-    self.loc_att_list.append('self.btn_6_02')
+    self.loc_att_list.append('self.btn_train')
 
     # Create a vertical scrollbar for Validation Data
-    self.scrollbar_6_03= ttk.Scrollbar(
+    self.scrollbar_val= ttk.Scrollbar(
                                     window, 
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_6_03.place(
-                                anchor='n', 
-                                relx = self.Placement['DataDef']['Scrollbar3'][0], 
-                                rely = self.Placement['DataDef']['Scrollbar3'][1], 
-                                height = self.Placement['DataDef']['Scrollbar3'][2]
-                                )
-    self.loc_att_list.append('self.scrollbar_6_03')
+    self.scrollbar_val.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Scrollbar3'][0], 
+                            rely = self.Placement['DataDef']['Scrollbar3'][1], 
+                            height = self.Placement['DataDef']['Scrollbar3'][2]
+                            )
+    self.loc_att_list.append('self.scrollbar_val')
 
     # Create the label for Validation Data
-    self.label_6_03 = ttk.Label(
+    self.label_val = ttk.Label(
                             window,
                             text='Validation Data',
                             style = "Modern3.TLabel"
                             )
-    self.label_6_03.place(
-                            anchor='n', 
-                            relx = self.Placement['DataDef']['Label3'][0], 
-                            rely = self.Placement['DataDef']['Label3'][1]
-                            )
-    self.loc_att_list.append('self.label_6_03')
+    self.label_val.place(
+                        anchor='n', 
+                        relx = self.Placement['DataDef']['Label3'][0], 
+                        rely = self.Placement['DataDef']['Label3'][1]
+                        )
+    self.loc_att_list.append('self.label_val')
 
     # Create Validation Data List Box
     items3 = tk.StringVar(value=self.Segment['ML']['Data']['Valid'])
-    self.listbox_6_03 = tk.Listbox(
+    self.listbox_val = tk.Listbox(
                                 window, 
                                 listvariable=items3,
                                 selectmode='multiple',
@@ -418,59 +429,59 @@ def DataDefinition(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_6_03.place(
-                            anchor='n', 
-                            relx = self.Placement['DataDef']['Listbox3'][0], 
-                            rely = self.Placement['DataDef']['Listbox3'][1]
-                            )
-    self.listbox_6_03.config(yscrollcommand= self.scrollbar_6_03.set)
-    self.loc_att_list.append('self.listbox_6_03')
+    self.listbox_val.place(
+                        anchor='n', 
+                        relx = self.Placement['DataDef']['Listbox3'][0], 
+                        rely = self.Placement['DataDef']['Listbox3'][1]
+                        )
+    self.listbox_val.config(yscrollcommand= self.scrollbar_val.set)
+    self.loc_att_list.append('self.listbox_val')
 
     # Create button to move items to validation
-    self.btn_6_03 = ttk.Button(
-                                window, 
-                                text = "Add to Valdiation", 
-                                command = lambda : add_to_list(self,'self.listbox_6_03'), 
-                                style = "Modern3.TButton",
-                                width = self.Placement['DataDef']['Button3'][2]
-                                )
-    self.btn_6_03.place(
-                        anchor = 'c', 
-                        relx = self.Placement['DataDef']['Button3'][0], 
-                        rely = self.Placement['DataDef']['Button3'][1]
-                        )
-    self.loc_att_list.append('self.btn_6_03')
+    self.btn_val = ttk.Button(
+                            window, 
+                            text = "Add to Valdiation", 
+                            command = lambda : add_to_list(self,'self.listbox_val'), 
+                            style = "Modern3.TButton",
+                            width = self.Placement['DataDef']['Button3'][2]
+                            )
+    self.btn_val.place(
+                    anchor = 'c', 
+                    relx = self.Placement['DataDef']['Button3'][0], 
+                    rely = self.Placement['DataDef']['Button3'][1]
+                    )
+    self.loc_att_list.append('self.btn_val')
 
     # Create a vertical scrollbar for Test Data
-    self.scrollbar_6_04= ttk.Scrollbar(
+    self.scrollbar_test= ttk.Scrollbar(
                                     window, 
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_6_04.place(
-                                anchor='n', 
-                                relx = self.Placement['DataDef']['Scrollbar4'][0], 
-                                rely = self.Placement['DataDef']['Scrollbar4'][1], 
-                                height = self.Placement['DataDef']['Scrollbar4'][2]
-                                )
-    self.loc_att_list.append('self.scrollbar_6_04')
+    self.scrollbar_test.place(
+                            anchor='n', 
+                            relx = self.Placement['DataDef']['Scrollbar4'][0], 
+                            rely = self.Placement['DataDef']['Scrollbar4'][1], 
+                            height = self.Placement['DataDef']['Scrollbar4'][2]
+                            )
+    self.loc_att_list.append('self.scrollbar_test')
 
     # Create the label for All Images
-    self.label_6_04 = ttk.Label(
-                            window,
-                            text='Test Data',
-                            style = "Modern3.TLabel"
-                            )
-    self.label_6_04.place(
-                            anchor='n', 
-                            relx = self.Placement['DataDef']['Label4'][0], 
-                            rely = self.Placement['DataDef']['Label4'][1]
-                            )
-    self.loc_att_list.append('self.label_6_04')
+    self.label_test = ttk.Label(
+                                window,
+                                text='Test Data',
+                                style = "Modern3.TLabel"
+                                )
+    self.label_test.place(
+                        anchor='n', 
+                        relx = self.Placement['DataDef']['Label4'][0], 
+                        rely = self.Placement['DataDef']['Label4'][1]
+                        )
+    self.loc_att_list.append('self.label_test')
 
     # Create All Images List Box
     items4 = tk.StringVar(value=self.Segment['ML']['Data']['Test'])
-    self.listbox_6_04 = tk.Listbox(
+    self.listbox_test = tk.Listbox(
                                 window, 
                                 listvariable=items4,
                                 selectmode='multiple',
@@ -484,53 +495,57 @@ def DataDefinition(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_6_04.place(
+    self.listbox_test.place(
                             anchor='n', 
                             relx = self.Placement['DataDef']['Listbox4'][0], 
                             rely = self.Placement['DataDef']['Listbox4'][1]
                             )
-    self.listbox_6_04.config(yscrollcommand= self.scrollbar_6_04.set)
-    self.loc_att_list.append('self.listbox_6_04')
+    self.listbox_test.config(yscrollcommand= self.scrollbar_test.set)
+    self.loc_att_list.append('self.listbox_test')
 
     # Create button to move items to test
-    self.btn_6_04 = ttk.Button(
-                                window, 
-                                text = "Add to Test", 
-                                command = lambda : add_to_list(self,'self.listbox_6_04'), 
-                                style = "Modern3.TButton",
-                                width = self.Placement['DataDef']['Button4'][2]
-                                )
-    self.btn_6_04.place(
+    self.btn_test = ttk.Button(
+                            window, 
+                            text = "Add to Test", 
+                            command = lambda : add_to_list(self,'self.listbox_test'), 
+                            style = "Modern3.TButton",
+                            width = self.Placement['DataDef']['Button4'][2]
+                            )
+    self.btn_test.place(
                         anchor = 'c', 
                         relx = self.Placement['DataDef']['Button4'][0], 
                         rely = self.Placement['DataDef']['Button4'][1]
                         )
-    self.loc_att_list.append('self.btn_6_04')
+    self.loc_att_list.append('self.btn_test')
 
     # Create Continue Button
     self.btn_cont = ttk.Button(
-                                window, 
-                                text = "Continue", 
-                                command = next_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['DataDef']['ButtonCont'][2]
-                                )
-    self.btn_cont.place(anchor = 'e', 
+                            window, 
+                            text = "Continue", 
+                            command = next_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['DataDef']['ButtonCont'][2]
+                            )
+    self.btn_cont.place(
+                        anchor = 'e', 
                         relx = self.Placement['DataDef']['ButtonCont'][0], 
-                        rely = self.Placement['DataDef']['ButtonCont'][1])
+                        rely = self.Placement['DataDef']['ButtonCont'][1]
+                        )
     self.att_list.append('self.btn_cont')
     
     # Create Back Button
     self.btn_back = ttk.Button(
-                                window, 
-                                text = "Back", 
-                                command = back_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['DataDef']['ButtonBack'][2]
-                                )
-    self.btn_back.place(anchor = 'e', 
-                         relx = self.Placement['DataDef']['ButtonBack'][0], 
-                         rely = self.Placement['DataDef']['ButtonBack'][1])
+                            window, 
+                            text = "Back", 
+                            command = back_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['DataDef']['ButtonBack'][2]
+                            )
+    self.btn_back.place(
+                        anchor = 'e', 
+                        relx = self.Placement['DataDef']['ButtonBack'][0], 
+                        rely = self.Placement['DataDef']['ButtonBack'][1]
+                        )
     self.att_list.append('self.btn_back')
 
     # Create Help Button
@@ -545,15 +560,17 @@ def DataDefinition(self,window):
 
     # -- Create the button
     self.btn_help = ttk.Button(
-                                window, 
-                                text = " Help",
-                                image=self.photo_help,
-                                compound='left',                                 
-                                command = helper,
-                                style = "Modern2.TButton",
-                                width = self.Placement['DataDef']['Help'][2]
-                                )
-    self.btn_help.place(anchor = 'w', 
+                            window, 
+                            text = " Help",
+                            image=self.photo_help,
+                            compound='left',                                 
+                            command = helper,
+                            style = "Modern2.TButton",
+                            width = self.Placement['DataDef']['Help'][2]
+                            )
+    self.btn_help.place(
+                        anchor = 'w', 
                         relx = self.Placement['DataDef']['Help'][0], 
-                        rely = self.Placement['DataDef']['Help'][1])
+                        rely = self.Placement['DataDef']['Help'][1]
+                        )
     self.att_list.append('self.btn_help')

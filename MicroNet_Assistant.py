@@ -42,13 +42,8 @@ from RUCGenerator.BuildRUCGenerator import *
 
 #Create the GUI
 class MicroNetAssistant:
-    #Initialize
+    # Function to initialize the program
     def __init__(self):
-        #--------------------------------------------------------------------------
-        #
-        #   PURPOSE: Initialize the GUI.
-        #
-        #--------------------------------------------------------------------------
 
         # Set global variales
         global window
@@ -74,15 +69,15 @@ class MicroNetAssistant:
         img = img.resize((int(img.width*scale), int(img.height*scale)))
         self.img_hdr = ImageTk.PhotoImage(img)
         self.panel_hdr = tk.Label(
-                                    window, 
-                                    image = self.img_hdr, 
-                                    bg = 'white'
-                                    )
-        self.panel_hdr.place(  
-                                anchor = 'n', 
-                                relx = self.Placement['MainPage']['Title'][0], 
-                                rely = self.Placement['MainPage']['Title'][1]
+                                window, 
+                                image = self.img_hdr, 
+                                bg = 'white'
                                 )
+        self.panel_hdr.place(  
+                            anchor = 'n', 
+                            relx = self.Placement['MainPage']['Title'][0], 
+                            rely = self.Placement['MainPage']['Title'][1]
+                            )
 
         # Add the NASA Logo
         img = Image.open(logo_img)
@@ -90,26 +85,21 @@ class MicroNetAssistant:
         img = img.resize((int(img.width*scale), int(img.height*scale)))
         self.img_nasa = ImageTk.PhotoImage(img)
         self.panel_nasa = tk.Label(
-                                    window, 
-                                    image = self.img_nasa, 
-                                    bg = 'white'
-                                    )
-        self.panel_nasa.place(
-                                anchor = 'e', 
-                                relx = self.Placement['MainPage']['Logo'][0], 
-                                rely = self.Placement['MainPage']['Logo'][1]
+                                window, 
+                                image = self.img_nasa, 
+                                bg = 'white'
                                 )
+        self.panel_nasa.place(
+                            anchor = 'e', 
+                            relx = self.Placement['MainPage']['Logo'][0], 
+                            rely = self.Placement['MainPage']['Logo'][1]
+                            )
 
         # Load the style
         GetStyles(self)
 
         # Function for GUI Exit
         def on_closing(self):
-            #----------------------------------------------------------------------
-            #
-            #   PURPOSE: Set exit protocol for the GUI.
-            #
-            #----------------------------------------------------------------------
 
             # Check if project file exists
             if hasattr(self,'proj_file'):
@@ -132,14 +122,10 @@ class MicroNetAssistant:
 
     # Function to create the save button
     def create_save_btn(self):
-        #--------------------------------------------------------------------------
-        #
-        #   PURPOSE: Create the save button for the GUI.
-        #
-        #--------------------------------------------------------------------------
 
         # Check if button exists
         if hasattr(self,"btn_save") == False:
+
             # Create the Save Button
             # -- Load an image using PIL
             self.image_path_save = os.path.join(os.getcwd(),'GUI','General','save.png') 
@@ -168,11 +154,6 @@ class MicroNetAssistant:
 
     # Function to create a new project
     def new_project(self):
-        #--------------------------------------------------------------------------
-        #
-        #   PURPOSE: Initialize a new project file.
-        #
-        #--------------------------------------------------------------------------
 
         # Initialize the data structure
         CreateNewProject(self)
@@ -189,11 +170,6 @@ class MicroNetAssistant:
 
     # Function to load an existing project
     def load_project(self):
-        #--------------------------------------------------------------------------
-        #
-        #   PURPOSE: Load a project.
-        #
-        #--------------------------------------------------------------------------
 
         # Load the data structure
         LoadProject(self, window)
@@ -210,11 +186,6 @@ class MicroNetAssistant:
 
     # Function to load an existing model for segmentation
     def segment_image(self):
-        #--------------------------------------------------------------------------
-        #
-        #   PURPOSE: Load a trained model and segment an image.
-        #
-        #--------------------------------------------------------------------------
 
         # Set the page number
         self.Segment = {'GUI':{'CurrentPage':8}}
@@ -225,13 +196,8 @@ class MicroNetAssistant:
         # Load the page
         self.load_page()
 
-    # Function to start exporting a segmentation
+    # Function to start exporting a segmentation to an RUC
     def start_export(self):
-        #--------------------------------------------------------------------------
-        #
-        #   PURPOSE: Enable exporting segmentation to a model.
-        #
-        #--------------------------------------------------------------------------
 
         # Set the page number
         self.Segment = {'GUI':{'CurrentPage':9}}
@@ -244,11 +210,6 @@ class MicroNetAssistant:
 
     # Function to load a GUI Page
     def load_page(self):
-        #--------------------------------------------------------------------------
-        #
-        #   PURPOSE: Load the correct page of the GUI.
-        #
-        #--------------------------------------------------------------------------
 
         # Load the correct page
         if self.Segment['GUI']['CurrentPage'] == 0:
@@ -290,11 +251,6 @@ class MicroNetAssistant:
 
     # Function to save the project file
     def save(self):
-        #--------------------------------------------------------------------------
-        #
-        #   PURPOSE: Save the project file.
-        #
-        #--------------------------------------------------------------------------
 
         # Check the max page number corresponds to the Train Model Page
         if self.Segment['GUI']['CurrentPage'] > 7:
@@ -323,6 +279,8 @@ class MicroNetAssistant:
 
         # Function to save the data
         def save_file(callback):
+            
+            # Compress data with pickle
             cctx = zstd.ZstdCompressor()
             with open(self.proj_file, 'wb') as f:
                 with cctx.stream_writer(f) as compressor:
@@ -333,6 +291,7 @@ class MicroNetAssistant:
 
         # Function to display progress bar while saving
         def show_loading_window():
+
             # Create the window
             loading = tk.Toplevel(window)
             loading.title("Saving File")
@@ -343,34 +302,39 @@ class MicroNetAssistant:
 
             # Function for progress bar Exit Protocol
             def on_closing_saving(self):
+
                 # Don't allow exit while saving
                 return
             
             # Create the window exit protocal
             loading.protocol("WM_DELETE_WINDOW", lambda:on_closing_saving(self))
 
-            # Create the label
+            # Create the loading label
             ttk.Label(
-                        loading, 
-                        text="Saving Project File - Please Wait.", 
-                        style = "Modern1.TLabel"
-                        ).pack(pady=10)
+                    loading, 
+                    text="Saving Project File - Please Wait.", 
+                    style = "Modern1.TLabel"
+                    ).pack(pady=10)
 
             # Create the progress bar
             pb = ttk.Progressbar(
-                                    loading, 
-                                    mode='indeterminate',
-                                    style = "Modern.Horizontal.TProgressbar"
-                                    )
+                                loading, 
+                                mode='indeterminate',
+                                style = "Modern.Horizontal.TProgressbar"
+                                )
             pb.pack(fill='x', padx=20, pady=10)
             pb.start(10)
 
             # Function to close window when task is completed
             def on_task_done():
+
+                # Stop Progress bar
                 pb.stop()
+
+                # Destroy Window
                 loading.destroy()
 
-            #Begin save on background thread
+            # Begin save on background thread
             threading.Thread(target=save_file, args=(on_task_done,), daemon=True).start()
 
             # Wait until loading window is closed
@@ -384,11 +348,6 @@ class MicroNetAssistant:
 
     # Function to save the current manual segmentation
     def save_image(self):
-        #--------------------------------------------------------------------------
-        #
-        #   PURPOSE: Save the current manual segmentation for data labelling.
-        #
-        #--------------------------------------------------------------------------
 
         # Save the image
         if self.prev_img is not None:
@@ -401,24 +360,18 @@ class MicroNetAssistant:
 
     # Function to save the current model information
     def save_model(self):
-        #--------------------------------------------------------------------------
-        #
-        #   PURPOSE: Save the current model information for defining a new model
-        #            to train.
-        #
-        #--------------------------------------------------------------------------
 
         # Get the model information
         if hasattr(self,"sheet_7_01"):
             self.Segment['Model Information'] = [
-                self.sheet_7_01.data,
-                self.sheet_7_02.data,
-                self.sheet_7_03.data,
-                self.combo_7_01.get(),
-                self.combo_7_02.get(),
-                self.combo_7_03.get(),
-                self.combo_7_04.get()
-            ]
+                                                self.sheet_7_01.data,
+                                                self.sheet_7_02.data,
+                                                self.sheet_7_03.data,
+                                                self.combo_7_01.get(),
+                                                self.combo_7_02.get(),
+                                                self.combo_7_03.get(),
+                                                self.combo_7_04.get()
+                                                ]
 
 # Start the GUI
 MicroNetAssistant()

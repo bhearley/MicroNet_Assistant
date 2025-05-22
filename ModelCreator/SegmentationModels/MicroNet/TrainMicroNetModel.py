@@ -9,22 +9,18 @@
 #-----------------------------------------------------------------------------------------
 def TrainMicroNetModel(MicroNetData):
     # Import Modules
+    import albumentations as albu
+    import matplotlib.pyplot as plt
+    import numpy as np
     import os
-    import torch
+    from pathlib import Path
+    import pretrained_microscopy_models as pmm
     import random
+    import segmentation_models_pytorch as smp
     import shutil
     from tkinter import filedialog
     from tkinter import messagebox
-
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import pretrained_microscopy_models as pmm
-    import segmentation_models_pytorch as smp
-    import albumentations as albu
-
-    from pathlib import Path
-    from torch.utils.data import DataLoader
-    from torch.utils.data import Dataset as BaseDataset
+    import torch
 
     # Set Directory Names
     x_train_dir = MicroNetData['Paths']['Train']
@@ -107,7 +103,6 @@ def TrainMicroNetModel(MicroNetData):
             albu.CenterCrop(MicroNetData['Augmentation']['Crop'],MicroNetData['Augmentation']['Crop'])
         ]
         return albu.Compose(test_transform)
-
 
     def to_tensor(x, **kwargs):
         return x.transpose(2, 0, 1).astype('float32')

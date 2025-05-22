@@ -13,12 +13,12 @@
 #-----------------------------------------------------------------------------------------
 def SegmentMicroNet(model_path, image_path, class_num):
     # Import Modules
-    import torch
     import imageio
     import numpy as np
     import pretrained_microscopy_models as pmm
     import segmentation_models_pytorch as smp
     from skimage import img_as_ubyte
+    import torch
     import warnings
 
     def compare(prediction, truth, labels):
@@ -146,6 +146,3 @@ def SegmentMicroNet(model_path, image_path, class_num):
     pred = segmentation_models_inference(im, model, preprocessing_fn, batch_size=4, patch_size=512, num_classes=class_num)
 
     return pred
-
-
-

@@ -2,7 +2,7 @@
 #
 #   ReviewImages.py
 #
-#   PURPOSE: Review the final images and save
+#   PURPOSE: Review the final images and save.
 #
 #   INPUTS:
 #       self    structure containing all GUI information
@@ -35,7 +35,10 @@ def ReviewImages(self,window):
 
     # Convert Images to pure RGB
     for item in self.Segment['Data'].keys():
+
+        # Check for image
         if self.Segment['Data'][item]['Original Image'] != None:
+
             # Get the original image
             if item not in self.Segment['Final'].keys():
                 self.Segment['Final'][item] = None
@@ -59,17 +62,21 @@ def ReviewImages(self,window):
             for pts in green_set:
                 pixels[pts[0], pts[1]] = (0,255,0,255)
 
+            # Save output
             self.output[item] = self.Segment['Final'][item]
             
     # Function to load an image for display
     def load_image(self):
-        if len([self.listbox_01.get(idx) for idx in self.listbox_01.curselection()]) > 0:
+
+        # Check that image was selected
+        if len([self.listbox_rev.get(idx) for idx in self.listbox_rev.curselection()]) > 0:
+
             # Delete Local Widgets
             if hasattr(self,"img_final"):
                 self.img_final.destroy()
 
             # Dispaly the image 
-            self.img_f = self.Segment['Final'][[self.listbox_01.get(idx) for idx in self.listbox_01.curselection()][0]]
+            self.img_f = self.Segment['Final'][[self.listbox_rev.get(idx) for idx in self.listbox_rev.curselection()][0]]
            
             # -- Get the image dimensions in pixels
             img_width = self.img_f.width
@@ -94,10 +101,10 @@ def ReviewImages(self,window):
             self.imgtk_f = ImageTk.PhotoImage(self.img_f)
             self.img_final = tk.Label(window, image = self.imgtk_f, bg = 'white')
             self.img_final.place(
-                                    anchor = 'n', 
-                                    relx = self.Placement['Review']['Image1'][0], 
-                                    rely = self.Placement['Review']['Image1'][1]
-                                    )
+                                anchor = 'n', 
+                                relx = self.Placement['Review']['Image1'][0], 
+                                rely = self.Placement['Review']['Image1'][1]
+                                )
             self.loc_att_list.append('self.img_final')
         else:
             messagebox.showerror(message = 'No image selected.')
@@ -135,10 +142,10 @@ def ReviewImages(self,window):
 
     # Function to continue to next page
     def next_page():
+
         # Delete the page
         DeleteLocal(self)
         DeletePages(self)
-
         
         # Get the Save Path
         dir_name = os.path.dirname(self.proj_file)
@@ -154,6 +161,7 @@ def ReviewImages(self,window):
 
         # Remove All items in Temp Folder
         def delete_all_files(directory):
+
             # Check if the directory exists
             if not os.path.isdir(directory):
                 print(f"The directory {directory} does not exist.")
@@ -193,6 +201,7 @@ def ReviewImages(self,window):
 
     # Function to go back to previous page
     def back_page():
+
         # Delete the page
         DeleteLocal(self)
         DeletePages(self)
@@ -322,25 +331,25 @@ def ReviewImages(self,window):
                                 style = "ModernT.TLabel"
                                 )
     self.label_title.place(
-                            anchor = 'center', 
-                            relx = self.Placement['Review']['LabelTitle'][0], 
-                            rely = self.Placement['Review']['LabelTitle'][1]
-                            )
+                        anchor = 'center', 
+                        relx = self.Placement['Review']['LabelTitle'][0], 
+                        rely = self.Placement['Review']['LabelTitle'][1]
+                        )
     self.att_list.append('self.label_title')
 
     # Create the scrollbar
-    self.scrollbar_01= ttk.Scrollbar(
-                                        window, 
-                                        orient= 'vertical', 
-                                        style = "Vertical.TScrollbar"
-                                        )
-    self.scrollbar_01.place(
+    self.scrollbar_rev= ttk.Scrollbar(
+                                    window, 
+                                    orient= 'vertical', 
+                                    style = "Vertical.TScrollbar"
+                                    )
+    self.scrollbar_rev.place(
                             anchor='n', 
                             relx = self.Placement['Review']['Scrollbar1'][0], 
                             rely = self.Placement['Review']['Scrollbar1'][1], 
                             height = self.Placement['Review']['Scrollbar1'][2]
                             )
-    self.att_list.append('self.scrollbar_01')
+    self.att_list.append('self.scrollbar_rev')
     
     # Get all images
     all_images = list(self.Segment['Final'].keys())
@@ -348,7 +357,8 @@ def ReviewImages(self,window):
 
     # Create the list box of images
     items = tk.StringVar(value=all_images)
-    self.listbox_01 = tk.Listbox(window, 
+    self.listbox_rev = tk.Listbox(
+                                window, 
                                 listvariable=items,
                                 selectmode='single',
                                 height = self.Placement['Review']['Listbox1'][2],
@@ -361,31 +371,31 @@ def ReviewImages(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']                                  
                                 )
-    self.listbox_01.place(
-                            anchor='n', 
-                            relx = self.Placement['Review']['Listbox1'][0], 
-                            rely = self.Placement['Review']['Listbox1'][1]
-                            )
-    self.att_list.append('self.listbox_01')
-    self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
+    self.listbox_rev.place(
+                        anchor='n', 
+                        relx = self.Placement['Review']['Listbox1'][0], 
+                        rely = self.Placement['Review']['Listbox1'][1]
+                        )
+    self.att_list.append('self.listbox_rev')
+    self.listbox_rev.config(yscrollcommand= self.scrollbar_rev.set)
 
     #Configure the scrollbar
-    self.scrollbar_01.config(command= self.listbox_01.yview)
+    self.scrollbar_rev.config(command= self.listbox_rev.yview)
 
     # Create button to load image
-    self.load_btn = ttk.Button(
+    self.btn_load = ttk.Button(
                                window, 
                                text = "Load Image", 
                                command = lambda:load_image(self), 
                                style = 'Modern2.TButton',
                                width = self.Placement['Review']['ButtonLoad'][2]
                                )
-    self.load_btn.place(
+    self.btn_load.place(
                         anchor = 'n', 
                         relx = self.Placement['Review']['ButtonLoad'][0], 
                         rely = self.Placement['Review']['ButtonLoad'][1]
                         )
-    self.att_list.append('self.load_btn')
+    self.att_list.append('self.btn_load')
 
     # Create button to export images
     self.btn_exp = ttk.Button(
@@ -395,36 +405,40 @@ def ReviewImages(self,window):
                               width = self.Placement['Review']['ButtonExport'][2]
                               )
     self.btn_exp.place(
-                        anchor = 'n', 
-                        relx = self.Placement['Review']['ButtonExport'][0], 
-                        rely = self.Placement['Review']['ButtonExport'][1]
-                        )
+                    anchor = 'n', 
+                    relx = self.Placement['Review']['ButtonExport'][0], 
+                    rely = self.Placement['Review']['ButtonExport'][1]
+                    )
     self.att_list.append('self.btn_exp')
 
     # Create Continue Button
     self.btn_cont = ttk.Button(
-                                window, 
-                                text = "Continue", 
-                                command = next_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['Review']['ButtonCont'][2]
-                                )
-    self.btn_cont.place(anchor = 'e', 
+                            window, 
+                            text = "Continue", 
+                            command = next_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['Review']['ButtonCont'][2]
+                            )
+    self.btn_cont.place(
+                        anchor = 'e', 
                         relx = self.Placement['Review']['ButtonCont'][0], 
-                        rely = self.Placement['Review']['ButtonCont'][1])
+                        rely = self.Placement['Review']['ButtonCont'][1]
+                        )
     self.att_list.append('self.btn_cont')
     
     # Create Back Button
     self.btn_back = ttk.Button(
-                                window, 
-                                text = "Back", 
-                                command = back_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['Review']['ButtonBack'][2]
-                                )
-    self.btn_back.place(anchor = 'e', 
-                         relx = self.Placement['Review']['ButtonBack'][0], 
-                         rely = self.Placement['Review']['ButtonBack'][1])
+                            window, 
+                            text = "Back", 
+                            command = back_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['Review']['ButtonBack'][2]
+                            )
+    self.btn_back.place(
+                        anchor = 'e', 
+                        relx = self.Placement['Review']['ButtonBack'][0], 
+                        rely = self.Placement['Review']['ButtonBack'][1]
+                        )
     self.att_list.append('self.btn_back')
 
     # Create Help Button
@@ -439,15 +453,17 @@ def ReviewImages(self,window):
 
     # -- Create the button
     self.btn_help = ttk.Button(
-                                window, 
-                                text = " Help",
-                                image=self.photo_help,
-                                compound='left',                                 
-                                command = helper,
-                                style = "Modern2.TButton",
-                                width = self.Placement['Review']['Help'][2]
-                                )
-    self.btn_help.place(anchor = 'w', 
+                            window, 
+                            text = " Help",
+                            image=self.photo_help,
+                            compound='left',                                 
+                            command = helper,
+                            style = "Modern2.TButton",
+                            width = self.Placement['Review']['Help'][2]
+                            )
+    self.btn_help.place(
+                        anchor = 'w', 
                         relx = self.Placement['Review']['Help'][0], 
-                        rely = self.Placement['Review']['Help'][1])
+                        rely = self.Placement['Review']['Help'][1]
+                        )
     self.att_list.append('self.btn_help')

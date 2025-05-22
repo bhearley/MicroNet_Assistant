@@ -38,6 +38,7 @@ def TrainModel(self,window):
     for i in range(mods.shape[1]):
         self.architecture.append(mods.values[0][i])    
 
+    # Organize models into structure
     self.models = {}
     for i in range(1,mods.shape[0]):
         self.models[mods.values[i,0]] = []
@@ -48,31 +49,33 @@ def TrainModel(self,window):
 
     # Function to create drop down for weights
     def create_weights_drop(event):
-        # Destory previous
-        if hasattr(self,"combo_7_03"):
-            self.combo_7_03.destroy()
+
+        # Destory previous drow down
+        if hasattr(self,"combo_prew"):
+            self.combo_prew.destroy()
 
         # Get the current option
-        values = self.models[self.combo_7_02.get()]
+        values = self.models[self.combo_enc.get()]
 
-        self.combo_7_03 = ttk.Combobox(
-                            self.box_frame_7_01,
-                            values=values,
-                            style="Modern.TCombobox",
-                            state="readonly"
-                            )
-        self.combo_7_03.place(
+        # Create the drop down for weights
+        self.combo_prew = ttk.Combobox(
+                                            self.frame_model,
+                                            values=values,
+                                            style="Modern.TCombobox",
+                                            state="readonly"
+                                            )
+        self.combo_prew.place(
                                 anchor='w', 
                                 relx = self.Placement['Train']['Combo3'][0], 
                                 rely = self.Placement['Train']['Combo3'][1]
                                 )
-        self.combo_7_03.set(values[0]) 
-        self.loc_att_list.append('self.combo_7_03')
+        self.combo_prew.set(values[0]) 
+        self.loc_att_list.append('self.combo_prew')
 
     # Function for cell select options
     def cell_select_opt(event,Rows):
-        # Deterine locked columns
-        sel_col = event.selected.column 
+
+        # Determine locked items
         sel_row = event.selected.row
         locked_cols = [0]
         lim = []
@@ -87,45 +90,48 @@ def TrainModel(self,window):
         # Enable/Disable user ability to edit cells
         if event.selected.column != None:
             if event.selected.column in locked_cols:
-                self.sheet_7_01.disable_bindings(("edit_cell"))
+                self.sheet_aug.disable_bindings(("edit_cell"))
             else:
-                self.sheet_7_01.enable_bindings(("edit_cell"))
-                self.sheet_7_01.extra_bindings([("edit_cell", lambda event: num_val(event, Rows))])
+                self.sheet_aug.enable_bindings(("edit_cell"))
+                self.sheet_aug.extra_bindings([("edit_cell", lambda event: num_val(event, Rows))])
 
     # Function for numeric validation
     def num_val(event, Rows):
+
         # Get the selected row and column
         c = event.selected.column
         r = event.selected.row
 
         # Set the number of division points
         try:
-            float(self.sheet_7_01.data[r][c])
+            float(self.sheet_aug.data[r][c])
             # Try Limits
-            if 0 <= float(self.sheet_7_01.data[r][c]) <= Rows[r][c]:
+            if 0 <= float(self.sheet_aug.data[r][c]) <= Rows[r][c]:
                 return
             else:
-                self.sheet_7_01.data[r][c] = 0
-                self.sheet_7_01.redraw()
+                self.sheet_aug.data[r][c] = 0
+                self.sheet_aug.redraw()
         except:
-            self.sheet_7_01.data[r][c] = 0
-            self.sheet_7_01.redraw()
+            self.sheet_aug.data[r][c] = 0
+            self.sheet_aug.redraw()
 
     # Function for cell select options
     def cell_select_opt2(event,Rows):
-        # Deterine locked columns
+
+        # Set locked columns
         locked_cols = [0]
 
         # Enable/Disable user ability to edit cells
         if event.selected.column != None:
             if event.selected.column in locked_cols:
-                self.sheet_7_02.disable_bindings(("edit_cell"))
+                self.sheet_set.disable_bindings(("edit_cell"))
             else:
-                self.sheet_7_02.enable_bindings(("edit_cell"))
-                self.sheet_7_02.extra_bindings([("edit_cell", lambda event: num_val2(event, Rows))])
+                self.sheet_set.enable_bindings(("edit_cell"))
+                self.sheet_set.extra_bindings([("edit_cell", lambda event: num_val2(event, Rows))])
 
     # Function for numeric validation
     def num_val2(event, Rows):
+
         # Get the selected row and column
         c = event.selected.column
         r = event.selected.row
@@ -133,27 +139,29 @@ def TrainModel(self,window):
         # Set the number of division points
         try:
             if Rows[r][1] is None:
-                float(self.sheet_7_02.data[r][c])
-                self.sheet_7_02.data[r][c] = float(self.sheet_7_02.data[r][c])
-                self.sheet_7_02.redraw()
+                float(self.sheet_set.data[r][c])
+                self.sheet_set.data[r][c] = float(self.sheet_set.data[r][c])
+                self.sheet_set.redraw()
         except:
-            self.sheet_7_02.data[r][c] = ''
-            self.sheet_7_02.redraw()
+            self.sheet_set.data[r][c] = ''
+            self.sheet_set.redraw()
 
     # Function for cell select options
-    def cell_select_opt3(event,Rows):
-        # Deterine locked columns
+    def cell_select_opt3(event):
+
+        # Set locked columns
         locked_cols = [0]
 
         # Enable/Disable user ability to edit cells
         if event.selected.column != None:
             if event.selected.column in locked_cols:
-                self.sheet_7_03.disable_bindings(("edit_cell"))
+                self.sheet_labels.disable_bindings(("edit_cell"))
             else:
-                self.sheet_7_03.enable_bindings(("edit_cell"))
+                self.sheet_labels.enable_bindings(("edit_cell"))
         
     # Function to begin training a model
     def begin_train(self):
+
         # Preallocate Settings
         self.Segment['ML']['Settings'] = {
                                         'Model':{
@@ -196,56 +204,56 @@ def TrainModel(self,window):
                                             'TrainL':os.path.join(os.getcwd(),'Temp','Train Labelled'),
                                             'ValidationL':os.path.join(os.getcwd(),'Temp','Validation Labelled'),
                                             'TestL':os.path.join(os.getcwd(),'Temp','Test Labelled'),
-                                        }
+                                            }
                                         }
         
         # Populate Settings
         # -- Model
-        self.Segment['ML']['Settings']['Model']['Architecture'] = self.combo_7_01.get()
-        self.Segment['ML']['Settings']['Model']['Encoder'] = self.combo_7_02.get()
-        if self.combo_7_03.get() == 'Micronet':
+        self.Segment['ML']['Settings']['Model']['Architecture'] = self.combo_arch.get()
+        self.Segment['ML']['Settings']['Model']['Encoder'] = self.combo_enc.get()
+        if self.combo_prew.get() == 'Micronet':
             preweight = 'micronet'
         else:
             preweight = 'image-micronet'
         self.Segment['ML']['Settings']['Model']['PreWeights'] = preweight
 
         # -- Augmentation
-        crop_w = int(self.combo_7_04.get().split('x')[0])
+        crop_w = int(self.combo_window.get().split('x')[0])
         self.Segment['ML']['Settings']['Augmentation']['Crop'] = crop_w
         keys = list(self.Segment['ML']['Settings']['Augmentation'].keys())
         for i in range(1,len(keys)):
             if self.Segment['ML']['Settings']['Augmentation'][keys[i]] is None:
-                self.Segment['ML']['Settings']['Augmentation'][keys[i]] = float(self.sheet_7_01.data[i-1][1])
+                self.Segment['ML']['Settings']['Augmentation'][keys[i]] = float(self.sheet_aug.data[i-1][1])
             else:
-                self.Segment['ML']['Settings']['Augmentation'][keys[i]] = [float(self.sheet_7_01.data[i-1][1]),
-                                                                           float(self.sheet_7_01.data[i-1][2])]
+                self.Segment['ML']['Settings']['Augmentation'][keys[i]] = [float(self.sheet_aug.data[i-1][1]),
+                                                                           float(self.sheet_aug.data[i-1][2])]
                 
         # -- Train
         keys = list(self.Segment['ML']['Settings']['Train'].keys())
         for i in range(len(keys)):
-            if self.sheet_7_02.data[i][1] != '':
-                self.Segment['ML']['Settings']['Train'][keys[i]] = self.sheet_7_02.data[i][1]
+            if self.sheet_set.data[i][1] != '':
+                self.Segment['ML']['Settings']['Train'][keys[i]] = self.sheet_set.data[i][1]
 
         # -- Classes
         ColorDict = { # Use BGR for MicroNet
                     0:(255,0,0),
                     1:(0,0,255),
                     2:(0,255,0)} 
-        for i in range(len(self.sheet_7_03.data)-1):
-            if self.sheet_7_03.data[i][2] == True:
-                self.Segment['ML']['Settings']['Classes'][self.sheet_7_03.data[i][1]] = ColorDict[i]
+        for i in range(len(self.sheet_labels.data)-1):
+            if self.sheet_labels.data[i][2] == True:
+                self.Segment['ML']['Settings']['Classes'][self.sheet_labels.data[i][1]] = ColorDict[i]
         if len(self.Segment['ML']['Settings']['Classes'].keys()) > 1:
-            if self.sheet_7_03.data[-1][1] == True:
-                self.Segment['ML']['Settings']['Classes'][self.sheet_7_03.data[-1][1]] = (0,0,0)
+            if self.sheet_labels.data[-1][1] == True:
+                self.Segment['ML']['Settings']['Classes'][self.sheet_labels.data[-1][1]] = (0,0,0)
 
         # -- Settings
-        if self.var_7_01.get() == 1:
+        if self.var_GPU.get() == 1:
             self.Segment['ML']['Settings']['Settings']['GPU'] = True
 
-        if self.var_7_02.get() == 1:
+        if self.var_vizTD.get() == 1:
             self.Segment['ML']['Settings']['Settings']['TrainViz'] = True
 
-        if self.var_7_03.get() == 1:
+        if self.var_vizVD.get() == 1:
             self.Segment['ML']['Settings']['Settings']['ValViz'] = True
 
         # -- Paths
@@ -299,23 +307,27 @@ def TrainModel(self,window):
             def flush(self2):
                 pass  # needed for compatibility (e.g., with print buffering)
 
+        # Function to train a model
         def training_simulation(stop_event):
+
             # Begin Training 
             TrainMicroNetModel(self.Segment['ML']['Settings'])
 
             # Create Message
             messagebox.showinfo(message = 'Model Saved!')
             
-
+        # Function to start training on thread
         def start_training():
             self.stop_event.clear()
             self.training_thread = threading.Thread(target=training_simulation, args=(self.stop_event,), daemon=True)
             self.training_thread.start()
 
+        # Function for exit protocol
         def on_closing():
             self.stop_event.set()  # Signal the thread to stop
             loading.destroy()    # Then close the window
 
+        # Create training window
         loading = tk.Toplevel(window)
         loading.title("Training Model")
         loading.geometry("600x400")
@@ -324,6 +336,7 @@ def TrainModel(self,window):
         loading.grab_set()
         loading.protocol("WM_DELETE_WINDOW", on_closing)
 
+        # Set output text
         output_text = ScrolledText(loading, width=80, height=20)
         output_text.pack(padx=10, pady=10)
 
@@ -334,10 +347,12 @@ def TrainModel(self,window):
         self.stop_event = threading.Event()
         self.training_thread = None
 
+        # Begin training
         start_training()
 
     # Function to continue to next page
     def next_page():
+
         # Delete the page
         DeleteLocal(self)
         DeletePages(self)
@@ -350,6 +365,7 @@ def TrainModel(self,window):
 
     # Function to go back to previous page
     def back_page():
+
         # Save the model
         self.save_model()
 
@@ -482,140 +498,142 @@ def TrainModel(self,window):
                                 style = "ModernT.TLabel"
                                 )
     self.label_title.place(
-                            anchor = 'center', 
-                            relx = self.Placement['Train']['LabelTitle'][0], 
-                            rely = self.Placement['Train']['LabelTitle'][1]
-                            )
+                        anchor = 'center', 
+                        relx = self.Placement['Train']['LabelTitle'][0], 
+                        rely = self.Placement['Train']['LabelTitle'][1]
+                        )
     self.att_list.append('self.label_title')
 
     # Create the frame for model architecture/encoder
-    self.box_frame_7_01 = tk.Frame(
-                            window, 
-                            bd=self.Placement['Train']['Frame1'][2], 
-                            relief="ridge", 
-                            width = self.Placement['Train']['Frame1'][3],
-                            height = self.Placement['Train']['Frame1'][4],
-                            bg="white"
-                            )
-    self.box_frame_7_01.place(
-                                anchor = 'n', 
-                                relx=self.Placement['Train']['Frame1'][0], 
-                                rely=self.Placement['Train']['Frame1'][1]
+    self.frame_model = tk.Frame(
+                                window, 
+                                bd=self.Placement['Train']['Frame1'][2], 
+                                relief="ridge", 
+                                width = self.Placement['Train']['Frame1'][3],
+                                height = self.Placement['Train']['Frame1'][4],
+                                bg="white"
                                 )
-    self.att_list.append('self.box_frame_7_01')
+    self.frame_model.place(
+                        anchor = 'n', 
+                        relx=self.Placement['Train']['Frame1'][0], 
+                        rely=self.Placement['Train']['Frame1'][1]
+                        )
+    self.att_list.append('self.frame_model')
 
     # Create a label for the model architecture
-    self.label_7_01 = ttk.Label(
-                            self.box_frame_7_01,
-                            text='Model Definition',
-                            style = "Modern3.TLabel",
-                            )
-    self.label_7_01.place(
-                            anchor='n', 
-                            relx = self.Placement['Train']['Label1'][0], 
-                            rely = self.Placement['Train']['Label1'][1]
-                            )
-    self.att_list.append('self.label_7_01')
+    self.label_model = ttk.Label(
+                                self.frame_model,
+                                text='Model Definition',
+                                style = "Modern3.TLabel",
+                                )
+    self.label_model.place(
+                        anchor='n', 
+                        relx = self.Placement['Train']['Label1'][0], 
+                        rely = self.Placement['Train']['Label1'][1]
+                        )
+    self.att_list.append('self.label_model')
 
     # Create label for architecture
-    self.label_7_02 = ttk.Label(
-                            self.box_frame_7_01,
-                            text='Architecture: ',
-                            style = "Modern2.TLabel",
-                            anchor='w'
-                            )
-    self.label_7_02.place(
-                            anchor='w', 
-                            relx = self.Placement['Train']['Label2'][0], 
-                            rely = self.Placement['Train']['Label2'][1]
-                            )
-    self.att_list.append('self.label_7_02')
+    self.label_arch = ttk.Label(
+                                self.frame_model,
+                                text='Architecture: ',
+                                style = "Modern2.TLabel",
+                                anchor='w'
+                                )
+    self.label_arch.place(
+                        anchor='w', 
+                        relx = self.Placement['Train']['Label2'][0], 
+                        rely = self.Placement['Train']['Label2'][1]
+                        )
+    self.att_list.append('self.label_arch')
 
     # Create drop down for architecture
-    self.combo_7_01 = ttk.Combobox(
-                        self.box_frame_7_01,
-                        values=self.architecture,
-                        style="Modern.TCombobox",
-                        state="readonly"
+    self.combo_arch = ttk.Combobox(
+                                self.frame_model,
+                                values=self.architecture,
+                                style="Modern.TCombobox",
+                                state="readonly"
+                                )
+    self.combo_arch.place(
+                        anchor='w', 
+                        relx = self.Placement['Train']['Combo1'][0], 
+                        rely = self.Placement['Train']['Combo1'][1]
                         )
-    self.combo_7_01.place(
-                            anchor='w', 
-                            relx = self.Placement['Train']['Combo1'][0], 
-                            rely = self.Placement['Train']['Combo1'][1]
-                            )
-    self.combo_7_01.set(self.architecture[0]) 
-    self.loc_att_list.append('self.combo_7_01')
+    self.combo_arch.set(self.architecture[0]) 
+    self.loc_att_list.append('self.combo_arch')
 
+    # -- Set existing model architecture value
     if 'Model Information' in self.Segment.keys():
-        self.combo_7_01.set(self.Segment['Model Information'][3])
+        self.combo_arch.set(self.Segment['Model Information'][3])
 
     # Create label for Encoder
-    self.label_7_03 = ttk.Label(
-                            self.box_frame_7_01,
+    self.label_enc = ttk.Label(
+                            self.frame_model,
                             text='Encoder: ',
                             style = "Modern2.TLabel",
                             anchor='w'
                             )
-    self.label_7_03.place(
-                            anchor='w', 
-                            relx = self.Placement['Train']['Label3'][0], 
-                            rely = self.Placement['Train']['Label3'][1]
-                            )
-    self.att_list.append('self.label_7_03')
+    self.label_enc.place(
+                        anchor='w', 
+                        relx = self.Placement['Train']['Label3'][0], 
+                        rely = self.Placement['Train']['Label3'][1]
+                        )
+    self.att_list.append('self.label_enc')
 
     # Create drop down for encoder
-    self.combo_7_02 = ttk.Combobox(
-                            self.box_frame_7_01,
-                            values=list(self.models.keys()),
-                            style="Modern.TCombobox",
-                            state="readonly"
-                            )
-    self.combo_7_02.bind("<<ComboboxSelected>>", create_weights_drop)
-    self.combo_7_02.place(
-                            anchor='w', 
-                            relx = self.Placement['Train']['Combo2'][0], 
-                            rely = self.Placement['Train']['Combo2'][1]
-                            )
-    self.combo_7_02.set(list(self.models.keys())[0]) 
-    self.loc_att_list.append('self.combo_7_02')
+    self.combo_enc = ttk.Combobox(
+                                self.frame_model,
+                                values=list(self.models.keys()),
+                                style="Modern.TCombobox",
+                                state="readonly"
+                                )
+    self.combo_enc.bind("<<ComboboxSelected>>", create_weights_drop)
+    self.combo_enc.place(
+                        anchor='w', 
+                        relx = self.Placement['Train']['Combo2'][0], 
+                        rely = self.Placement['Train']['Combo2'][1]
+                        )
+    self.combo_enc.set(list(self.models.keys())[0]) 
+    self.loc_att_list.append('self.combo_enc')
 
+    # -- Set existing model encoder value
     if 'Model Information' in self.Segment.keys():
-        self.combo_7_02.set(self.Segment['Model Information'][4])
+        self.combo_enc.set(self.Segment['Model Information'][4])
 
     # Create label for Pretrained Weights
-    self.label_7_04 = ttk.Label(
-                            self.box_frame_7_01,
-                            text='Pretrained Weights: ',
-                            style = "Modern2.TLabel",
-                            anchor='w'
-                            )
-    self.label_7_04.place(
-                            anchor='w', 
-                            relx = self.Placement['Train']['Label4'][0], 
-                            rely = self.Placement['Train']['Label4'][1]
-                            )
-    self.att_list.append('self.label_7_04')
+    self.label_prew = ttk.Label(
+                                self.frame_model,
+                                text='Pretrained Weights: ',
+                                style = "Modern2.TLabel",
+                                anchor='w'
+                                )
+    self.label_prew.place(
+                        anchor='w', 
+                        relx = self.Placement['Train']['Label4'][0], 
+                        rely = self.Placement['Train']['Label4'][1]
+                        )
+    self.att_list.append('self.label_prew')
 
     # Create the drop down for pretrained weights
     create_weights_drop(None)
 
     # Create GPU Checkbutton
-    self.var_7_01 = tk.IntVar()
-    self.checkbutton_7_01 = ttk.Checkbutton(
-                                    self.box_frame_7_01, 
+    self.var_GPU = tk.IntVar()
+    self.check_GPU = ttk.Checkbutton(
+                                    self.frame_model, 
                                     text="Use GPU", 
-                                    variable=self.var_7_01,
+                                    variable=self.var_GPU,
                                     style="TCheckbutton"
                                     )
-    self.checkbutton_7_01.place(
-                                anchor = 'n', 
-                                relx = self.Placement['Train']['Check1'][0], 
-                                rely = self.Placement['Train']['Check1'][1]
-                                )
-    self.loc_att_list.append('self.checkbutton_7_01')
+    self.check_GPU.place(
+                        anchor = 'n', 
+                        relx = self.Placement['Train']['Check1'][0], 
+                        rely = self.Placement['Train']['Check1'][1]
+                        )
+    self.loc_att_list.append('self.check_GPU')
 
     # Create the frame for image augementation
-    self.box_frame_7_02 = tk.Frame(
+    self.frame_aug = tk.Frame(
                             window, 
                             bd=self.Placement['Train']['Frame2'][2], 
                             relief="ridge", 
@@ -623,38 +641,38 @@ def TrainModel(self,window):
                             height = self.Placement['Train']['Frame2'][4],
                             bg="white"
                             )
-    self.box_frame_7_02.place(
-                                anchor = 'n', 
-                                relx=self.Placement['Train']['Frame2'][0], 
-                                rely=self.Placement['Train']['Frame2'][1]
-                                )
-    self.att_list.append('self.box_frame_7_02')
+    self.frame_aug.place(
+                        anchor = 'n', 
+                        relx=self.Placement['Train']['Frame2'][0], 
+                        rely=self.Placement['Train']['Frame2'][1]
+                        )
+    self.att_list.append('self.frame_aug')
 
     # Create label for Image Augmentation
-    self.label_7_05 = ttk.Label(
-                            self.box_frame_7_02,
-                            text='Image Augmentation',
-                            style = "Modern3.TLabel",
-                            )
-    self.label_7_05.place(
-                            anchor='n', 
-                            relx = self.Placement['Train']['Label5'][0], 
-                            rely = self.Placement['Train']['Label5'][1]
-                            )
-    self.att_list.append('self.label_7_05')
+    self.label_aug = ttk.Label(
+                                self.frame_aug,
+                                text='Image Augmentation',
+                                style = "Modern3.TLabel",
+                                )
+    self.label_aug.place(
+                        anchor='n', 
+                        relx = self.Placement['Train']['Label5'][0], 
+                        rely = self.Placement['Train']['Label5'][1]
+                        )
+    self.att_list.append('self.label_aug')
 
     # Create Label for Window Size
-    self.label_7_06 = ttk.Label(
-                            self.box_frame_7_02,
-                            text='Crop Window: ',
-                            style = "Modern2.TLabel",
-                            )
-    self.label_7_06.place(
+    self.label_window = ttk.Label(
+                                self.frame_aug,
+                                text='Crop Window: ',
+                                style = "Modern2.TLabel",
+                                )
+    self.label_window.place(
                             anchor='n', 
                             relx = self.Placement['Train']['Label6'][0], 
                             rely = self.Placement['Train']['Label6'][1]
                             )
-    self.att_list.append('self.label_7_06')
+    self.att_list.append('self.label_window')
 
     # Get Crop Window Options
     min_size = 1e6
@@ -669,22 +687,23 @@ def TrainModel(self,window):
         size_ct = size_ct + 32
 
     # Create drop down for size
-    self.combo_7_04 = ttk.Combobox(
-                            self.box_frame_7_02,
-                            values=size_opts,
-                            style="Modern.TCombobox",
-                            state="readonly"
-                            )
-    self.combo_7_04.place(
+    self.combo_window = ttk.Combobox(
+                                    self.frame_aug,
+                                    values=size_opts,
+                                    style="Modern.TCombobox",
+                                    state="readonly"
+                                    )
+    self.combo_window.place(
                             anchor='n', 
                             relx = self.Placement['Train']['Combo4'][0], 
                             rely = self.Placement['Train']['Combo4'][1]
                             )
-    self.combo_7_04.set(size_opts[-1]) 
-    self.loc_att_list.append('self.combo_7_04')
+    self.combo_window.set(size_opts[-1]) 
+    self.loc_att_list.append('self.combo_window')
 
+    # -- Set existing model window value
     if 'Model Information' in self.Segment.keys():
-        self.combo_7_04.set(self.Segment['Model Information'][6])
+        self.combo_window.set(self.Segment['Model Information'][6])
 
     # Create the Image Augmentation Sheet
     Cols1 = ['Option','Probability','Limit']
@@ -701,55 +720,57 @@ def TrainModel(self,window):
         ['Random Contrast', 1, 1],
         ['Hue Saturation', 1, None],
         ]
-    self.sheet_7_01 = tksheet.Sheet(
-                            self.box_frame_7_02, 
-                            total_rows = len(Rows1), 
-                            total_columns = len(Cols1), 
-                            headers = Cols1,
-                            width = self.Placement['Train']['Sheet1'][2], 
-                            height = self.Placement['Train']['Sheet1'][3], 
-                            show_x_scrollbar = False, 
-                            show_y_scrollbar = False,
-                            font = ('Segoe UI',12,"normal"),
-                            header_font = ('Segoe UI',12,"bold")
-                            )
-    self.sheet_7_01.place(
-                            anchor = 'n', 
-                            relx = self.Placement['Train']['Sheet1'][0], 
-                            rely = self.Placement['Train']['Sheet1'][1]
-                            )
-    self.loc_att_list.append('self.sheet_7_01')
+    self.sheet_aug = tksheet.Sheet(
+                                self.frame_aug, 
+                                total_rows = len(Rows1), 
+                                total_columns = len(Cols1), 
+                                headers = Cols1,
+                                width = self.Placement['Train']['Sheet1'][2], 
+                                height = self.Placement['Train']['Sheet1'][3], 
+                                show_x_scrollbar = False, 
+                                show_y_scrollbar = False,
+                                font = ('Segoe UI',12,"normal"),
+                                header_font = ('Segoe UI',12,"bold")
+                                )
+    self.sheet_aug.place(
+                        anchor = 'n', 
+                        relx = self.Placement['Train']['Sheet1'][0], 
+                        rely = self.Placement['Train']['Sheet1'][1]
+                        )
+    self.loc_att_list.append('self.sheet_aug')
 
-    # format sheet
-    self.sheet_7_01.set_index_width(0)
-    self.sheet_7_01.column_width(column = 0, width = self.Placement['Train']['Sheet1'][4], redraw = True)
-    self.sheet_7_01.column_width(column = 1, width = self.Placement['Train']['Sheet1'][5], redraw = True)
-    self.sheet_7_01.column_width(column = 2, width = self.Placement['Train']['Sheet1'][6], redraw = True)
-    self.sheet_7_01.table_align(align = 'c',redraw=True)
+    # Format sheet
+    self.sheet_aug.set_index_width(0)
+    self.sheet_aug.column_width(column = 0, width = self.Placement['Train']['Sheet1'][4], redraw = True)
+    self.sheet_aug.column_width(column = 1, width = self.Placement['Train']['Sheet1'][5], redraw = True)
+    self.sheet_aug.column_width(column = 2, width = self.Placement['Train']['Sheet1'][6], redraw = True)
+    self.sheet_aug.table_align(align = 'c',redraw=True)
 
     # Enable Bindings
-    self.sheet_7_01.enable_bindings('single_select','cell_select', 'column_select', 'edit_cell',"arrowkeys", "right_click_popup_menu")
-    self.sheet_7_01.extra_bindings([("cell_select", lambda event: cell_select_opt(event, Rows1))])
+    self.sheet_aug.enable_bindings('single_select','cell_select', 'column_select', 'edit_cell',"arrowkeys", "right_click_popup_menu")
+    self.sheet_aug.extra_bindings([("cell_select", lambda event: cell_select_opt(event, Rows1))])
+
     # Set values
     for i in range(len(Rows1)):
         row = Rows1[i]
-        self.sheet_7_01.set_cell_data(i,0,row[0])
+        self.sheet_aug.set_cell_data(i,0,row[0])
         if row[1] != None:
-            self.sheet_7_01.set_cell_data(i,1,0.5)
+            self.sheet_aug.set_cell_data(i,1,0.5)
         if row[2] != None:
-            self.sheet_7_01.set_cell_data(i,2,0)
+            self.sheet_aug.set_cell_data(i,2,0)
 
     # Populate Existing Data
     if "Model Information" in self.Segment.keys():
         sheet_data = self.Segment['Model Information'][0]
         for i in range(len(sheet_data)):
             for j in range(len(sheet_data[0])):
-                self.sheet_7_01.set_cell_data(i,j,sheet_data[i][j])
+                self.sheet_aug.set_cell_data(i,j,sheet_data[i][j])
 
-    self.sheet_7_01.redraw()
+    # Redraw sheet
+    self.sheet_aug.redraw()
 
-    # Create the frame for model architecture/encoder
-    self.box_frame_7_03 = tk.Frame(
+    # Create the frame for training settings
+    self.frame_set = tk.Frame(
                             window, 
                             bd=self.Placement['Train']['Frame3'][2], 
                             relief="ridge", 
@@ -757,27 +778,27 @@ def TrainModel(self,window):
                             height = self.Placement['Train']['Frame3'][4],
                             bg="white"
                             )
-    self.box_frame_7_03.place(
-                                anchor = 'n', 
-                                relx=self.Placement['Train']['Frame3'][0], 
-                                rely=self.Placement['Train']['Frame3'][1]
-                                )
-    self.att_list.append('self.box_frame_7_03')
+    self.frame_set.place(
+                        anchor = 'n', 
+                        relx=self.Placement['Train']['Frame3'][0], 
+                        rely=self.Placement['Train']['Frame3'][1]
+                        )
+    self.att_list.append('self.frame_set')
 
-    # Create label for Image Augmentation
-    self.label_7_07 = ttk.Label(
-                            self.box_frame_7_03,
+    # Create label for Training Settings
+    self.label_set = ttk.Label(
+                            self.frame_set,
                             text='Training Settings',
                             style = "Modern3.TLabel",
                             )
-    self.label_7_07.place(
-                            anchor='n', 
-                            relx = self.Placement['Train']['Label7'][0], 
-                            rely = self.Placement['Train']['Label7'][1]
-                            )
-    self.att_list.append('self.label_7_07')
+    self.label_set.place(
+                        anchor='n', 
+                        relx = self.Placement['Train']['Label7'][0], 
+                        rely = self.Placement['Train']['Label7'][1]
+                        )
+    self.att_list.append('self.label_set')
 
-    # Create the Image Augmentation Sheet
+    # Create the Training Settings Sheet
     Cols2 = ['Option','Value']
     Rows2 = [
         ['Epochs'],
@@ -786,38 +807,39 @@ def TrainModel(self,window):
         ['Batch Size'],
         ['Validation Batch Size'],
         ]
-    self.sheet_7_02 = tksheet.Sheet(
-                            self.box_frame_7_03, 
-                            total_rows = len(Rows2), 
-                            total_columns = len(Cols2), 
-                            headers = Cols2,
-                            width = self.Placement['Train']['Sheet2'][2], 
-                            height = self.Placement['Train']['Sheet2'][3], 
-                            show_x_scrollbar = False, 
-                            show_y_scrollbar = False,
-                            font = ('Segoe UI',12,"normal"),
-                            header_font = ('Segoe UI',12,"bold")
-                            )
-    self.sheet_7_02.place(
-                            anchor = 'n', 
-                            relx = self.Placement['Train']['Sheet2'][0], 
-                            rely = self.Placement['Train']['Sheet2'][1]
-                            )
-    self.loc_att_list.append('self.sheet_7_01')
+    self.sheet_set = tksheet.Sheet(
+                                self.frame_set, 
+                                total_rows = len(Rows2), 
+                                total_columns = len(Cols2), 
+                                headers = Cols2,
+                                width = self.Placement['Train']['Sheet2'][2], 
+                                height = self.Placement['Train']['Sheet2'][3], 
+                                show_x_scrollbar = False, 
+                                show_y_scrollbar = False,
+                                font = ('Segoe UI',12,"normal"),
+                                header_font = ('Segoe UI',12,"bold")
+                                )
+    self.sheet_set.place(
+                        anchor = 'n', 
+                        relx = self.Placement['Train']['Sheet2'][0], 
+                        rely = self.Placement['Train']['Sheet2'][1]
+                        )
+    self.loc_att_list.append('self.sheet_aug')
 
-    # format sheet
-    self.sheet_7_02.set_index_width(0)
-    self.sheet_7_02.column_width(column = 0, width = self.Placement['Train']['Sheet2'][4], redraw = True)
-    self.sheet_7_02.column_width(column = 1, width = self.Placement['Train']['Sheet2'][5], redraw = True)
-    self.sheet_7_02.table_align(align = 'c',redraw=True)
+    # Format sheet
+    self.sheet_set.set_index_width(0)
+    self.sheet_set.column_width(column = 0, width = self.Placement['Train']['Sheet2'][4], redraw = True)
+    self.sheet_set.column_width(column = 1, width = self.Placement['Train']['Sheet2'][5], redraw = True)
+    self.sheet_set.table_align(align = 'c',redraw=True)
 
     # Enable Bindings
-    self.sheet_7_02.enable_bindings('single_select','cell_select', 'column_select', 'edit_cell',"arrowkeys", "right_click_popup_menu")
-    self.sheet_7_02.extra_bindings([("cell_select", lambda event: cell_select_opt2(event, Rows2))])
+    self.sheet_set.enable_bindings('single_select','cell_select', 'column_select', 'edit_cell',"arrowkeys", "right_click_popup_menu")
+    self.sheet_set.extra_bindings([("cell_select", lambda event: cell_select_opt2(event, Rows2))])
+
     # Set values
     for i in range(len(Rows2)):
         row = Rows2[i]
-        self.sheet_7_02.set_cell_data(i,0,row[0])
+        self.sheet_set.set_cell_data(i,0,row[0])
 
     # Populate Existing Data
     if "Model Information" in self.Segment.keys():
@@ -826,116 +848,117 @@ def TrainModel(self,window):
             for j in range(len(sheet_data[0])):
                 if i != 2 and j == 1:
                     try:
-                        self.sheet_7_02.set_cell_data(i,j,int(sheet_data[i][j]))
+                        self.sheet_set.set_cell_data(i,j,int(sheet_data[i][j]))
                     except:
                         pass
                 else:
-                    self.sheet_7_02.set_cell_data(i,j,sheet_data[i][j])
+                    self.sheet_set.set_cell_data(i,j,sheet_data[i][j])
 
-
-    self.sheet_7_02.redraw()
+    # Redraw sheet
+    self.sheet_set.redraw()
 
     # Visualize Training Data
-    self.var_7_02 = tk.IntVar()
-    self.checkbutton_7_02 = ttk.Checkbutton(
-                                    self.box_frame_7_03, 
+    self.var_vizTD = tk.IntVar()
+    self.check_vizTD = ttk.Checkbutton(
+                                    self.frame_set, 
                                     text="Visualize Training Data", 
-                                    variable=self.var_7_02,
+                                    variable=self.var_vizTD,
                                     style="TCheckbutton"
                                     )
-    self.checkbutton_7_02.place(
-                                anchor = 'n', 
-                                relx = self.Placement['Train']['Check2'][0], 
-                                rely = self.Placement['Train']['Check2'][1]
-                                )
-    self.loc_att_list.append('self.checkbutton_7_02')
+    self.check_vizTD.place(
+                        anchor = 'n', 
+                        relx = self.Placement['Train']['Check2'][0], 
+                        rely = self.Placement['Train']['Check2'][1]
+                        )
+    self.loc_att_list.append('self.check_vizTD')
 
     # Visualize Validation Data
-    self.var_7_03 = tk.IntVar()
-    self.checkbutton_7_03 = ttk.Checkbutton(
-                                    self.box_frame_7_03, 
+    self.var_vizVD = tk.IntVar()
+    self.check_vizVD = ttk.Checkbutton(
+                                    self.frame_set, 
                                     text="Visualize Validation Data", 
-                                    variable=self.var_7_03,
+                                    variable=self.var_vizVD,
                                     style="TCheckbutton"
                                     )
-    self.checkbutton_7_03.place(
-                                anchor = 'n', 
-                                relx = self.Placement['Train']['Check3'][0], 
-                                rely = self.Placement['Train']['Check3'][1]
-                                )
-    self.loc_att_list.append('self.checkbutton_7_03')
-
-    # Create the frame for model architecture/encoder
-    self.box_frame_7_04 = tk.Frame(
-                            window, 
-                            bd=self.Placement['Train']['Frame4'][2], 
-                            relief="ridge", 
-                            width = self.Placement['Train']['Frame4'][3],
-                            height = self.Placement['Train']['Frame4'][4],
-                            bg="white"
+    self.check_vizVD.place(
+                            anchor = 'n', 
+                            relx = self.Placement['Train']['Check3'][0], 
+                            rely = self.Placement['Train']['Check3'][1]
                             )
-    self.box_frame_7_04.place(
-                                anchor = 'n', 
-                                relx=self.Placement['Train']['Frame4'][0], 
-                                rely=self.Placement['Train']['Frame4'][1]
+    self.loc_att_list.append('self.check_vizVD')
+
+    # Create the frame for labels
+    self.frame_labels = tk.Frame(
+                                window, 
+                                bd=self.Placement['Train']['Frame4'][2], 
+                                relief="ridge", 
+                                width = self.Placement['Train']['Frame4'][3],
+                                height = self.Placement['Train']['Frame4'][4],
+                                bg="white"
                                 )
-    self.att_list.append('self.box_frame_7_04')
+    self.frame_labels.place(
+                            anchor = 'n', 
+                            relx=self.Placement['Train']['Frame4'][0], 
+                            rely=self.Placement['Train']['Frame4'][1]
+                            )
+    self.att_list.append('self.frame_labels')
 
     # Create label for Classification Labels
-    self.label_7_08 = ttk.Label(
-                            self.box_frame_7_04,
-                            text='Labels',
-                            style = "Modern3.TLabel",
-                            )
-    self.label_7_08.place(
+    self.label_labels = ttk.Label(
+                                self.frame_labels,
+                                text='Labels',
+                                style = "Modern3.TLabel",
+                                )
+    self.label_labels.place(
                             anchor='n', 
                             relx = self.Placement['Train']['Label8'][0], 
                             rely = self.Placement['Train']['Label8'][1]
                             )
-    self.att_list.append('self.label_7_08')
+    self.att_list.append('self.label_labels')
 
     # Create the Image Augmentation Sheet
     Cols3 = ['Color','Label',' ']
     Rows3 = []
     Colors = {1:(0,0,255), 2:(255,0,0), 3:(0,255,0)}
 
+    # Get colors in each image
     for item in self.Segment['Data'].keys():
-        # Get colors in each image
         for i in range(1,4):
             if len(self.Segment['Data'][item]['Segments'][i]['Pixel List']) > 0:
                 if Colors[i] not in Rows3:
                     Rows3.append(Colors[i])
 
-    self.sheet_7_03 = tksheet.Sheet(
-                            self.box_frame_7_04, 
-                            total_rows = len(Rows3)+1, 
-                            total_columns = len(Cols3), 
-                            headers = Cols3,
-                            width = self.Placement['Train']['Sheet3'][2], 
-                            height = self.Placement['Train']['Sheet3'][3], 
-                            show_x_scrollbar = False, 
-                            show_y_scrollbar = False,
-                            font = ('Segoe UI',12,"normal"),
-                            header_font = ('Segoe UI',12,"bold")
-                            )
-    self.sheet_7_03.place(
+    # Create labels sheet
+    self.sheet_labels = tksheet.Sheet(
+                                    self.frame_labels, 
+                                    total_rows = len(Rows3)+1, 
+                                    total_columns = len(Cols3), 
+                                    headers = Cols3,
+                                    width = self.Placement['Train']['Sheet3'][2], 
+                                    height = self.Placement['Train']['Sheet3'][3], 
+                                    show_x_scrollbar = False, 
+                                    show_y_scrollbar = False,
+                                    font = ('Segoe UI',12,"normal"),
+                                    header_font = ('Segoe UI',12,"bold")
+                                    )
+    self.sheet_labels.place(
                             anchor = 'n', 
                             relx = self.Placement['Train']['Sheet3'][0], 
                             rely = self.Placement['Train']['Sheet3'][1]
                             )
-    self.loc_att_list.append('self.sheet_7_03')
+    self.loc_att_list.append('self.sheet_labels')
 
-    # format sheet
-    self.sheet_7_03.set_index_width(0)
-    self.sheet_7_03.column_width(column = 0, width = self.Placement['Train']['Sheet3'][4], redraw = True)
-    self.sheet_7_03.column_width(column = 1, width = self.Placement['Train']['Sheet3'][5], redraw = True)
-    self.sheet_7_03.column_width(column = 2, width = self.Placement['Train']['Sheet3'][6], redraw = True)
-    self.sheet_7_03.table_align(align = 'c',redraw=True)
-    self.sheet_7_03.checkbox('C', checked=True)
+    # Format sheet
+    self.sheet_labels.set_index_width(0)
+    self.sheet_labels.column_width(column = 0, width = self.Placement['Train']['Sheet3'][4], redraw = True)
+    self.sheet_labels.column_width(column = 1, width = self.Placement['Train']['Sheet3'][5], redraw = True)
+    self.sheet_labels.column_width(column = 2, width = self.Placement['Train']['Sheet3'][6], redraw = True)
+    self.sheet_labels.table_align(align = 'c',redraw=True)
+    self.sheet_labels.checkbox('C', checked=True)
 
     # Enable Bindings
-    self.sheet_7_03.enable_bindings('single_select','cell_select', 'column_select', 'edit_cell',"arrowkeys", "right_click_popup_menu")
-    self.sheet_7_03.extra_bindings([("cell_select", lambda event: cell_select_opt3(event, Rows3))])
+    self.sheet_labels.enable_bindings('single_select','cell_select', 'column_select', 'edit_cell',"arrowkeys", "right_click_popup_menu")
+    self.sheet_labels.extra_bindings([("cell_select", lambda event: cell_select_opt3(event))])
 
     # Set values
     def rgb_to_hex(r, g, b):
@@ -943,57 +966,62 @@ def TrainModel(self,window):
     
     for i in range(len(Rows3)):
         hex_color = rgb_to_hex(Rows3[i][0], Rows3[i][1], Rows3[i][2])
-        self.sheet_7_03.highlight_cells(i, 0, bg=hex_color, fg='black')
-    self.sheet_7_03.set_cell_data(len(Rows3),0,'Other')
+        self.sheet_labels.highlight_cells(i, 0, bg=hex_color, fg='black')
+    self.sheet_labels.set_cell_data(len(Rows3),0,'Other')
 
     # Populate Existing Data
     if "Model Information" in self.Segment.keys():
         sheet_data = self.Segment['Model Information'][2]
         for i in range(len(sheet_data)):
             for j in range(len(sheet_data[0])):
-                self.sheet_7_03.set_cell_data(i,j,sheet_data[i][j])
+                self.sheet_labels.set_cell_data(i,j,sheet_data[i][j])
 
-    self.sheet_7_03.redraw()
+    # Redraw sheet
+    self.sheet_labels.redraw()
 
     # Create Button to train
-    self.train_btn = ttk.Button(
+    self.btn_train = ttk.Button(
                                window, 
                                text = "Train Model", 
                                command = lambda:begin_train(self), 
                                style = 'Modern2.TButton',
                                width = self.Placement['Train']['ButtonTrain'][2]
                                )
-    self.train_btn.place(
-                            anchor = 'n', 
-                            relx = self.Placement['Train']['ButtonTrain'][0], 
-                            rely = self.Placement['Train']['ButtonTrain'][1]
-                            )
-    self.att_list.append('self.train_btn')
+    self.btn_train.place(
+                        anchor = 'n', 
+                        relx = self.Placement['Train']['ButtonTrain'][0], 
+                        rely = self.Placement['Train']['ButtonTrain'][1]
+                        )
+    self.att_list.append('self.btn_train')
     
     # Create Continue Button
     self.btn_cont = ttk.Button(
-                                window, 
-                                text = "Continue", 
-                                command = next_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['Train']['ButtonCont'][2]
-                                )
-    self.btn_cont.place(anchor = 'e', 
+                            window, 
+                            text = "Continue", 
+                            command = next_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['Train']['ButtonCont'][2]
+                            )
+    self.btn_cont.place(
+                        anchor = 'e', 
                         relx = self.Placement['Train']['ButtonCont'][0], 
-                        rely = self.Placement['Train']['ButtonCont'][1])
+                        rely = self.Placement['Train']['ButtonCont'][1]
+                        )
     self.att_list.append('self.btn_cont')
     
     # Create Back Button
     self.btn_back = ttk.Button(
-                                window, 
-                                text = "Back", 
-                                command = back_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['Train']['ButtonBack'][2]
-                                )
-    self.btn_back.place(anchor = 'e', 
-                         relx = self.Placement['Train']['ButtonBack'][0], 
-                         rely = self.Placement['Train']['ButtonBack'][1])
+                            window, 
+                            text = "Back", 
+                            command = back_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['Train']['ButtonBack'][2]
+                            )
+    self.btn_back.place(
+                        anchor = 'e', 
+                        relx = self.Placement['Train']['ButtonBack'][0], 
+                        rely = self.Placement['Train']['ButtonBack'][1]
+                        )
     self.att_list.append('self.btn_back')
 
     # Create Help Button
@@ -1008,15 +1036,17 @@ def TrainModel(self,window):
 
     # -- Create the button
     self.btn_help = ttk.Button(
-                                window, 
-                                text = " Help",
-                                image=self.photo_help,
-                                compound='left',                                 
-                                command = helper,
-                                style = "Modern2.TButton",
-                                width = self.Placement['Train']['Help'][2]
-                                )
-    self.btn_help.place(anchor = 'w', 
+                            window, 
+                            text = " Help",
+                            image=self.photo_help,
+                            compound='left',                                 
+                            command = helper,
+                            style = "Modern2.TButton",
+                            width = self.Placement['Train']['Help'][2]
+                            )
+    self.btn_help.place(
+                        anchor = 'w', 
                         relx = self.Placement['Train']['Help'][0], 
-                        rely = self.Placement['Train']['Help'][1])
+                        rely = self.Placement['Train']['Help'][1]
+                        )
     self.att_list.append('self.btn_help')

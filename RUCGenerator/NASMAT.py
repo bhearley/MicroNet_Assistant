@@ -45,6 +45,7 @@ def NASMAT(self):
 
     # Write the RUC
     fid = open(filename, "w")
+
     # Write RUC Options
     fid.write('*RUC\n')
     fid.write(f' MOD=202 ARCHID=99\n')
@@ -80,7 +81,7 @@ def NASMAT(self):
         file_path = filedialog.asksaveasfilename(
             title="Create a new project file",
             filetypes=(("RUC", "*.ruc"),)
-        )
+            )
 
     # Move file
     shutil.move(os.path.join(os.getcwd(),'temp.RUC'),file_path + '.RUC')

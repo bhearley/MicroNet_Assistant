@@ -23,7 +23,7 @@ def SegmentImages(self,window):
     from tkinter import filedialog
     from tkinter import ttk
     
-    # Import SAM Functions
+    # Import Segmentation Functions
     from ModelCreator.SegmentationModels.SAM.Utility import LoadModel, SetImage, GetMask
 
     # Import Functions
@@ -34,7 +34,7 @@ def SegmentImages(self,window):
     self.att_list = []
     self.loc_att_list = []
 
-    # Initialize start image
+    # Initialize flags
     self.prev_img = None
     self.pass_init = False
 
@@ -54,7 +54,7 @@ def SegmentImages(self,window):
                 },
             }
     
-    # Create the Temp folder it it doesn't exist
+    # Create the Temp folder if it doesn't exist
     curr_dir = os.getcwd()
     temp_dir = os.path.join(curr_dir,'Temp')
     try:
@@ -71,25 +71,27 @@ def SegmentImages(self,window):
 
     # Function to get brush for display
     def GetEllipse():
+
         # Get Brush Size
-        self.brush_size = int(self.slider.get())*2
+        self.brush_size = int(self.slider_brush.get())*2
 
         # Convert image pixels to data units in x/y
-        xlim = self.ax_4_01.get_xlim()
-        ylim = self.ax_4_01.get_ylim()
+        xlim = self.ax_seg.get_xlim()
+        ylim = self.ax_seg.get_ylim()
 
         # Axes size in pixels
-        bbox = self.ax_4_01.get_window_extent()
+        bbox = self.ax_seg.get_window_extent()
         ax_width_px = bbox.width
         ax_height_px = bbox.height
 
         xdata_per_pixel = abs(xlim[1] - xlim[0]) / ax_width_px
         ydata_per_pixel = abs(ylim[1] - ylim[0]) / ax_height_px
 
+        # Set Radius
         self.pixel_radius_x = 2 * xdata_per_pixel
         self.pixel_radius_y = 2 * ydata_per_pixel
 
-    # Load an image    
+    # Function to load an image    
     def load_image(self):
 
         # Function for a mouse click event on the canvas
@@ -100,10 +102,13 @@ def SegmentImages(self,window):
             
             # Manaully adding/removing points is off
             if self.add_selected == False and self.rem_selected == False:
+
                 # Check for mouse click only
                 if event.button == 1 or event.button == 3:
 
-                    if event.inaxes == self.ax_4_01:
+                    # Check for event in axes
+                    if event.inaxes == self.ax_seg:
+
                         # Get the selected point
                         x, y = int(event.xdata), int(event.ydata)
 
@@ -145,17 +150,17 @@ def SegmentImages(self,window):
                             self.combined = Image.alpha_composite(self.combined_all, self.mask_image)
 
                             # Get the limits
-                            xlim = self.ax_4_01.get_xlim()
-                            ylim = self.ax_4_01.get_ylim()
+                            xlim = self.ax_seg.get_xlim()
+                            ylim = self.ax_seg.get_ylim()
 
                             # Display the image
-                            self.ax_4_01.clear()
-                            self.ax_4_01.imshow(self.combined)
-                            self.ax_4_01.axis('off')  # Hide axes
+                            self.ax_seg.clear()
+                            self.ax_seg.imshow(self.combined)
+                            self.ax_seg.axis('off')  # Hide axes
                             
                             # Remove Previous Selection Points
-                            while len(self.ax_4_01.lines) > 0:
-                                self.ax_4_01.lines[len(self.ax_4_01.lines)-1].remove()
+                            while len(self.ax_seg.lines) > 0:
+                                self.ax_seg.lines[len(self.ax_seg.lines)-1].remove()
 
                             # Plot Points
                             for i in range(len(self.mask_in)):
@@ -164,30 +169,34 @@ def SegmentImages(self,window):
                                     color = 'go'
                                 else:
                                     color = 'ro'
-                                self.ax_4_01.plot(pt[0], pt[1], color)
+                                self.ax_seg.plot(pt[0], pt[1], color)
 
                             # Set the axes limits
-                            self.ax_4_01.set_xlim(xlim)
-                            self.ax_4_01.set_ylim(ylim)
+                            self.ax_seg.set_xlim(xlim)
+                            self.ax_seg.set_ylim(ylim)
 
-                            # Redraw the canas
+                            # Redraw the canvas
                             self.canvas.draw()
 
                             # Bind Buttons
                             window.bind("<Return>", lambda event : save_mask(self, mask, 'save', event))
                             window.bind("<Escape>", lambda event : save_mask(self, mask, 'undo', event))
 
-            # Manaully adding/removing points is off
+            # If manaully adding/removing points is off
             elif self.add_selected == True or self.rem_selected == True:
+
                 # Check for left mouse click and event in axes
-                if event.button == 1 and event.inaxes == self.ax_4_01:
+                if event.button == 1 and event.inaxes == self.ax_seg:
+
                     # Turn on drawing and save the points
                     self.drawing = True
 
         # Function to save or discard a mask
         def save_mask(self, mask, tag, event):
+
             # Check if "Enter" was pressed to save
             if tag == 'save':
+
                 # Get pixel data
                 pixels = self.mask_image_f.load()
 
@@ -209,17 +218,17 @@ def SegmentImages(self,window):
                 self.combined_all = Image.alpha_composite(self.combined_all, self.mask_image_f)
 
             # Get the limits
-            xlim = self.ax_4_01.get_xlim()
-            ylim = self.ax_4_01.get_ylim()
+            xlim = self.ax_seg.get_xlim()
+            ylim = self.ax_seg.get_ylim()
 
             # Display the image
-            self.ax_4_01.clear()
-            self.ax_4_01.imshow(self.combined_all)
-            self.ax_4_01.axis('off')  # Hide axes
+            self.ax_seg.clear()
+            self.ax_seg.imshow(self.combined_all)
+            self.ax_seg.axis('off')
             
             # Set the axes limits
-            self.ax_4_01.set_xlim(xlim)
-            self.ax_4_01.set_ylim(ylim)
+            self.ax_seg.set_xlim(xlim)
+            self.ax_seg.set_ylim(ylim)
 
             # Draw the canvas
             self.canvas.draw()
@@ -234,10 +243,11 @@ def SegmentImages(self,window):
 
         # Function to turn on addings points manually
         def add_pixels(self):
+
             # Remove Hover Point
             try:
                 # Remove the brush
-                for patch in self.ax_4_012.patches: 
+                for patch in self.ax_seg2.patches: 
                     patch.remove()
                 self.canvas.draw_idle()
             except:
@@ -253,17 +263,18 @@ def SegmentImages(self,window):
 
             # Change Button Display
             if self.add_selected:
-                self.add_pts.config(style="Modern5Selected.TButton")
+                self.btn_add_pts.config(style="Modern5Selected.TButton")
                 
             else:
-                self.add_pts.config(style="Modern5.TButton")
+                self.btn_add_pts.config(style="Modern5.TButton")
             
         # Function to turn on removing points manually
         def rem_pixels(self):
+
             # Remove Hover Point
             try:
                 # Remove the brush
-                for patch in self.ax_4_012.patches: 
+                for patch in self.ax_seg2.patches: 
                     patch.remove()
                 self.canvas.draw_idle()
             except:
@@ -279,15 +290,16 @@ def SegmentImages(self,window):
 
             # Change Button Display
             if self.rem_selected:
-                self.remove_pts.config(style="Modern5Selected.TButton")
+                self.btn_rem_pts.config(style="Modern5Selected.TButton")
                 
             else:
-                self.remove_pts.config(style="Modern5.TButton")
+                self.btn_rem_pts.config(style="Modern5.TButton")
 
         # Function for changing the combobox for segmentation selection
         def change_combo(event):
+
             # Get the selected value
-            value = self.combo1.get()
+            value = self.combo_color.get()
             self.seg_num = int(value.strip(' ')[-1])
 
             # Change the color
@@ -306,17 +318,22 @@ def SegmentImages(self,window):
             self.img_c = self.img_c.resize((int(self.img_c.width*scale), int(self.img_c.height*scale)))
             self.imgtk_c = ImageTk.PhotoImage(self.img_c)
             self.img_color = tk.Label(window, image = self.imgtk_c, bg = 'white')
-            self.img_color.place(anchor = 'n', 
-                                 relx = self.Placement['Segment']['Image1'][0], 
-                                 rely = self.Placement['Segment']['Image1'][1])
+            self.img_color.place(
+                                anchor = 'n', 
+                                relx = self.Placement['Segment']['Image1'][0], 
+                                rely = self.Placement['Segment']['Image1'][1]
+                                )
             self.loc_att_list.append('self.img_color')
 
         # Create Hovering Cursor
         def on_mouse_move(self, event):
-            # Manually adding/removing points is on
+
+            # Check if manually adding/removing points is on
             if self.add_selected == True or self.rem_selected == True:
-                # Show brush
+
+                # Check if drawing is disabled
                 if self.drawing == False:
+
                     # Remove previous point if it exists
                     if hasattr(self,"hover_dot"):
                         try:
@@ -329,10 +346,10 @@ def SegmentImages(self,window):
                         return  
 
                     # Check that point is on canvas
-                    if event.inaxes != self.ax_4_01:
+                    if event.inaxes != self.ax_seg:
                         try:
                             # Remove the brush
-                            for patch in self.ax_4_012.patches: 
+                            for patch in self.ax_seg2.patches: 
                                 patch.remove()
                             self.canvas.draw_idle()
                             self.canvas.draw_idle()
@@ -344,34 +361,39 @@ def SegmentImages(self,window):
                     GetEllipse()
 
                     # Get the limits
-                    xlim = self.ax_4_01.get_xlim()
-                    ylim = self.ax_4_01.get_ylim()
+                    xlim = self.ax_seg.get_xlim()
+                    ylim = self.ax_seg.get_ylim()
 
                     # Plot a circle using a patch for pixel-perfect control
                     self.hover_dot = Ellipse((event.xdata, event.ydata),
                                         width=self.brush_size * self.pixel_radius_x, height=self.brush_size * self.pixel_radius_y,
                                         edgecolor='white', facecolor='none', linewidth=1.5)
-                    self.ax_4_01.add_patch(self.hover_dot)
+                    self.ax_seg.add_patch(self.hover_dot)
                     self.canvas.draw_idle()
 
                     # Set the axes limits
-                    self.ax_4_01.set_xlim(xlim)
-                    self.ax_4_01.set_ylim(ylim)
+                    self.ax_seg.set_xlim(xlim)
+                    self.ax_seg.set_ylim(ylim)
                 
-                # Add/Remove points
+                # If drawing is enabled and the event is in the axes
                 else:
-                    if self.drawing and event.inaxes == self.ax_4_01:
+                    if self.drawing and event.inaxes == self.ax_seg:
 
-                        #self.ax_4_01.plot(event.xdata, event.ydata, 'o', color='white', markersize=self.brush_size*3)
-                        new_point = Ellipse((event.xdata, event.ydata),
-                                        width=self.brush_size * self.pixel_radius_x, height=self.brush_size * self.pixel_radius_y,
-                                        edgecolor='white', facecolor='white', linewidth=1.5)
-                        self.ax_4_01.add_patch(new_point)
+                        # Draw new point
+                        new_point = Ellipse(
+                                        (event.xdata, event.ydata),
+                                        width=self.brush_size * self.pixel_radius_x, 
+                                        height=self.brush_size * self.pixel_radius_y,
+                                        edgecolor='white', 
+                                        facecolor='white', 
+                                        linewidth=1.5
+                                        )
+                        self.ax_seg.add_patch(new_point)
 
                         # Redraw the canvas
                         self.canvas.draw_idle()
 
-            # Manually adding/removing points is off
+            # If manually adding/removing points is off
             else:
                 try:
                     self.hover_dot.remove()
@@ -380,25 +402,32 @@ def SegmentImages(self,window):
 
         # Create Brush
         def on_mouse_release(self, event):
+
+            # Check if toolbar mode is zoom
             if self.toolbar.mode == 'zoom':
                 self.toolbar._zoom_mode = None
-                self.toolbar.zoom()  # toggle off
+                self.toolbar.zoom()  
                 self.toolbar.mode = ''
                 return
+            
+            # Check if toolbar mode is zoom rect
             elif self.toolbar.mode == 'zoom rect':
                 self.toolbar._zoom_mode = None
-                self.toolbar.zoom()  # toggle off
+                self.toolbar.zoom()  
                 self.toolbar.mode = ''
                 return
+            
+            # Check if toolbar mode is pan
             elif self.toolbar.mode == 'pan':
-                self.toolbar.pan()   # toggle off
+                self.toolbar.pan()   
                 return
 
-    
-            # Manually add/remove points is on
+            # Check if manually add/remove points is on
             if self.add_selected == True or self.rem_selected == True:
-                # Drawing is on and the left mouse click is used
+
+                # Check if drawing is on and the left mouse click is used
                 if self.drawing and event.button == 1:
+
                     # Reset Drawing
                     self.drawing = False
 
@@ -412,7 +441,8 @@ def SegmentImages(self,window):
                     mask = np.zeros((h, w), dtype=bool)
 
                     # Loop through patches
-                    for patch in self.ax_4_01.patches:
+                    for patch in self.ax_seg.patches:
+
                         # Get Ellipse parameters
                         cx, cy = patch.center
                         width = patch.width
@@ -457,51 +487,61 @@ def SegmentImages(self,window):
                     self.combined_all = Image.alpha_composite(self.combined_all, self.mask_image_f)
 
                     # Get the limits
-                    xlim = self.ax_4_01.get_xlim()
-                    ylim = self.ax_4_01.get_ylim()
+                    xlim = self.ax_seg.get_xlim()
+                    ylim = self.ax_seg.get_ylim()
 
                     # Display the image
-                    self.ax_4_01.clear()
-                    self.ax_4_01.imshow(self.combined_all)
-                    self.ax_4_01.axis('off')  # Hide axes
-                    
-                    self.ax_4_01.set_xlim(xlim)
-                    self.ax_4_01.set_ylim(ylim)
+                    self.ax_seg.clear()
+                    self.ax_seg.imshow(self.combined_all)
+                    self.ax_seg.axis('off')
 
+                    # Reset limits
+                    self.ax_seg.set_xlim(xlim)
+                    self.ax_seg.set_ylim(ylim)
+
+                    # Redraw canvas
                     self.canvas.draw()
 
         # Function to Remove Hovering Cursor Brush         
         def on_mouse_leave(self, event):
+
+            # Check if toolbar mode is zoom
             if self.toolbar.mode == 'zoom':
                 self.toolbar._zoom_mode = None
-                self.toolbar.zoom()  # toggle off
+                self.toolbar.zoom() 
                 self.toolbar.mode = ''
                 return
+            
+            # Check if toolbar mode is zoom rect
             elif self.toolbar.mode == 'zoom rect':
-                # self.toolbar._zoom_mode = None
-                # self.toolbar.zoom()  # toggle off
-                # self.toolbar.mode = ''
-                return                             
+                self.toolbar._zoom_mode = None
+                self.toolbar.zoom()
+                self.toolbar.mode = ''
+                return                          
+            # Check if toolbar mode is pan   
             elif self.toolbar.mode == 'pan':
-                self.toolbar.pan()   # toggle off
+                self.toolbar.pan()
                 return
 
+            # Remove previous point
             try:
-                # Remove previous point if it exists
-                for patch in self.ax_4_012.patches:  
+                for patch in self.ax_seg2.patches:  
                     patch.remove()
             except:
                 pass
+
+            # Redraw canvas
             self.canvas.draw_idle()
 
         # Initialize
         if self.pass_init == False:
+
             # Initialize segmentation number
             self.seg_num = 1
 
             # Get the image
-            if len([self.listbox_01.get(idx) for idx in self.listbox_01.curselection()])> 0:
-                self.img_name = [self.listbox_01.get(idx) for idx in self.listbox_01.curselection()][0]
+            if len([self.listbox_seg.get(idx) for idx in self.listbox_seg.curselection()])> 0:
+                self.img_name = [self.listbox_seg.get(idx) for idx in self.listbox_seg.curselection()][0]
                 self.image_path = os.path.join(temp_dir, self.img_name)
             else:
                 return
@@ -557,56 +597,69 @@ def SegmentImages(self,window):
         new_height = int(img_height * scale)/dpi
 
         # -- Create the figure
-        self.fig_4_01, self.ax_4_01 = plt.subplots(figsize=(new_width, new_height))
-        self.fig_4_01.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
+        self.fig_seg, self.ax_seg = plt.subplots(figsize=(new_width, new_height))
+        self.fig_seg.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
-        self.canvas = FigureCanvasTkAgg(self.fig_4_01, master=window)
+        self.canvas = FigureCanvasTkAgg(self.fig_seg, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.config(width=int(self.fig_4_01.get_figwidth() * self.fig_4_01.get_dpi()),
-                                  height=int(self.fig_4_01.get_figheight() * self.fig_4_01.get_dpi()))
-        self.canvas_widget.place(anchor='n', 
-                                 relx = self.Placement['Segment']['Canvas1'][0], 
-                                 rely = self.Placement['Segment']['Canvas1'][1])
+        self.canvas_widget.config(
+                                width=int(self.fig_seg.get_figwidth() * self.fig_seg.get_dpi()),
+                                height=int(self.fig_seg.get_figheight() * self.fig_seg.get_dpi())
+                                )
+        self.canvas_widget.place(
+                                anchor='n', 
+                                relx = self.Placement['Segment']['Canvas1'][0], 
+                                rely = self.Placement['Segment']['Canvas1'][1]
+                                )
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
         # Display the image
-        self.ax_4_01.clear()  # Clear previous image
-        self.ax_4_01.imshow(self.combined_all)
-        self.ax_4_01.axis('off')  # Hide axes
+        self.ax_seg.clear() 
+        self.ax_seg.imshow(self.combined_all)
+        self.ax_seg.axis('off')
         self.canvas.draw()
 
         # Add the Matplotlib navigation toolbar
         self.toolbar = NavigationToolbar2Tk(self.canvas, window)
         self.toolbar.update()
-        self.toolbar.place(anchor='n', 
-                           relx = self.Placement['Segment']['Toolbar1'][0], 
-                           rely = self.Placement['Segment']['Toolbar1'][1])
+        self.toolbar.place(
+                        anchor='n', 
+                        relx = self.Placement['Segment']['Toolbar1'][0], 
+                        rely = self.Placement['Segment']['Toolbar1'][1]
+                        )
         self.loc_att_list.append('self.toolbar')
 
         # Replace the title (canvas covers the title)
         self.label_title.destroy()
         self.label_title = ttk.Label(
-                                window,
-                                text='Segment Images',
-                                style = "ModernT.TLabel"
-                                )
-        self.label_title.place(anchor = 'center', 
-                               relx = self.Placement['Segment']['LabelTitle'][0], 
-                               rely = self.Placement['Segment']['LabelTitle'][1])
+                                    window,
+                                    text='Segment Images',
+                                    style = "ModernT.TLabel"
+                                    )
+        self.label_title.place(
+                            anchor = 'center', 
+                            relx = self.Placement['Segment']['LabelTitle'][0], 
+                            rely = self.Placement['Segment']['LabelTitle'][1]
+                            )
         self.att_list.append('self.label_title')
     
         # Get the segmentation model
-        seg_mod = self.combo2.get()
+        seg_mod = self.combo_segmod.get()
 
-
+        # Load Segment Anything Model (SAM)
         if seg_mod == 'Segment Anything (SAM)':
+
             # Load the SAM Model if not in project
             if self.Segment['Data'][self.img_name]['Predictor'] is None or self.Segment['Data'][self.img_name]['Predictor'] == 'Load':
+
                 # Function to open SAM Model
                 def open_file(callback, loading):
+
+                    # Check if a predictor exists
                     if hasattr(self,'predictor') == False:
+
                         # Get the model path
                         model_path = ''
                         # -- Check default location
@@ -645,7 +698,8 @@ def SegmentImages(self,window):
                                     break
 
                                 else:
-                                    shutil.move(model_path,os.path.join(def_direc,os.path.basename(model_path)))
+                                    # Copy model to default directory
+                                    shutil.copy(model_path,os.path.join(def_direc,os.path.basename(model_path)))
 
 
                         # -- Load the model and set the image
@@ -661,7 +715,6 @@ def SegmentImages(self,window):
                         self.predictor, self.image_Sam = SetImage(self.predictor, os.path.join(temp_dir, self.img_name))
                     except:
                         self.predictor = None
-
 
                     # Notify when done
                     callback()  # Notify when
@@ -684,23 +737,32 @@ def SegmentImages(self,window):
                     # Create the window exit protocal
                     loading.protocol("WM_DELETE_WINDOW", lambda:on_closing_sam(self))
 
-                    # Create the label
+                    # Create the loading label
                     ttk.Label(
                             loading, 
                             text="Loading SAM for the image - Please Wait.", 
-                            style = "Modern1.TLabel").pack(pady=10)
+                            style = "Modern1.TLabel"
+                            ).pack(pady=10)
 
                     # Create the progress bar
-                    pb = ttk.Progressbar(loading, mode='indeterminate', style = "Modern.Horizontal.TProgressbar")
+                    pb = ttk.Progressbar(
+                                        loading, 
+                                        mode='indeterminate', 
+                                        style = "Modern.Horizontal.TProgressbar"
+                                        )
                     pb.pack(fill='x', padx=20, pady=10)
                     pb.start(10)
 
                     # Function to close window when task is completed
                     def on_task_done():
+
+                        # Stop the progress bar
                         pb.stop()
+
+                        # Destroy the window
                         loading.destroy()
 
-                    #Begin save on background thread
+                    # Begin save on background thread
                     threading.Thread(target=open_file, args=(on_task_done,loading), daemon=True).start()
 
                     # Wait until loading window is closed
@@ -713,8 +775,8 @@ def SegmentImages(self,window):
             else:
                 self.predictor = self.Segment['Data'][self.img_name]['Predictor']
 
+            # Reload the page
             if self.predictor is None:
-                # Reload the page
                 self.load_page()
 
         # Manual Segmentation
@@ -733,19 +795,21 @@ def SegmentImages(self,window):
         icon = icon.resize((24, 24))
         icon_img = ImageTk.PhotoImage(icon)
         self.icon_img = icon_img
-        self.add_pts = ttk.Button(
-                                window, 
-                                text = " Brush",
-                                image=self.icon_img,
-                                compound='left',
-                                style = "Modern5.TButton",                                  
-                                command = lambda:add_pixels(self),
-                                width = self.Placement['Segment']['ButtonAdd'][2],
-                                )
-        self.add_pts.place(anchor = 'n', 
-                           relx = self.Placement['Segment']['ButtonAdd'][0], 
-                           rely = self.Placement['Segment']['ButtonAdd'][1])
-        self.loc_att_list.append('self.add_pts')
+        self.btn_add_pts = ttk.Button(
+                                    window, 
+                                    text = " Brush",
+                                    image=self.icon_img,
+                                    compound='left',
+                                    style = "Modern5.TButton",                                  
+                                    command = lambda:add_pixels(self),
+                                    width = self.Placement['Segment']['ButtonAdd'][2],
+                                    )
+        self.btn_add_pts.place(
+                            anchor = 'n', 
+                            relx = self.Placement['Segment']['ButtonAdd'][0], 
+                            rely = self.Placement['Segment']['ButtonAdd'][1]
+                            )
+        self.loc_att_list.append('self.btn_add_pts')
         self.add_selected = False
 
         # Create Button to Erase Points
@@ -753,7 +817,7 @@ def SegmentImages(self,window):
         icon2 = icon2.resize((24, 24))
         icon_img2 = ImageTk.PhotoImage(icon2)
         self.icon_img2 = icon_img2
-        self.remove_pts = ttk.Button(
+        self.btn_rem_pts = ttk.Button(
                                     window,text = " Erase",
                                     image=self.icon_img2,
                                     compound='left',
@@ -761,25 +825,29 @@ def SegmentImages(self,window):
                                     command = lambda:rem_pixels(self),
                                     width = self.Placement['Segment']['ButtonRemove'][2],
                                     )
-        self.remove_pts.place(anchor = 'n',
-                              relx = self.Placement['Segment']['ButtonRemove'][0], 
-                              rely = self.Placement['Segment']['ButtonRemove'][1])
-        self.loc_att_list.append('self.remove_pts')
+        self.btn_rem_pts.place(
+                            anchor = 'n',
+                            relx = self.Placement['Segment']['ButtonRemove'][0], 
+                            rely = self.Placement['Segment']['ButtonRemove'][1]
+                            )
+        self.loc_att_list.append('self.btn_rem_pts')
         self.rem_selected = False
 
         # Create Brush Size Slider
-        self.slider = ttk.Scale(
-                                window,
-                                from_=1,
-                                to=25,
-                                orient='horizontal',  
-                                length=self.Placement['Segment']['Slider1'][2],
-                                style="Modern.Horizontal.TScale"
-                                )
-        self.slider.place(anchor = 'n', 
-                          relx = self.Placement['Segment']['Slider1'][0], 
-                          rely = self.Placement['Segment']['Slider1'][1])
-        self.loc_att_list.append('self.slider')
+        self.slider_brush = ttk.Scale(
+                                    window,
+                                    from_=1,
+                                    to=25,
+                                    orient='horizontal',  
+                                    length=self.Placement['Segment']['Slider1'][2],
+                                    style="Modern.Horizontal.TScale"
+                                    )
+        self.slider_brush.place(
+                            anchor = 'n', 
+                            relx = self.Placement['Segment']['Slider1'][0], 
+                            rely = self.Placement['Segment']['Slider1'][1]
+                            )
+        self.loc_att_list.append('self.slider_brush')
 
         # Get Available Masks
         mask_list = []
@@ -787,28 +855,36 @@ def SegmentImages(self,window):
             mask_list.append('Segment ' + str(list(self.Segment['Data'][self.img_name]['Segments'].keys())[i]))
 
         # Create the dropdown (combobox) for Segmentation Options
-        self.combo1 = ttk.Combobox(
-                            window,
-                            values=mask_list,
-                            style="Modern.TCombobox",
-                            state="readonly"
-                            )
-        self.combo1.bind("<<ComboboxSelected>>", change_combo)
-        self.combo1.place(anchor='n', 
-                          relx = self.Placement['Segment']['Combo1'][0], 
-                          rely = self.Placement['Segment']['Combo1'][1])
-        self.combo1.set(mask_list[0]) 
-        self.loc_att_list.append('self.combo1')
+        self.combo_color = ttk.Combobox(
+                                        window,
+                                        values=mask_list,
+                                        style="Modern.TCombobox",
+                                        state="readonly"
+                                        )
+        self.combo_color.bind("<<ComboboxSelected>>", change_combo)
+        self.combo_color.place(
+                                anchor='n', 
+                                relx = self.Placement['Segment']['Combo1'][0], 
+                                rely = self.Placement['Segment']['Combo1'][1]
+                                )
+        self.combo_color.set(mask_list[0]) 
+        self.loc_att_list.append('self.combo_color')
 
         # Create the color image
         self.img_c = Image.open(os.path.join(os.getcwd(),'GUI', 'Segment', "blue.png"))
         scale = self.Placement['Segment']['Image1'][2]
         self.img_c = self.img_c.resize((int(self.img_c.width*scale), int(self.img_c.height*scale)))
         self.imgtk_c = ImageTk.PhotoImage(self.img_c)
-        self.img_color = tk.Label(window, image = self.imgtk_c, bg = 'white')
-        self.img_color.place(anchor = 'n', 
-                             relx = self.Placement['Segment']['Image1'][0], 
-                             rely = self.Placement['Segment']['Image1'][1])
+        self.img_color = tk.Label(
+                                window, 
+                                image = self.imgtk_c, 
+                                bg = 'white'
+                                )
+        self.img_color.place(
+                            anchor = 'n', 
+                            relx = self.Placement['Segment']['Image1'][0], 
+                            rely = self.Placement['Segment']['Image1'][1]
+                            )
         self.loc_att_list.append('self.img_color')
 
         # Initialize Drawing
@@ -820,9 +896,9 @@ def SegmentImages(self,window):
         self.canvas.mpl_connect("button_release_event", lambda event : on_mouse_release(self, event))
         self.canvas.mpl_connect('figure_leave_event', lambda event: on_mouse_leave(self, event))
 
-
     # Function to continue to next page
     def next_page():
+
         # Try Save
         try:
             self.save_image()
@@ -841,6 +917,7 @@ def SegmentImages(self,window):
 
     # Function to go back to previous page
     def back_page():
+
         # Try Save
         try:
             self.save_image()
@@ -1137,24 +1214,26 @@ def SegmentImages(self,window):
                                 text='Segment Images',
                                 style = "ModernT.TLabel"
                                 )
-    self.label_title.place(anchor = 'center', 
-                           relx = self.Placement['Segment']['LabelTitle'][0], 
-                           rely = self.Placement['Segment']['LabelTitle'][1])
+    self.label_title.place(
+                        anchor = 'center', 
+                        relx = self.Placement['Segment']['LabelTitle'][0], 
+                        rely = self.Placement['Segment']['LabelTitle'][1]
+                        )
     self.att_list.append('self.label_title')
 
     # Create scrollbar for segmentation images
-    self.scrollbar_01= ttk.Scrollbar(
-                                     window, 
-                                     orient= 'vertical', 
-                                     style = "Vertical.TScrollbar"
-                                     )
-    self.scrollbar_01.place(
+    self.scrollbar_seg= ttk.Scrollbar(
+                                    window, 
+                                    orient= 'vertical', 
+                                    style = "Vertical.TScrollbar"
+                                    )
+    self.scrollbar_seg.place(
                             anchor='n', 
                             relx = self.Placement['Segment']['Scrollbar1'][0], 
                             rely = self.Placement['Segment']['Scrollbar1'][1], 
                             height = self.Placement['Segment']['Scrollbar1'][2]
                             )
-    self.att_list.append('self.scrollbar_01')
+    self.att_list.append('self.scrollbar_seg')
     
     # Get all images for segmentation
     all_images = list(self.Segment['Data'].keys())
@@ -1162,7 +1241,7 @@ def SegmentImages(self,window):
 
     # Create the list box of images
     items = tk.StringVar(value=all_images)
-    self.listbox_01 = tk.Listbox(
+    self.listbox_seg = tk.Listbox(
                                 window, 
                                 listvariable=items,
                                 selectmode='single',
@@ -1177,76 +1256,80 @@ def SegmentImages(self,window):
                                 bd=self.style_man['ListBox']['ListBox1']['bd'],
                                 exportselection=0
                                 )
-    self.listbox_01.place(
-                            anchor='n', 
-                            relx = self.Placement['Segment']['Listbox1'][0], 
-                            rely = self.Placement['Segment']['Listbox1'][1]
-                            )
-    self.att_list.append('self.listbox_01')
-    self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
+    self.listbox_seg.place(
+                        anchor='n', 
+                        relx = self.Placement['Segment']['Listbox1'][0], 
+                        rely = self.Placement['Segment']['Listbox1'][1]
+                        )
+    self.att_list.append('self.listbox_seg')
+    self.listbox_seg.config(yscrollcommand= self.scrollbar_seg.set)
 
     # Configure the scrollbar
-    self.scrollbar_01.config(command= self.listbox_01.yview)
+    self.scrollbar_seg.config(command= self.listbox_seg.yview)
 
     # Create combo box for segmentation option
     seg_opts = ['Segment Anything (SAM)','Manual']
 
     # Create the dropdown (combobox) for Segmentation Options
-    self.combo2 = ttk.Combobox(
-                        window,
-                        values=seg_opts,
-                        style="Modern.TCombobox",
-                        state="readonly",
-                        width = self.Placement['Segment']['Combo2'][2],
-                        )
-    self.combo2.place(
+    self.combo_segmod = ttk.Combobox(
+                                    window,
+                                    values=seg_opts,
+                                    style="Modern.TCombobox",
+                                    state="readonly",
+                                    width = self.Placement['Segment']['Combo2'][2],
+                                    )
+    self.combo_segmod.place(
                         anchor='n', 
                         relx = self.Placement['Segment']['Combo2'][0], 
                         rely = self.Placement['Segment']['Combo2'][1]
                         )
-    self.combo2.set(seg_opts[0]) 
-    self.att_list.append('self.combo2')
+    self.combo_segmod.set(seg_opts[0]) 
+    self.att_list.append('self.combo_segmod')
 
 
     # Create button to load an image
-    self.load_btn = ttk.Button(
+    self.btn_load = ttk.Button(
                                window, 
                                text = "Load Image", 
                                command = lambda:load_image(self), 
                                style = 'Modern2.TButton',
                                width = self.Placement['Segment']['ButtonLoad'][2]
                                )
-    self.load_btn.place(
+    self.btn_load.place(
                         anchor = 'n', 
                         relx = self.Placement['Segment']['ButtonLoad'][0], 
                         rely = self.Placement['Segment']['ButtonLoad'][1]
                         )
-    self.att_list.append('self.load_btn')
+    self.att_list.append('self.btn_load')
 
     # Create Continue Button
     self.btn_cont = ttk.Button(
-                                window, 
-                                text = "Continue", 
-                                command = next_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['Segment']['ButtonCont'][2]
-                                )
-    self.btn_cont.place(anchor = 'e', 
+                            window, 
+                            text = "Continue", 
+                            command = next_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['Segment']['ButtonCont'][2]
+                            )
+    self.btn_cont.place(
+                        anchor = 'e', 
                         relx = self.Placement['Segment']['ButtonCont'][0], 
-                        rely = self.Placement['Segment']['ButtonCont'][1])
+                        rely = self.Placement['Segment']['ButtonCont'][1]
+                        )
     self.att_list.append('self.btn_cont')
     
     # Create Back Button
     self.btn_back = ttk.Button(
-                                window, 
-                                text = "Back", 
-                                command = back_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['Segment']['ButtonBack'][2]
-                                )
-    self.btn_back.place(anchor = 'e', 
-                         relx = self.Placement['Segment']['ButtonBack'][0], 
-                         rely = self.Placement['Segment']['ButtonBack'][1])
+                            window, 
+                            text = "Back", 
+                            command = back_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['Segment']['ButtonBack'][2]
+                            )
+    self.btn_back.place(
+                        anchor = 'e', 
+                        relx = self.Placement['Segment']['ButtonBack'][0], 
+                        rely = self.Placement['Segment']['ButtonBack'][1]
+                        )
     self.att_list.append('self.btn_back')
 
     # Create Help Button
@@ -1261,15 +1344,17 @@ def SegmentImages(self,window):
 
     # -- Create the button
     self.btn_help = ttk.Button(
-                                window, 
-                                text = " Help",
-                                image=self.photo_help,
-                                compound='left',                                 
-                                command = helper,
-                                style = "Modern2.TButton",
-                                width = self.Placement['Segment']['Help'][2]
-                                )
-    self.btn_help.place(anchor = 'w', 
+                            window, 
+                            text = " Help",
+                            image=self.photo_help,
+                            compound='left',                                 
+                            command = helper,
+                            style = "Modern2.TButton",
+                            width = self.Placement['Segment']['Help'][2]
+                            )
+    self.btn_help.place(
+                        anchor = 'w', 
                         relx = self.Placement['Segment']['Help'][0], 
-                        rely = self.Placement['Segment']['Help'][1])
+                        rely = self.Placement['Segment']['Help'][1]
+                        )
     self.att_list.append('self.btn_help')

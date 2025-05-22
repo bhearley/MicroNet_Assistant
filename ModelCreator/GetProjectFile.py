@@ -22,9 +22,9 @@ def CreateNewProject(self):
     # Ask where to save the new file
     while '.seg' not in file_path:
         file_path = filedialog.asksaveasfilename(
-            title="Create a new project file",
-            filetypes=(("Project Files", "*.seg"),)
-        )
+                        title="Create a new project file",
+                        filetypes=(("Project Files", "*.seg"),)
+                        )
 
         if file_path == '':
             self.proj_file = None
@@ -55,16 +55,13 @@ def LoadProject(self, window):
 
     # Import Modules
     import os
+    import pickle
     import threading
     import tkinter as tk
     from tkinter import ttk
     from tkinter import filedialog
     from tkinter import messagebox
-    import pickle
     import zstandard as zstd
-
-    # Import Functions
-    from General.DeleteWidgets import DeletePages
 
     # Preallocate file path
     file_path = ''
@@ -74,7 +71,7 @@ def LoadProject(self, window):
         file_path = filedialog.askopenfilename(
             title="Open a project file",
             filetypes=(("Project Files", "*.seg"),)
-        )
+            )
 
         if file_path == '':
             self.proj_file = None
@@ -88,9 +85,11 @@ def LoadProject(self, window):
 
     # Initialize the data structure
     try:
+
         # Function to open file
         def open_file(callback):
-            # Start Open
+
+            # Open the project file
             dctx = zstd.ZstdDecompressor()
             with open(file_path, 'rb') as f:
                 with dctx.stream_reader(f) as decompressor:
@@ -101,6 +100,7 @@ def LoadProject(self, window):
 
         # Exit Protocol
         def on_closing_loading(self):
+
             # Force Quit the entire program
             if messagebox.askyesno("Quit", "Do you want to quit the program?"):
                 window.destroy()
@@ -112,21 +112,34 @@ def LoadProject(self, window):
             loading.geometry("250x100")
             loading.resizable(False, False)
             loading.configure(bg='white')
-            loading.grab_set()  # Make it modal
+            loading.grab_set()
 
             # Create Window Exit Protocol
             loading.protocol("WM_DELETE_WINDOW", lambda:on_closing_loading(self))
 
-            ttk.Label(loading, 
-                        text="Opening Project File - Please Wait.", 
-                        style = "Modern1.TLabel").pack(pady=10)
+            # Create the loading label
+            ttk.Label(
+                    loading, 
+                    text="Opening Project File - Please Wait.", 
+                    style = "Modern1.TLabel"
+                    ).pack(pady=10)
 
-            pb = ttk.Progressbar(loading, mode='indeterminate',style='Modern.Horizontal.TProgressbar')
+            # Create the progress bar
+            pb = ttk.Progressbar(
+                                loading, 
+                                mode='indeterminate',
+                                style='Modern.Horizontal.TProgressbar'
+                                )
             pb.pack(fill='x', padx=20, pady=10)
             pb.start(10)
 
+            # Function to close window when task is completed
             def on_task_done():
+
+                # Stop Progress Bar
                 pb.stop()
+
+                # Destory the window
                 loading.destroy()
 
             # Run long task in background thread
@@ -138,7 +151,7 @@ def LoadProject(self, window):
         # Get the file size
         fsize = os.path.getsize(self.proj_file)
 
-        # Start Load
+        # Load Project
         if fsize > 1E6:
             show_loading_window()
         else:
@@ -151,4 +164,5 @@ def LoadProject(self, window):
         # Return empty data structure
         self.Segment = {}
         self.Segment['GUI'] = {'CurrentPage':1}
+
     return

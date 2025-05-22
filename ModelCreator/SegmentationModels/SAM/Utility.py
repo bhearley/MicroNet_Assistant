@@ -51,7 +51,6 @@ def SetImage(predictor, image_path):
     #-----------------------------------------------------------------------------------------
     # Import Modules
     import cv2
-    import time
 
     # Load the image
     image_sam = cv2.imread(image_path)

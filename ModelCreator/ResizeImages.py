@@ -32,17 +32,20 @@ def ResizeImages(self,window):
 
     # Function to show the image
     def load_image(self):
-        # Function for Validation for Entry
+
+        # Function for Validation of Entry - only float values
         def only_numbers_and_decimal(char, current_value):
+
             # Check if the character is a digit or a decimal point
             if char.isdigit():
                 return True
-            elif char == '.' and current_value.count('.') == 1:  # Allow only one decimal point
+            elif char == '.' and current_value.count('.') == 1:
                 return True
             return False
         
         # Function to scale images
         def scale_img(self):
+
             # Get the scale
             scale = float(self.entry_S.get())
 
@@ -56,6 +59,7 @@ def ResizeImages(self,window):
 
             # Scale Images
             for key in keys:
+
                 # Get the image
                 self.img_to_scale = self.Segment['Files']['Resized Images'][key]
 
@@ -83,15 +87,15 @@ def ResizeImages(self,window):
 
         # Get the image name
         if self.pass_in == False:
-            if len([self.listbox_01.get(idx) for idx in self.listbox_01.curselection()]) > 0:
-                self.img_full_name = [self.listbox_01.get(idx) for idx in self.listbox_01.curselection()][0]
+            if len([self.listbox_load.get(idx) for idx in self.listbox_load.curselection()]) > 0:
+                self.img_full_name = [self.listbox_load.get(idx) for idx in self.listbox_load.curselection()][0]
             else:
                 messagebox.showerror(message = 'No image selected!')
                 return
         else:
             self.pass_in = False
 
-            # Load the image
+        # Load the image
         self.image_full = self.Segment['Files']['Resized Images'][self.img_full_name]
 
         # Create a Matplotlib figure
@@ -114,57 +118,67 @@ def ResizeImages(self,window):
         new_height = int(img_height * scale)/dpi
 
         # -- Create the figure
-        self.fig_2_01, self.ax_2_01 = plt.subplots(figsize=(new_width, new_height))
-        self.fig_2_01.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
+        self.fig_resize, self.ax_resize = plt.subplots(figsize=(new_width, new_height))
+        self.fig_resize.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
-        self.canvas = FigureCanvasTkAgg(self.fig_2_01, master=window)
+        self.canvas = FigureCanvasTkAgg(self.fig_resize, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.config(width=int(self.fig_2_01.get_figwidth() * self.fig_2_01.get_dpi()),
-                                height=int(self.fig_2_01.get_figheight() * self.fig_2_01.get_dpi()))
-        self.canvas_widget.place(anchor='n', 
-                                 relx = self.Placement['Resize']['Canvas1'][0], 
-                                 rely = self.Placement['Resize']['Canvas1'][1])
+        self.canvas_widget.config(
+                                width=int(self.fig_resize.get_figwidth() * self.fig_resize.get_dpi()),
+                                height=int(self.fig_resize.get_figheight() * self.fig_resize.get_dpi())
+                                )
+        self.canvas_widget.place(
+                                anchor='n', 
+                                relx = self.Placement['Resize']['Canvas1'][0], 
+                                rely = self.Placement['Resize']['Canvas1'][1]
+                                )
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
         # Display the image
-        self.ax_2_01.clear()  # Clear previous image
-        self.ax_2_01.imshow(self.image_full)
-        self.ax_2_01.axis('off')  # Hide axes
+        self.ax_resize.clear()  
+        self.ax_resize.imshow(self.image_full)
+        self.ax_resize.axis('off')  
         self.canvas.draw()
 
         # Add the Matplotlib navigation toolbar
         self.toolbar = NavigationToolbar2Tk(self.canvas, window)
         self.toolbar.update()
-        self.toolbar.place(anchor='n', 
-                           relx = self.Placement['Resize']['Toolbar1'][0], 
-                           rely = self.Placement['Resize']['Toolbar1'][1])
+        self.toolbar.place(
+                        anchor='n', 
+                        relx = self.Placement['Resize']['Toolbar1'][0], 
+                        rely = self.Placement['Resize']['Toolbar1'][1]
+                        )
         self.loc_att_list.append('self.toolbar')
 
         # Create the x label
-        self.x_label = ttk.Label(
-                        window, 
-                        text="X:", 
-                        style = "Modern2.TLabel"
+        self.label_x = ttk.Label(
+                                window, 
+                                text="X:", 
+                                style = "Modern2.TLabel"
+                                )
+        self.label_x.place(
+                        anchor = 'n', 
+                        relx = self.Placement['Resize']['LabelX'][0], 
+                        rely = self.Placement['Resize']['LabelX'][1]
                         )
-        self.x_label.place(anchor = 'n', 
-                           relx = self.Placement['Resize']['LabelX'][0], 
-                           rely = self.Placement['Resize']['LabelX'][1])
-        self.loc_att_list.append('self.x_label')
+        self.loc_att_list.append('self.label_x')
 
         # Create the y label
-        self.y_label = ttk.Label(
-                        window, 
-                        text="Y:", 
-                        style = "Modern2.TLabel"
+        self.label_y = ttk.Label(
+                                window, 
+                                text="Y:", 
+                                style = "Modern2.TLabel"
+                                )
+        self.label_y.place(
+                        anchor = 'n', 
+                        relx = self.Placement['Resize']['LabelY'][0], 
+                        rely = self.Placement['Resize']['LabelY'][1]
                         )
-        self.y_label.place(anchor = 'n', 
-                           relx = self.Placement['Resize']['LabelY'][0], 
-                           rely = self.Placement['Resize']['LabelY'][1])
-        self.loc_att_list.append('self.y_label')
+        self.loc_att_list.append('self.label_y')
 
-        #Load an image using PIL
+        # Load the scale image for the scale button
         self.image_path_scale = os.path.join(os.getcwd(),'GUI','Resize','scale.png')
         self.image_scale = Image.open(self.image_path_scale)
         scale = 0.06
@@ -174,91 +188,110 @@ def ResizeImages(self,window):
         self.photo_scale = ImageTk.PhotoImage(self.image_scale)
 
         # Create a ttk.Label with the image
-        self.label_scale = ttk.Label(window, 
+        self.label_scale = ttk.Label(
+                                    window, 
                                     image=self.photo_scale,
-                                    background="white")
-        self.label_scale.place(anchor = 'n', 
-                               relx = self.Placement['Resize']['LabelS'][0], 
-                               rely = self.Placement['Resize']['LabelS'][1])
+                                    background="white"
+                                    )
+        self.label_scale.place(
+                            anchor = 'n', 
+                            relx = self.Placement['Resize']['LabelS'][0], 
+                            rely = self.Placement['Resize']['LabelS'][1]
+                            )
         self.loc_att_list.append('self.label_scale')
 
         # Register the validation function
         vcmd = (window.register(only_numbers_and_decimal), "%S", "%P")
 
         # Add the Entry Box for X
-        self.entry_X = ttk.Entry(window, 
-                            validate="key", 
-                            validatecommand=vcmd, 
-                            style="Custom.TEntry",
-                            justify='center',
-                            width = self.Placement['Resize']['EntryX'][2],
-                            font = tkfont.Font(family="Segoe UI", size=14)
-                            )
+        self.entry_X = ttk.Entry(
+                                window, 
+                                validate="key", 
+                                validatecommand=vcmd, 
+                                style="Custom.TEntry",
+                                justify='center',
+                                width = self.Placement['Resize']['EntryX'][2],
+                                font = tkfont.Font(family="Segoe UI", size=14)
+                                )
         self.entry_X.insert(0, str(int(self.image_full.width)))
-        self.entry_X.place(anchor = 'n',
-                           relx = self.Placement['Resize']['EntryX'][0], 
-                           rely = self.Placement['Resize']['EntryX'][1])
+        self.entry_X.place(
+                        anchor = 'n',
+                        relx = self.Placement['Resize']['EntryX'][0], 
+                        rely = self.Placement['Resize']['EntryX'][1]
+                        )
         self.entry_X.config(state='disabled')
         self.loc_att_list.append('self.entry_X')
 
         # Add the Entry Box for Y
-        self.entry_Y = ttk.Entry(window, 
-                            validate="key", 
-                            validatecommand=vcmd, 
-                            style="Custom.TEntry",
-                            justify='center',
-                            width = self.Placement['Resize']['EntryY'][2],
-                            font = tkfont.Font(family="Segoe UI", size=14)
-                            )
+        self.entry_Y = ttk.Entry(
+                                window, 
+                                validate="key", 
+                                validatecommand=vcmd, 
+                                style="Custom.TEntry",
+                                justify='center',
+                                width = self.Placement['Resize']['EntryY'][2],
+                                font = tkfont.Font(family="Segoe UI", size=14)
+                                )
         self.entry_Y.insert(0, str(int(self.image_full.height)))
-        self.entry_Y.place(anchor = 'n', 
-                           relx = self.Placement['Resize']['EntryY'][0], 
-                           rely = self.Placement['Resize']['EntryY'][1])
+        self.entry_Y.place(
+                        anchor = 'n', 
+                        relx = self.Placement['Resize']['EntryY'][0], 
+                        rely = self.Placement['Resize']['EntryY'][1]
+                        )
         self.entry_Y.config(state='disabled')
         self.loc_att_list.append('self.entry_Y')
 
         # Add the Entry Box for Scale
-        self.entry_S = ttk.Entry(window, 
-                            validate="key", 
-                            validatecommand=vcmd, 
-                            style="Custom.TEntry",
-                            justify='center',
-                            width = self.Placement['Resize']['EntryS'][2],
-                            font = tkfont.Font(family="Segoe UI", size=14)
-                            )
+        self.entry_S = ttk.Entry(
+                                window, 
+                                validate="key", 
+                                validatecommand=vcmd, 
+                                style="Custom.TEntry",
+                                justify='center',
+                                width = self.Placement['Resize']['EntryS'][2],
+                                font = tkfont.Font(family="Segoe UI", size=14)
+                                )
         self.entry_S.insert(0, "1")
-        self.entry_S.place(anchor = 'n',
-                           relx = self.Placement['Resize']['EntryS'][0], 
-                           rely = self.Placement['Resize']['EntryS'][1])
+        self.entry_S.place(
+                        anchor = 'n',
+                        relx = self.Placement['Resize']['EntryS'][0], 
+                        rely = self.Placement['Resize']['EntryS'][1]
+                        )
         self.loc_att_list.append('self.entry_S')
 
         # Create Scale Button
-        self.btn_scale = ttk.Button(window, 
-                                text = "Scale", 
-                                command = lambda: scale_img(self), 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['Resize']['ButtonS'][2]
-                                )
-        self.btn_scale.place(anchor = 'n',
-                             relx = self.Placement['Resize']['ButtonS'][0], 
-                             rely = self.Placement['Resize']['ButtonS'][1])
+        self.btn_scale = ttk.Button(
+                                    window, 
+                                    text = "Scale", 
+                                    command = lambda: scale_img(self), 
+                                    style = 'Modern2.TButton',
+                                    width = self.Placement['Resize']['ButtonS'][2]
+                                    )
+        self.btn_scale.place(
+                            anchor = 'n',
+                            relx = self.Placement['Resize']['ButtonS'][0], 
+                            rely = self.Placement['Resize']['ButtonS'][1]
+                            )
         self.loc_att_list.append('self.btn_scale')
 
         # Create a ttk.Checkbutton widget (used as the toggle)
         self.var = tk.IntVar()
-        self.checkbutton = ttk.Checkbutton(
-                                    window, 
-                                    text="Scale All Images", 
-                                    variable=self.var,
-                                    style="TCheckbutton"
-                                    )
-        self.checkbutton.place(anchor = 'n',
-                               relx = self.Placement['Resize']['Check1'][0], 
-                               rely = self.Placement['Resize']['Check1'][1])
-        self.loc_att_list.append('self.checkbutton')
+        self.check_scale = ttk.Checkbutton(
+                                        window, 
+                                        text="Scale All Images", 
+                                        variable=self.var,
+                                        style="TCheckbutton"
+                                        )
+        self.check_scale.place(
+                            anchor = 'n',
+                            relx = self.Placement['Resize']['Check1'][0], 
+                            rely = self.Placement['Resize']['Check1'][1]
+                            )
+        self.loc_att_list.append('self.check_scale')
 
     # Function to continue to next page
     def next_page():
+
         # Delete the page
         DeleteLocal(self)
         DeletePages(self)
@@ -271,6 +304,7 @@ def ResizeImages(self,window):
 
     # Function to go back to previous page
     def back_page():
+
         # Delete the page
         DeleteLocal(self)
         DeletePages(self)
@@ -419,36 +453,41 @@ def ResizeImages(self,window):
                                 text='Resize Images',
                                 style = "ModernT.TLabel"
                                 )
-    self.label_title.place(anchor = 'center', 
-                           relx = self.Placement['Resize']['LabelTitle'][0], 
-                           rely = self.Placement['Resize']['LabelTitle'][1])
+    self.label_title.place(
+                        anchor = 'center', 
+                        relx = self.Placement['Resize']['LabelTitle'][0], 
+                        rely = self.Placement['Resize']['LabelTitle'][1]
+                        )
     self.att_list.append('self.label_title')
     
     # Create button to load an image
-    self.load_btn = ttk.Button(
-                                window, 
-                                text = "Load Image", 
-                                command = lambda:load_image(self), 
-                                style = 'Modern.TButton',
-                                width = self.Placement['Resize']['ButtonLoad'][2]
-                                )
-    self.load_btn.place(anchor = 'n', 
+    self.btn_load = ttk.Button(
+                            window, 
+                            text = "Load Image", 
+                            command = lambda:load_image(self), 
+                            style = 'Modern.TButton',
+                            width = self.Placement['Resize']['ButtonLoad'][2]
+                            )
+    self.btn_load.place(
+                        anchor = 'n', 
                         relx = self.Placement['Resize']['ButtonLoad'][0], 
                         rely = self.Placement['Resize']['ButtonLoad'][1]
                         )
-    self.att_list.append('self.load_btn')
+    self.att_list.append('self.btn_load')
 
     # Create scrollbar for list of images
-    self.scrollbar_01= ttk.Scrollbar(
+    self.scrollbar_load= ttk.Scrollbar(
                                     window, 
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_01.place(anchor='n', 
+    self.scrollbar_load.place(
+                            anchor='n', 
                             relx = self.Placement['Resize']['Scrollbar1'][0], 
                             rely = self.Placement['Resize']['Scrollbar1'][1], 
-                            height = self.Placement['Resize']['Scrollbar1'][2])
-    self.att_list.append('self.scrollbar_01')
+                            height = self.Placement['Resize']['Scrollbar1'][2]
+                            )
+    self.att_list.append('self.scrollbar_load')
     
     # Get list of all images
     all_images = list(self.Segment['Files']['Resized Images'].keys())
@@ -456,7 +495,7 @@ def ResizeImages(self,window):
 
     # Create the list box of images
     items = tk.StringVar(value=all_images)
-    self.listbox_01 = tk.Listbox(
+    self.listbox_load = tk.Listbox(
                                 window, 
                                 listvariable=items,
                                 selectmode='single',
@@ -470,39 +509,45 @@ def ResizeImages(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_01.place(anchor='n', 
-                          relx = self.Placement['Resize']['Listbox1'][0], 
-                          rely = self.Placement['Resize']['Listbox1'][1])
-    self.att_list.append('self.listbox_01')
-    self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
+    self.listbox_load.place(
+                            anchor='n', 
+                            relx = self.Placement['Resize']['Listbox1'][0], 
+                            rely = self.Placement['Resize']['Listbox1'][1]
+                            )
+    self.att_list.append('self.listbox_load')
+    self.listbox_load.config(yscrollcommand= self.scrollbar_load.set)
 
     # Configure the scrollbar for list of all images
-    self.scrollbar_01.config(command= self.listbox_01.yview)
+    self.scrollbar_load.config(command= self.listbox_load.yview)
 
    # Create Continue Button
     self.btn_cont = ttk.Button(
-                                window, 
-                                text = "Continue", 
-                                command = next_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['Resize']['ButtonCont'][2]
-                                )
-    self.btn_cont.place(anchor = 'e', 
+                            window, 
+                            text = "Continue", 
+                            command = next_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['Resize']['ButtonCont'][2]
+                            )
+    self.btn_cont.place(
+                        anchor = 'e', 
                         relx = self.Placement['Resize']['ButtonCont'][0], 
-                        rely = self.Placement['Resize']['ButtonCont'][1])
+                        rely = self.Placement['Resize']['ButtonCont'][1]
+                        )
     self.att_list.append('self.btn_cont')
     
     # Create Back Button
     self.btn_back = ttk.Button(
-                                window, 
-                                text = "Back", 
-                                command = back_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['Resize']['ButtonBack'][2]
-                                )
-    self.btn_back.place(anchor = 'e', 
-                         relx = self.Placement['Resize']['ButtonBack'][0], 
-                         rely = self.Placement['Resize']['ButtonBack'][1])
+                            window, 
+                            text = "Back", 
+                            command = back_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['Resize']['ButtonBack'][2]
+                            )
+    self.btn_back.place(
+                        anchor = 'e', 
+                        relx = self.Placement['Resize']['ButtonBack'][0], 
+                        rely = self.Placement['Resize']['ButtonBack'][1]
+                        )
     self.att_list.append('self.btn_back')
 
     # Create Help Button
@@ -517,15 +562,17 @@ def ResizeImages(self,window):
 
     # -- Create the button
     self.btn_help = ttk.Button(
-                                window, 
-                                text = " Help",
-                                image=self.photo_help,
-                                compound='left',                                 
-                                command = helper,
-                                style = "Modern2.TButton",
-                                width = self.Placement['Resize']['Help'][2]
-                                )
-    self.btn_help.place(anchor = 'w', 
+                            window, 
+                            text = " Help",
+                            image=self.photo_help,
+                            compound='left',                                 
+                            command = helper,
+                            style = "Modern2.TButton",
+                            width = self.Placement['Resize']['Help'][2]
+                            )
+    self.btn_help.place(
+                        anchor = 'w', 
                         relx = self.Placement['Resize']['Help'][0], 
-                        rely = self.Placement['Resize']['Help'][1])
+                        rely = self.Placement['Resize']['Help'][1]
+                        )
     self.att_list.append('self.btn_help')

@@ -29,54 +29,65 @@ def CropImages(self,window):
     self.att_list = []
     self.loc_att_list = []
 
-    # Load an image to crop
+    # Function to load an image to crop
     def load_image(self):
+
         # Function for Validation for Entry
         def only_numbers(char):
+
             # Check if the character is a digit or a decimal point
             return char.isdigit()
         
         # Function for Creating Hovering Cursor Rectangle
         def on_mouse_move(self, event):
             if self.allow_motion == True:
+
                 # Remove previous crop area
-                for patch in self.ax_3_01.patches:  
+                for patch in self.ax_crop.patches:  
                     patch.remove()
 
+                # Don't show hover point while zooming
                 if self.toolbar.mode == 'zoom rect':
-                    return  # Don't show hover point while zooming
+                    return  
 
-                if event.inaxes != self.ax_3_01:
-                    return  # Ignore if outside axes
+                # Ignore if outside axes
+                if event.inaxes != self.ax_crop:
+                    return  
 
                 # Plot a rectangle using a patch for pixel-perfect control
-                self.hover_rect = patches.Rectangle((int(event.xdata - self.crop_window/2), 
+                self.hover_rect = patches.Rectangle(
+                                                    (int(event.xdata - self.crop_window/2), 
                                                     int(event.ydata - self.crop_window/2)), 
                                                     self.crop_window, 
                                                     self.crop_window, 
                                                     linewidth=2, 
                                                     linestyle='--',
                                                     edgecolor='red', 
-                                                    facecolor='none')
-                self.ax_3_01.add_patch(self.hover_rect)
+                                                    facecolor='none'
+                                                    )
+                self.ax_crop.add_patch(self.hover_rect)
                 self.canvas.draw_idle()
 
         # Function to Lock Hovering Cursor Rectangle
         def mouse_click(self, event):
+
             # Check if event is in axes
-            if event.inaxes == self.ax_3_01:
+            if event.inaxes == self.ax_crop:
+
                 # Check if full square is in the image
                 if 0 <= event.xdata - self.crop_window/2 and  self.image_full.width >= event.xdata + self.crop_window/2 and 0 <= event.ydata - self.crop_window/2 and  self.image_full.height >= event.ydata + self.crop_window/2:
+                    
                     # Check that zoom is off
                     if self.toolbar.mode != 'zoom rect':
     
                         # Function to Confirm Crop Window
                         def save_image(self, event):
+
                             # Get the box 
-                            x = self.ax_3_01.patches[0].get_x()
-                            y = self.ax_3_01.patches[0].get_y()
-                            width = self.ax_3_01.patches[0].get_width()
-                            height = self.ax_3_01.patches[0].get_height()
+                            x = self.ax_crop.patches[0].get_x()
+                            y = self.ax_crop.patches[0].get_y()
+                            width = self.ax_crop.patches[0].get_width()
+                            height = self.ax_crop.patches[0].get_height()
 
                             # Get the image
                             self.image_crop = copy.deepcopy(self.image_full)
@@ -93,23 +104,23 @@ def CropImages(self,window):
 
                             # Save new image to data structure
                             self.Segment['Data'][base_name +'_' + str(ct)+ '.png'] = {
-                                                'Original Image':self.image_crop,
-                                                'Pixel List All':set(),
-                                                'Predictor':None,
-                                                'Segmented Image':None,
-                                                'Segments':{}
-                                                }
+                                                                                    'Original Image':self.image_crop,
+                                                                                    'Pixel List All':set(),
+                                                                                    'Predictor':None,
+                                                                                    'Segmented Image':None,
+                                                                                    'Segments':{}
+                                                                                    }
                             
                             # Preallocate segmentations
                             for i in range(3):
                                 self.Segment['Data'][base_name +'_' + str(ct)+ '.png']['Segments'][i+1] = {
-                                                                            'Pixel List':set()
-                                                                            }
+                                                                                                        'Pixel List':set()
+                                                                                                        }
                             # Update List Box
                             update_listbox(self)
 
                             # Remove the rectangle
-                            for patch in self.ax_3_01.patches: 
+                            for patch in self.ax_crop.patches: 
                                 patch.remove()
                             self.canvas.draw_idle()
 
@@ -125,8 +136,9 @@ def CropImages(self,window):
 
                         # Function to discard image
                         def no_save_image(self, event):
+
                             # Remove the rectangle
-                            for patch in self.ax_3_01.patches:
+                            for patch in self.ax_crop.patches:
                                 patch.remove()
                             self.canvas.draw_idle()
 
@@ -144,7 +156,7 @@ def CropImages(self,window):
                         self.allow_motion = False
 
                         # Change to solid lines
-                        self.ax_3_01.patches[0].set_linestyle('-')
+                        self.ax_crop.patches[0].set_linestyle('-')
                         self.canvas.draw_idle()
 
                         # Unbind crop window entry
@@ -156,10 +168,12 @@ def CropImages(self,window):
 
         # Function to Remove Hovering Cursor Rectangle         
         def on_mouse_leave(self, event):
+
+            # Check if motion is allowed
             if self.allow_motion == True:
                 try:
                     # Remove previous point if it exists
-                    for patch in self.ax_3_01.patches:  
+                    for patch in self.ax_crop.patches:  
                         patch.remove()
                 except:
                     pass
@@ -170,7 +184,7 @@ def CropImages(self,window):
             self.crop_window = int(self.entry_C.get())
         
         # Check if image is selected
-        if len([self.listbox_01.get(idx) for idx in self.listbox_01.curselection()]) < 1:
+        if len([self.listbox_orig.get(idx) for idx in self.listbox_orig.curselection()]) < 1:
             messagebox.showerror(message = 'No image selected!')
             return
         
@@ -186,7 +200,7 @@ def CropImages(self,window):
             pass
 
         # Get the image
-        self.img_full_name = [self.listbox_01.get(idx) for idx in self.listbox_01.curselection()][0]
+        self.img_full_name = [self.listbox_orig.get(idx) for idx in self.listbox_orig.curselection()][0]
         self.image_full = self.Segment['Files']['Resized Images'][self.img_full_name]
 
         # Create a Matplotlib figure
@@ -209,33 +223,38 @@ def CropImages(self,window):
         new_height = int(img_height * scale)/dpi
 
         # -- Create the figure
-        self.fig_3_01, self.ax_3_01 = plt.subplots(figsize=(new_width, new_height))
-        self.fig_3_01.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
+        self.fig_crop, self.ax_crop = plt.subplots(figsize=(new_width, new_height))
+        self.fig_crop.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
-        self.canvas = FigureCanvasTkAgg(self.fig_3_01, master=window)
+        self.canvas = FigureCanvasTkAgg(self.fig_crop, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.config(width=int(self.fig_3_01.get_figwidth() * self.fig_3_01.get_dpi()),
-                                height=int(self.fig_3_01.get_figheight() * self.fig_3_01.get_dpi()))
-        self.canvas_widget.place(anchor='n', 
-                                 relx = self.Placement['Crop']['Canvas1'][0], 
-                                 rely = self.Placement['Crop']['Canvas1'][1])
+        self.canvas_widget.config(
+                                width=int(self.fig_crop.get_figwidth() * self.fig_crop.get_dpi()),
+                                height=int(self.fig_crop.get_figheight() * self.fig_crop.get_dpi())
+                                )
+        self.canvas_widget.place(
+                                anchor='n', 
+                                relx = self.Placement['Crop']['Canvas1'][0], 
+                                rely = self.Placement['Crop']['Canvas1'][1]
+                                )
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
         # Display the image
-        self.ax_3_01.clear()  # Clear previous image
-        self.ax_3_01.imshow(self.image_full)
-        self.ax_3_01.axis('off')  # Hide axes
+        self.ax_crop.clear()
+        self.ax_crop.imshow(self.image_full)
+        self.ax_crop.axis('off')
         self.canvas.draw()
 
         # Add the Matplotlib navigation toolbar
         self.toolbar = NavigationToolbar2Tk(self.canvas, window)
         self.toolbar.update()
-        self.toolbar.place(anchor='n', 
-                           relx = self.Placement['Crop']['Toolbar1'][0], 
-                           rely = self.Placement['Crop']['Toolbar1'][1]
-                           )
+        self.toolbar.place(
+                        anchor='n', 
+                        relx = self.Placement['Crop']['Toolbar1'][0], 
+                        rely = self.Placement['Crop']['Toolbar1'][1]
+                        )
         self.loc_att_list.append('self.toolbar')
 
         # Create the crop window label
@@ -245,28 +264,32 @@ def CropImages(self,window):
                                     background="white",
                                     style = "Modern2.TLabel"
                                     )
-        self.label_crop.place(anchor = 'n', 
-                              relx = self.Placement['Crop']['LabelCrop'][0], 
-                              rely = self.Placement['Crop']['LabelCrop'][1])
+        self.label_crop.place(
+                            anchor = 'n', 
+                            relx = self.Placement['Crop']['LabelCrop'][0], 
+                            rely = self.Placement['Crop']['LabelCrop'][1]
+                            )
         self.loc_att_list.append('self.label_crop')
 
         # Register the validation function
         vcmd = (window.register(only_numbers), "%S")
 
-        # Add the Entry Box for Scale
+        # Add the Entry Box for Crop Window Size
         self.entry_C = ttk.Entry(
-                            window, 
-                            validate="key", 
-                            validatecommand=vcmd, 
-                            style="Custom.TEntry",
-                            justify='center',
-                            width = self.Placement['Crop']['EntryCrop'][2],
-                            font = tkfont.Font(family="Segoe UI", size=14)
-                            )
-        self.entry_C.insert(0, "700") # Set defualt value
-        self.entry_C.place(anchor = 'n', 
-                           relx = self.Placement['Crop']['EntryCrop'][0], 
-                           rely = self.Placement['Crop']['EntryCrop'][1])
+                                window, 
+                                validate="key", 
+                                validatecommand=vcmd, 
+                                style="Custom.TEntry",
+                                justify='center',
+                                width = self.Placement['Crop']['EntryCrop'][2],
+                                font = tkfont.Font(family="Segoe UI", size=14)
+                                )
+        self.entry_C.insert(0, "700")
+        self.entry_C.place(
+                        anchor = 'n', 
+                        relx = self.Placement['Crop']['EntryCrop'][0], 
+                        rely = self.Placement['Crop']['EntryCrop'][1]
+                        )
         self.loc_att_list.append('self.entry_C')
         self.crop_window = int(self.entry_C.get())
 
@@ -281,18 +304,20 @@ def CropImages(self,window):
 
     # Function to update cropped image listbox
     def update_listbox(self):
+
         # Get list of images
         crop_images = list(self.Segment['Data'].keys())
 
         # Update the listbox
-        self.listbox_02.delete(0, tk.END)  
+        self.listbox_crop.delete(0, tk.END)  
         for item in crop_images:
-            self.listbox_02.insert(tk.END, item)
+            self.listbox_crop.insert(tk.END, item)
 
     # Function to view a cropped image
     def view_image(self):
+
         # Check for selected image
-        if len([self.listbox_02.get(idx) for idx in self.listbox_02.curselection()]) < 1:
+        if len([self.listbox_crop.get(idx) for idx in self.listbox_crop.curselection()]) < 1:
             messagebox.showerror(message = 'No Cropped Image Selected!')
             return
 
@@ -314,7 +339,7 @@ def CropImages(self,window):
             pass
 
         # Get the image
-        self.img_view_name = [self.listbox_02.get(idx) for idx in self.listbox_02.curselection()][0]
+        self.img_view_name = [self.listbox_crop.get(idx) for idx in self.listbox_crop.curselection()][0]
         self.image_view = self.Segment['Data'][self.img_view_name]['Original Image']
 
         # Create a Matplotlib figure
@@ -337,55 +362,64 @@ def CropImages(self,window):
         new_height = int(img_height * scale)/dpi
 
         # -- Create the figure
-        self.fig_3_02, self.ax_3_02 = plt.subplots(figsize=(new_width, new_height))
-        self.fig_3_02.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
+        self.fig_crop_v, self.ax_crop_v = plt.subplots(figsize=(new_width, new_height))
+        self.fig_crop_v.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
 
         # Embed the Matplotlib figure in Tkinter
-        self.canvas = FigureCanvasTkAgg(self.fig_3_02, master=window)
+        self.canvas = FigureCanvasTkAgg(self.fig_crop_v, master=window)
         self.canvas_widget = self.canvas.get_tk_widget()
-        self.canvas_widget.config(width=int(self.fig_3_02.get_figwidth() * self.fig_3_02.get_dpi()),
-                                height=int(self.fig_3_02.get_figheight() * self.fig_3_02.get_dpi()))
-        self.canvas_widget.place(anchor='n', 
-                                 relx = self.Placement['Crop']['Canvas1'][0], 
-                                 rely = self.Placement['Crop']['Canvas1'][1])
+        self.canvas_widget.config(
+                                width=int(self.fig_crop_v.get_figwidth() * self.fig_crop_v.get_dpi()),
+                                height=int(self.fig_crop_v.get_figheight() * self.fig_crop_v.get_dpi())
+                                )
+        self.canvas_widget.place(
+                                anchor='n', 
+                                relx = self.Placement['Crop']['Canvas1'][0], 
+                                rely = self.Placement['Crop']['Canvas1'][1]
+                                )
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
         # Display the image
-        self.ax_3_02.clear()  # Clear previous image
-        self.ax_3_02.imshow(self.image_view)
-        self.ax_3_02.axis('off')  # Hide axes
+        self.ax_crop_v.clear()
+        self.ax_crop_v.imshow(self.image_view)
+        self.ax_crop_v.axis('off')
         self.canvas.draw()
 
         # Add the Matplotlib navigation toolbar
         self.toolbar = NavigationToolbar2Tk(self.canvas, window)
         self.toolbar.update()
-        self.toolbar.place(anchor='n', 
-                           relx = self.Placement['Crop']['Toolbar1'][0], 
-                           rely = self.Placement['Crop']['Toolbar1'][1])
+        self.toolbar.place(
+                        anchor='n', 
+                        relx = self.Placement['Crop']['Toolbar1'][0], 
+                        rely = self.Placement['Crop']['Toolbar1'][1]
+                        )
         self.loc_att_list.append('self.toolbar')
 
         # Cover the crop window
-        self.cover = ttk.Label(
-                                window,
-                                text = "                                                                                                    ",
-                                background='white',
-                                padding = self.Placement['Crop']['LabelCover'][2],
-                                )
-        self.cover.place(anchor = 'n', 
-                         relx = self.Placement['Crop']['LabelCover'][0], 
-                         rely = self.Placement['Crop']['LabelCover'][1])
-        self.loc_att_list.append('self.cover')
+        self.label_cover = ttk.Label(
+                                    window,
+                                    text = "                                                                                                    ",
+                                    background='white',
+                                    padding = self.Placement['Crop']['LabelCover'][2],
+                                    )
+        self.label_cover.place(
+                            anchor = 'n', 
+                            relx = self.Placement['Crop']['LabelCover'][0], 
+                            rely = self.Placement['Crop']['LabelCover'][1]
+                            )
+        self.loc_att_list.append('self.label_cover')
 
     # Function to delete a cropped image
     def del_images(self):
+
         # Check for selected image
-        if len([self.listbox_02.get(idx) for idx in self.listbox_02.curselection()]) < 1:
+        if len([self.listbox_crop.get(idx) for idx in self.listbox_crop.curselection()]) < 1:
             messagebox.showerror('No Cropped Image Selected!')
             return
         
         # Get the image
-        self.img_del = [self.listbox_02.get(idx) for idx in self.listbox_02.curselection()][0]
+        self.img_del = [self.listbox_crop.get(idx) for idx in self.listbox_crop.curselection()][0]
 
         # Confirm Delete
         if messagebox.askyesno("Delete Image", "Do you want to delete "+ self.img_del + "?"):
@@ -400,9 +434,9 @@ def CropImages(self,window):
                 crop_images = list(self.Segment['Data'].keys())
 
                 # Update the listbox
-                self.listbox_02.delete(0, tk.END)  
+                self.listbox_crop.delete(0, tk.END)  
                 for item in crop_images:
-                    self.listbox_02.insert(tk.END, item)
+                    self.listbox_crop.insert(tk.END, item)
 
                 # Show message
                 messagebox.showinfo(message = self.img_del + ' was successfully deleted!')
@@ -413,6 +447,7 @@ def CropImages(self,window):
 
     # Function to continue to next page
     def next_page():
+
         # Delete the page
         DeleteLocal(self)
         DeletePages(self)
@@ -425,6 +460,7 @@ def CropImages(self,window):
 
     # Function to go back to previous page
     def back_page():
+
         # Delete the page
         DeleteLocal(self)
         DeletePages(self)
@@ -649,16 +685,18 @@ def CropImages(self,window):
     self.att_list.append('self.label_title')
 
     # Create scrollbar for list of all images
-    self.scrollbar_01= ttk.Scrollbar(
+    self.scrollbar_orig= ttk.Scrollbar(
                                     window, 
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_01.place(anchor='n', 
+    self.scrollbar_orig.place(
+                            anchor='n', 
                             relx = self.Placement['Crop']['Scrollbar1'][0], 
                             rely = self.Placement['Crop']['Scrollbar1'][1], 
-                            height = self.Placement['Crop']['Scrollbar1'][2])
-    self.att_list.append('self.scrollbar_01')
+                            height = self.Placement['Crop']['Scrollbar1'][2]
+                            )
+    self.att_list.append('self.scrollbar_orig')
     
     # Get list of all images
     all_images = list(self.Segment['Files']['Resized Images'].keys())
@@ -666,7 +704,7 @@ def CropImages(self,window):
 
     # Create the list box of images
     items = tk.StringVar(value=all_images)
-    self.listbox_01 = tk.Listbox(
+    self.listbox_orig = tk.Listbox(
                                 window, 
                                 listvariable=items,
                                 selectmode='single',
@@ -680,26 +718,30 @@ def CropImages(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_01.place(anchor='n', 
-                          relx = self.Placement['Crop']['Listbox1'][0], 
-                          rely = self.Placement['Crop']['Listbox1'][1])
-    self.att_list.append('self.listbox_01')
-    self.listbox_01.config(yscrollcommand= self.scrollbar_01.set)
+    self.listbox_orig.place(
+                            anchor='n', 
+                            relx = self.Placement['Crop']['Listbox1'][0], 
+                            rely = self.Placement['Crop']['Listbox1'][1]
+                            )
+    self.att_list.append('self.listbox_orig')
+    self.listbox_orig.config(yscrollcommand= self.scrollbar_orig.set)
 
-    #Configure the scrollbar
-    self.scrollbar_01.config(command= self.listbox_01.yview)
+    # Configure the scrollbar
+    self.scrollbar_orig.config(command= self.listbox_orig.yview)
 
     # Create the scrollbar for cropped images
-    self.scrollbar_02= ttk.Scrollbar(
+    self.scrollbar_crop= ttk.Scrollbar(
                                     window, 
                                     orient= 'vertical', 
                                     style = "Vertical.TScrollbar"
                                     )
-    self.scrollbar_02.place(anchor='n', 
+    self.scrollbar_crop.place(
+                            anchor='n', 
                             relx = self.Placement['Crop']['Scrollbar2'][0], 
                             rely = self.Placement['Crop']['Scrollbar2'][1], 
-                            height = self.Placement['Crop']['Scrollbar2'][2])
-    self.att_list.append('self.scrollbar_02')
+                            height = self.Placement['Crop']['Scrollbar2'][2]
+                            )
+    self.att_list.append('self.scrollbar_crop')
     
     # Get List of cropped images
     if "Data" in self.Segment.keys():
@@ -711,7 +753,7 @@ def CropImages(self,window):
 
     # Create listbox for cropped images
     items2 = tk.StringVar(value=crop_images)
-    self.listbox_02 = tk.Listbox(
+    self.listbox_crop = tk.Listbox(
                                 window, 
                                 listvariable=items2,
                                 selectmode='single',
@@ -725,27 +767,31 @@ def CropImages(self,window):
                                 highlightthickness=self.style_man['ListBox']['ListBox1']['highlightthickness'],     
                                 bd=self.style_man['ListBox']['ListBox1']['bd']
                                 )
-    self.listbox_02.place(anchor='n',
-                          relx = self.Placement['Crop']['Listbox2'][0], 
-                          rely = self.Placement['Crop']['Listbox2'][1])
-    self.att_list.append('self.listbox_02')
-    self.listbox_02.config(yscrollcommand= self.scrollbar_02.set)
+    self.listbox_crop.place(
+                            anchor='n',
+                            relx = self.Placement['Crop']['Listbox2'][0], 
+                            rely = self.Placement['Crop']['Listbox2'][1]
+                            )
+    self.att_list.append('self.listbox_crop')
+    self.listbox_crop.config(yscrollcommand= self.scrollbar_crop.set)
 
-    #Configure the scrollbar for cropped images
-    self.scrollbar_02.config(command= self.listbox_02.yview)
+    # Configure the scrollbar for cropped images
+    self.scrollbar_crop.config(command= self.listbox_crop.yview)
 
     # Create button to load an image
-    self.load_btn = ttk.Button(
-                               window, 
-                               text = "Load Image", 
-                               command = lambda:load_image(self), 
-                               style = 'Modern2.TButton',
-                               width = self.Placement['Crop']['ButtonLoad'][2]
-                               )
-    self.load_btn.place(anchor = 'n', 
+    self.btn_load = ttk.Button(
+                            window, 
+                            text = "Load Image", 
+                            command = lambda:load_image(self), 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['Crop']['ButtonLoad'][2]
+                            )
+    self.btn_load.place(
+                        anchor = 'n', 
                         relx = self.Placement['Crop']['ButtonLoad'][0], 
-                        rely = self.Placement['Crop']['ButtonLoad'][1])
-    self.att_list.append('self.load_btn')
+                        rely = self.Placement['Crop']['ButtonLoad'][1]
+                        )
+    self.att_list.append('self.btn_load')
 
     # Create button to view a cropped image
     self.btn_view = ttk.Button(
@@ -755,9 +801,11 @@ def CropImages(self,window):
                             style = 'Modern2.TButton',
                             width = self.Placement['Crop']['ButtonView'][2]
                             )
-    self.btn_view.place(anchor = 'n',
+    self.btn_view.place(
+                        anchor = 'n',
                         relx = self.Placement['Crop']['ButtonView'][0], 
-                        rely = self.Placement['Crop']['ButtonView'][1])
+                        rely = self.Placement['Crop']['ButtonView'][1]
+                        )
     self.att_list.append('self.btn_view')
 
     # Create button to delete a cropped image
@@ -768,35 +816,41 @@ def CropImages(self,window):
                             style = 'Modern2.TButton',
                             width = self.Placement['Crop']['ButtonDelete'][2]
                             )
-    self.btn_del.place(anchor = 'n',
-                       relx = self.Placement['Crop']['ButtonDelete'][0], 
-                       rely = self.Placement['Crop']['ButtonDelete'][1])
+    self.btn_del.place(
+                    anchor = 'n',
+                    relx = self.Placement['Crop']['ButtonDelete'][0], 
+                    rely = self.Placement['Crop']['ButtonDelete'][1]
+                    )
     self.att_list.append('self.btn_del')
 
     # Create Continue Button
     self.btn_cont = ttk.Button(
-                                window, 
-                                text = "Continue", 
-                                command = next_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['Crop']['ButtonCont'][2]
-                                )
-    self.btn_cont.place(anchor = 'e', 
+                            window, 
+                            text = "Continue", 
+                            command = next_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['Crop']['ButtonCont'][2]
+                            )
+    self.btn_cont.place(
+                        anchor = 'e', 
                         relx = self.Placement['Crop']['ButtonCont'][0], 
-                        rely = self.Placement['Crop']['ButtonCont'][1])
+                        rely = self.Placement['Crop']['ButtonCont'][1]
+                        )
     self.att_list.append('self.btn_cont')
     
     # Create Back Button
     self.btn_back = ttk.Button(
-                                window, 
-                                text = "Back", 
-                                command = back_page, 
-                                style = 'Modern2.TButton',
-                                width = self.Placement['Crop']['ButtonBack'][2]
-                                )
-    self.btn_back.place(anchor = 'e', 
-                         relx = self.Placement['Crop']['ButtonBack'][0], 
-                         rely = self.Placement['Crop']['ButtonBack'][1])
+                            window, 
+                            text = "Back", 
+                            command = back_page, 
+                            style = 'Modern2.TButton',
+                            width = self.Placement['Crop']['ButtonBack'][2]
+                            )
+    self.btn_back.place(
+                        anchor = 'e', 
+                        relx = self.Placement['Crop']['ButtonBack'][0], 
+                        rely = self.Placement['Crop']['ButtonBack'][1]
+                        )
     self.att_list.append('self.btn_back')
 
     # Create Help Button
@@ -811,15 +865,17 @@ def CropImages(self,window):
 
     # -- Create the button
     self.btn_help = ttk.Button(
-                                window, 
-                                text = " Help",
-                                image=self.photo_help,
-                                compound='left',                                 
-                                command = helper,
-                                style = "Modern2.TButton",
-                                width = self.Placement['Crop']['Help'][2]
-                                )
-    self.btn_help.place(anchor = 'w', 
+                            window, 
+                            text = " Help",
+                            image=self.photo_help,
+                            compound='left',                                 
+                            command = helper,
+                            style = "Modern2.TButton",
+                            width = self.Placement['Crop']['Help'][2]
+                            )
+    self.btn_help.place(
+                        anchor = 'w', 
                         relx = self.Placement['Crop']['Help'][0], 
-                        rely = self.Placement['Crop']['Help'][1])
+                        rely = self.Placement['Crop']['Help'][1]
+                        )
     self.att_list.append('self.btn_help')
