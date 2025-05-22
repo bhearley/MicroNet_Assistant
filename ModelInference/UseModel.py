@@ -759,7 +759,7 @@ def UseModel(self,window):
     # -- Load an image using PIL
     self.image_path_home = os.path.join(os.getcwd(),'GUI','General','home.png') 
     self.image_home = Image.open(self.image_path_home)
-    scale = 1
+    scale = self.Placement['FileSelect']['ButtonHome'][3]
     self.image_home = self.image_home.resize((int(self.image_help.width*scale), int(self.image_help.height*scale)))
 
     # -- Convert the image to a Tkinter-compatible format
@@ -786,7 +786,7 @@ def UseModel(self,window):
     # -- Load an image using PIL
     self.image_path_help = os.path.join(os.getcwd(),'GUI','General','help.png') 
     self.image_help = Image.open(self.image_path_help)
-    scale = 0.05
+    scale = self.Placement['FileSelect']['Help'][3]
     self.image_help = self.image_help.resize((int(self.image_help.width*scale), int(self.image_help.height*scale)))
 
     # -- Convert the image to a Tkinter-compatible format

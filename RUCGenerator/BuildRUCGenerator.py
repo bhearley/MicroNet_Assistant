@@ -201,16 +201,25 @@ def BuildRUCGenerator(self,window):
                 self.color_lab = tk.Label(
                                             window,
                                             text = '',
-                                            width = 10
+                                            width = self.Placement['RUC']['LabelCol'][2]
                                             )
-                self.color_lab.place(anchor = 'n', relx = 0.175, rely = 0.85)
+                self.color_lab.place(
+                                        anchor = 'n', 
+                                        relx = self.Placement['RUC']['LabelCol'][0], 
+                                        rely = self.Placement['RUC']['LabelCol'][1]
+                                        )
                 self.color_lab2 = tk.Label(
                                             window,
                                             text = '',
-                                            width = 10,
+                                            width = self.Placement['RUC']['LabelCol2'][2],
+                                            font = ('Segoe UI',12,"normal"),
                                             bg = 'white'
                                             )
-                self.color_lab2.place(anchor = 'n', relx = 0.175, rely = 0.875)
+                self.color_lab2.place(
+                                        anchor = 'n', 
+                                        relx = self.Placement['RUC']['LabelCol2'][0], 
+                                        rely = self.Placement['RUC']['LabelCol2'][1]
+                                        )
 
                 # Load Pixels
                 pixels = self.image.load()
@@ -257,20 +266,24 @@ def BuildRUCGenerator(self,window):
                                     total_rows = len(rows), 
                                     total_columns = len(Cols), 
                                     headers = Cols,
-                                    width = 220, 
-                                    height = 250, 
+                                    width = self.Placement['RUC']['SheetCol'][2], 
+                                    height = self.Placement['RUC']['SheetCol'][3], 
                                     show_x_scrollbar = False, 
                                     show_y_scrollbar = True,
                                     font = ('Segoe UI',12,"normal"),
                                     header_font = ('Segoe UI',12,"bold")
                                     )
-            self.color_sheet.place(anchor = 'n', relx = 0.505, rely = 0.675)
+            self.color_sheet.place(
+                                    anchor = 'n', 
+                                    relx = self.Placement['RUC']['SheetCol'][0], 
+                                    rely = self.Placement['RUC']['SheetCol'][1]
+                                    )
             self.loc_att_list.append('self.color_sheet')
 
             # format sheet
             self.color_sheet.set_index_width(0)
-            self.color_sheet.column_width(column = 0, width = 100, redraw = True)
-            self.color_sheet.column_width(column = 1, width = 100, redraw = True)
+            self.color_sheet.column_width(column = 0, width = self.Placement['RUC']['SheetCol'][4], redraw = True)
+            self.color_sheet.column_width(column = 1, width = self.Placement['RUC']['SheetCol'][5], redraw = True)
             self.color_sheet.table_align(align = 'c',redraw=True)
 
             # Function for RGB to Hexcode conversion
@@ -373,7 +386,7 @@ def BuildRUCGenerator(self,window):
                 
                 # Create the Matplotlib Figure
                 if hasattr(self,"fig2") == False:
-                    img_scale = 0.9
+                    img_scale = self.Placement['RUC']['Canvas2'][2]
                     self.fig2, self.ax2 = plt.subplots(figsize=(8/img_scale, 6/img_scale))
                     self.fig2.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
 
@@ -382,7 +395,11 @@ def BuildRUCGenerator(self,window):
                 self.canvas_widget2 = self.canvas2.get_tk_widget()
                 self.canvas_widget2.config(width=int(self.fig1.get_figheight() * self.image.width/self.image.height  * self.fig1.get_dpi()),
                                         height=int(self.fig1.get_figheight() * self.fig1.get_dpi()))
-                self.canvas_widget2.place(anchor='n', relx = 0.825, rely = 0.25)
+                self.canvas_widget2.place(
+                                            anchor='n', 
+                                            relx = self.Placement['RUC']['Canvas2'][0], 
+                                            rely = self.Placement['RUC']['Canvas2'][1]
+                                            )
                 self.loc_att_list.append('self.canvas2')
                 self.loc_att_list.append('self.canvas_widget2')
 
@@ -400,7 +417,11 @@ def BuildRUCGenerator(self,window):
                 self.toolbar = NavigationToolbar2Tk(self.canvas2, window)
                 self.toolbar.update()
                 self.toolbar.push_current()
-                self.toolbar.place(anchor='n', relx = 0.825, rely = 0.85)
+                self.toolbar.place(
+                                    anchor='n', 
+                                    relx = self.Placement['RUC']['Toolbar2'][0], 
+                                    rely = self.Placement['RUC']['Toolbar2'][1]
+                                    )
                 self.loc_att_list.append('self.toolbar')
                 
                 # Draw borders (grid lines)
@@ -479,11 +500,15 @@ def BuildRUCGenerator(self,window):
                                 from_=self.xboundL,
                                 to=self.xboundU,
                                 orient='horizontal',  
-                                length=200,
+                                length=self.Placement['RUC']['SliderX'][2],
                                 style="Modern.Horizontal.TScale",
                                 command = change_x_slider
                                 )
-            self.sliderx.place(anchor = 'n', relx = 0.5, rely = 0.335)
+            self.sliderx.place(
+                                anchor = 'n', 
+                                relx = self.Placement['RUC']['SliderX'][0], 
+                                rely = self.Placement['RUC']['SliderX'][1]
+                                )
             self.loc_att_list.append('self.sliderx')
             self.sliderx.bind("<ButtonRelease-1>", on_slider_release)
 
@@ -522,11 +547,15 @@ def BuildRUCGenerator(self,window):
                                 from_=self.yboundL,
                                 to=self.yboundU,
                                 orient='horizontal',  
-                                length=200,
+                                length=self.Placement['RUC']['SliderY'][2],
                                 style="Modern.Horizontal.TScale",
                                 command = change_y_slider
                                 )
-            self.slidery.place(anchor = 'n', relx = 0.5, rely = 0.485)
+            self.slidery.place(
+                                anchor = 'n', 
+                                relx = self.Placement['RUC']['SliderY'][0], 
+                                rely = self.Placement['RUC']['SliderY'][1]
+                                )
             self.loc_att_list.append('self.slidery')
             self.slidery.bind("<ButtonRelease-1>", on_slider_release)
 
@@ -659,9 +688,15 @@ def BuildRUCGenerator(self,window):
             mod_select.grab_set()
 
             # Create a label
-            ttk.Label(mod_select, 
+            ttk.Label(
+                        mod_select, 
                         text="Select an Export Option:", 
-                        style = "Modern1.TLabel").place(anchor = 'n', relx = 0.5, rely = 0.1)
+                        style = "Modern1.TLabel"
+                        ).place(
+                                anchor = 'n', 
+                                relx = self.Placement['RUC']['LabelExp'][0], 
+                                rely = self.Placement['RUC']['LabelExp'][1]
+                                )
             
             # Create the selection box
             mod_opts = ['NASMAT']
@@ -671,61 +706,95 @@ def BuildRUCGenerator(self,window):
                             style="Modern.TCombobox",
                             state="readonly"
                             )
-            self.combo1.place(anchor='n', relx = 0.5, rely = 0.2)
+            self.combo1.place(
+                                anchor='n', 
+                                relx = self.Placement['RUC']['ComboExp'][0], 
+                                rely = self.Placement['RUC']['ComboExp'][1]
+                                )
             self.combo1.set(mod_opts[0]) 
 
             # Create label for conversion
-            ttk.Label(mod_select, 
+            ttk.Label(
+                        mod_select, 
                         text="Conversion from pixels to distance:", 
-                        style = "Modern1.TLabel").place(anchor = 'n', relx = 0.5, rely = 0.4)
+                        style = "Modern1.TLabel"
+                        ).place(
+                                anchor = 'n', 
+                                relx = self.Placement['RUC']['LabelConv'][0], 
+                                rely = self.Placement['RUC']['LabelConv'][1]
+                                )
             
             # Create label for X conversion
-            ttk.Label(mod_select, 
+            ttk.Label(
+                        mod_select, 
                         text="X:", 
-                        style = "Modern1.TLabel").place(anchor = 'n', relx = 0.2, rely = 0.5)
+                        style = "Modern1.TLabel"
+                        ).place(
+                                anchor = 'n', 
+                                relx = self.Placement['RUC']['LabelConvX'][0], 
+                                rely = self.Placement['RUC']['LabelConvX'][1]
+                                )
             
             # Register the validation function
             vcmd2 = (window.register(only_numbers_and_decimal), "%S", "%P")
 
             # Create X conversion entry box
             self.entry_convx = ttk.Entry(
-                            mod_select, 
-                            validate="key", 
-                            validatecommand=vcmd2, 
-                            style="Custom.TEntry",
-                            justify='center',
-                            width = 10,
-                            font = tkfont.Font(family="Segoe UI", size=14)
-                            )
-            self.entry_convx.place(anchor='n', relx = 0.5, rely = 0.5)
+                                            mod_select, 
+                                            validate="key", 
+                                            validatecommand=vcmd2, 
+                                            style="Custom.TEntry",
+                                            justify='center',
+                                            width = self.Placement['RUC']['EntryConvX'][2],
+                                            font = tkfont.Font(family="Segoe UI", size=14)
+                                            )
+            self.entry_convx.place(
+                                    anchor='n', 
+                                    relx = self.Placement['RUC']['EntryConvX'][0], 
+                                    rely = self.Placement['RUC']['EntryConvX'][1]
+                                    )
             self.entry_convx.insert(0, 1)
 
             # Create label for Y conversion
-            ttk.Label(mod_select, 
+            ttk.Label(
+                        mod_select, 
                         text="Y:", 
-                        style = "Modern1.TLabel").place(anchor = 'n', relx = 0.2, rely = 0.65)
+                        style = "Modern1.TLabel"
+                        ).place(
+                                anchor = 'n', 
+                                relx = self.Placement['RUC']['LabelConvY'][0], 
+                                rely = self.Placement['RUC']['LabelConvY'][1]
+                                )
 
             # Create Y conversion entry box
             self.entry_convy = ttk.Entry(
-                            mod_select, 
-                            validate="key", 
-                            validatecommand=vcmd2, 
-                            style="Custom.TEntry",
-                            justify='center',
-                            width = 10,
-                            font = tkfont.Font(family="Segoe UI", size=14)
-                            )
-            self.entry_convy.place(anchor='n', relx = 0.5, rely = 0.65)
+                                            mod_select, 
+                                            validate="key", 
+                                            validatecommand=vcmd2, 
+                                            style="Custom.TEntry",
+                                            justify='center',
+                                            width = self.Placement['RUC']['EntryConvY'][2],
+                                            font = tkfont.Font(family="Segoe UI", size=14)
+                                            )
+            self.entry_convy.place(
+                                    anchor='n', 
+                                    relx = self.Placement['RUC']['EntryConvY'][0], 
+                                    rely = self.Placement['RUC']['EntryConvY'][1]
+                                    )
             self.entry_convy.insert(0, 1)
 
             # Create button to write exported data
-            btn_exp_d = ttk.Button(
-                                    mod_select, 
-                                    text = "Export", 
-                                    command = lambda:export_data(self), 
-                                    style = 'Modern2.TButton',
-                                    width = 12
-                                    ).place(anchor = 'n', relx = 0.5, rely = 0.8)
+            ttk.Button(
+                        mod_select, 
+                        text = "Export", 
+                        command = lambda:export_data(self), 
+                        style = 'Modern2.TButton',
+                        width = self.Placement['RUC']['ButtonExpW'][2]
+                        ).place(
+                                anchor = 'n', 
+                                relx = self.Placement['RUC']['ButtonExpW'][0], 
+                                rely = self.Placement['RUC']['ButtonExpW'][1]
+                                )
 
         # Create the label for the segmented image
         self.label_01 = ttk.Label(
@@ -733,12 +802,16 @@ def BuildRUCGenerator(self,window):
                                 text='Segmented Image',
                                 style = "Modern3.TLabel"
                                 )
-        self.label_01.place(anchor = 'n', relx = 0.175, rely = 0.175)
+        self.label_01.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['LabelSeg'][0], 
+                            rely = self.Placement['RUC']['LabelSeg'][1]
+                            )
         self.att_list.append('self.label_01')
 
         # Create the canvas to display the image
         if hasattr(self,"fig1") == False:
-            img_scale = 0.9
+            img_scale = self.Placement['RUC']['Canvas1'][2]
             self.fig1, self.ax1 = plt.subplots(figsize=(8/img_scale, 6/img_scale))
             self.fig1.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
 
@@ -747,7 +820,11 @@ def BuildRUCGenerator(self,window):
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.config(width=int(self.fig1.get_figwidth() * self.fig1.get_dpi()),
                                 height=int(self.fig1.get_figheight() * self.fig1.get_dpi()))
-        self.canvas_widget.place(anchor='n', relx = 0.175, rely = 0.25)
+        self.canvas_widget.place(
+                                    anchor='n', 
+                                    relx = self.Placement['RUC']['Canvas1'][0], 
+                                    rely = self.Placement['RUC']['Canvas1'][1]
+                                    )
         self.loc_att_list.append('self.canvas')
         self.loc_att_list.append('self.canvas_widget')
 
@@ -757,13 +834,17 @@ def BuildRUCGenerator(self,window):
         self.ax1.axis('off')  # Hide axes
         self.canvas.draw()
 
-        # Create the label for the segmented image
+        # Create the label for the RUC
         self.label_02 = ttk.Label(
                                 window,
                                 text='RUC',
                                 style = "Modern3.TLabel"
                                 )
-        self.label_02.place(anchor = 'n', relx = 0.825, rely = 0.175)
+        self.label_02.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['LabelRUC'][0], 
+                            rely = self.Placement['RUC']['LabelRUC'][1]
+                            )
         self.att_list.append('self.label_02')
 
         # Set Default number of subcells in X and Y
@@ -785,7 +866,11 @@ def BuildRUCGenerator(self,window):
                                 text='X Subcells',
                                 style = "Modern2.TLabel"
                                 )
-        self.label_03.place(anchor = 'n', relx = 0.5, rely = 0.25)
+        self.label_03.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['LabelSubX'][0], 
+                            rely = self.Placement['RUC']['LabelSubX'][1]
+                            )
         self.att_list.append('self.label_03')
 
         # Create the lower X entry bound
@@ -795,11 +880,15 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10,
+                            width = self.Placement['RUC']['EntryXL'][2],
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_XL.insert(0, self.xboundL) # Set defualt value
-        self.entry_XL.place(anchor = 'n', relx = 0.425, rely = 0.329)
+        self.entry_XL.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['EntryXL'][0], 
+                            rely = self.Placement['RUC']['EntryXL'][1]
+                            )
         self.loc_att_list.append('self.entry_XL')
         self.entry_XL.bind("<Return>", lambda event: create_x_slider(event))
 
@@ -810,11 +899,15 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10,
+                            width = self.Placement['RUC']['EntryXU'][2],
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_XU.insert(0, self.xboundU) # Set defualt value
-        self.entry_XU.place(anchor = 'n', relx = 0.575, rely = 0.329)
+        self.entry_XU.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['EntryXU'][0], 
+                            rely = self.Placement['RUC']['EntryXU'][1]
+                            )
         self.loc_att_list.append('self.entry_XU')
         self.entry_XU.bind("<Return>", lambda event: create_x_slider(event))
 
@@ -825,11 +918,15 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10,
+                            width = self.Placement['RUC']['EntryXV'][2],
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_XV.insert(0, self.xsub) # Set defualt value
-        self.entry_XV.place(anchor = 'n', relx = 0.5, rely = 0.2925)
+        self.entry_XV.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['EntryXV'][0], 
+                            rely = self.Placement['RUC']['EntryXV'][1]
+                            )
         self.loc_att_list.append('self.entry_XV')
         self.entry_XV.bind("<Return>", lambda event: update_x_slider(event))
 
@@ -842,7 +939,11 @@ def BuildRUCGenerator(self,window):
                                 text='Y Subcells',
                                 style = "Modern2.TLabel"
                                 )
-        self.label_04.place(anchor = 'n', relx = 0.5, rely = 0.4)
+        self.label_04.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['LabelSubY'][0], 
+                            rely = self.Placement['RUC']['LabelSubY'][1]
+                            )
         self.att_list.append('self.label_04')
 
         # Create the lower X entry bound
@@ -852,11 +953,15 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10,
+                            width = self.Placement['RUC']['EntryYL'][2],
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_YL.insert(0, self.yboundL) # Set defualt value
-        self.entry_YL.place(anchor = 'n', relx = 0.425, rely = 0.479)
+        self.entry_YL.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['EntryYL'][0], 
+                            rely = self.Placement['RUC']['EntryYL'][1]
+                            )
         self.loc_att_list.append('self.entry_YL')
         self.entry_YL.bind("<Return>", lambda event: create_y_slider(event))
 
@@ -867,11 +972,15 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10,
+                            width = self.Placement['RUC']['EntryYU'][2],
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_YU.insert(0, self.xboundU) # Set defualt value
-        self.entry_YU.place(anchor = 'n', relx = 0.575, rely = 0.479)
+        self.entry_YU.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['EntryYU'][0], 
+                            rely = self.Placement['RUC']['EntryYU'][1]
+                            )
         self.loc_att_list.append('self.entry_YU')
         self.entry_YU.bind("<Return>", lambda event: create_y_slider(event))
 
@@ -882,11 +991,15 @@ def BuildRUCGenerator(self,window):
                             validatecommand=vcmd, 
                             style="Custom.TEntry",
                             justify='center',
-                            width = 10,
+                            width = self.Placement['RUC']['EntryYV'][2],
                             font = tkfont.Font(family="Segoe UI", size=14)
                             )
         self.entry_YV.insert(0, self.xsub) # Set defualt value
-        self.entry_YV.place(anchor = 'n', relx = 0.5, rely = 0.4425)
+        self.entry_YV.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['EntryYV'][0], 
+                            rely = self.Placement['RUC']['EntryYV'][1]
+                            )
         self.loc_att_list.append('self.entry_YV')
         self.entry_YV.bind("<Return>", lambda event: update_y_slider(event))
 
@@ -896,9 +1009,13 @@ def BuildRUCGenerator(self,window):
                                     text = "Update RUC", 
                                     command = create_ruc, 
                                     style = 'Modern3.TButton',
-                                    width = 12
+                                    width = self.Placement['RUC']['ButtonRUC'][2]
                                     )
-        self.btn_ruc.place(anchor = 'n', relx = 0.5, rely = 0.595)
+        self.btn_ruc.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['ButtonRUC'][0], 
+                            rely = self.Placement['RUC']['ButtonRUC'][1]
+                            )
         self.att_list.append('self.btn_ruc')
 
         # Create button to export data
@@ -907,9 +1024,13 @@ def BuildRUCGenerator(self,window):
                                     text = "Export", 
                                     command = lambda:export(self), 
                                     style = 'Modern3.TButton',
-                                    width = 10
+                                    width = self.Placement['RUC']['ButtonExp'][2]
                                     )
-        self.btn_exp.place(anchor = 'n', relx = 0.5, rely = 0.525)
+        self.btn_exp.place(
+                            anchor = 'n', 
+                            relx = self.Placement['RUC']['ButtonExp'][0], 
+                            rely = self.Placement['RUC']['ButtonExp'][1]
+                            )
         self.att_list.append('self.btn_exp')
 
         # Create slider for adjusting in X
@@ -1288,7 +1409,11 @@ def BuildRUCGenerator(self,window):
                                 text='RUC Generator',
                                 style = "ModernT.TLabel"
                                 )
-    self.label_title.place(anchor = 'center', relx = 0.5, rely = 0.125)
+    self.label_title.place(
+                            anchor = 'center', 
+                            relx = self.Placement['RUC']['LabelTitle'][0], 
+                            rely = self.Placement['RUC']['LabelTitle'][1]
+                            )
     self.att_list.append('self.label_title')
 
     # Create Button to select file
@@ -1297,16 +1422,20 @@ def BuildRUCGenerator(self,window):
                                 text = "Select File", 
                                 command = get_file, 
                                 style = 'Modern2.TButton',
-                                width = 12
+                                width = self.Placement['RUC']['ButtonFile'][2]
                                 )
-    self.btn_file.place(anchor = 'n', relx = 0.5, rely = 0.15)
+    self.btn_file.place(
+                        anchor = 'n', 
+                        relx = self.Placement['RUC']['ButtonFile'][0], 
+                        rely = self.Placement['RUC']['ButtonFile'][1]
+                        )
     self.att_list.append('self.btn_file')
 
     # Create Help Button
     # -- Load an image using PIL
     self.image_path_help = os.path.join(os.getcwd(),'GUI','General','help.png') 
     self.image_help = Image.open(self.image_path_help)
-    scale = 0.05
+    scale = self.Placement['RUC']['Help'][3]
     self.image_help = self.image_help.resize((int(self.image_help.width*scale), int(self.image_help.height*scale)))
 
     # -- Convert the image to a Tkinter-compatible format
@@ -1320,16 +1449,20 @@ def BuildRUCGenerator(self,window):
                                 compound='left',                                 
                                 command = helper,
                                 style = "Modern2.TButton",
-                                width = 7
+                                width = self.Placement['RUC']['Help'][2]
                                 )
-    self.btn_help.place(anchor = 'w', relx = 0.001, rely = 0.975)
+    self.btn_help.place(
+                        anchor = 'w', 
+                        relx = self.Placement['RUC']['Help'][0], 
+                        rely = self.Placement['RUC']['Help'][1]
+                        )
     self.att_list.append('self.btn_help')
 
     # Create Home Button
     # -- Load an image using PIL
     self.image_path_home = os.path.join(os.getcwd(),'GUI','General','home.png') 
     self.image_home = Image.open(self.image_path_home)
-    scale = 1
+    scale = self.Placement['RUC']['ButtonHome'][3]
     self.image_home = self.image_home.resize((int(self.image_help.width*scale), int(self.image_help.height*scale)))
 
     # -- Convert the image to a Tkinter-compatible format
@@ -1343,7 +1476,11 @@ def BuildRUCGenerator(self,window):
                                 compound='left',                                 
                                 command = home,
                                 style = "Modern2.TButton",
-                                width = 7
+                                width = self.Placement['RUC']['ButtonHome'][2]
                                 )
-    self.btn_home.place(anchor = 'e', relx = 0.997, rely = 0.975)
+    self.btn_home.place(
+                        anchor = 'e', 
+                        relx = self.Placement['RUC']['ButtonHome'][0], 
+                        rely = self.Placement['RUC']['ButtonHome'][1]
+                        )
     self.att_list.append('self.btn_home')

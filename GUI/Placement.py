@@ -1,13 +1,13 @@
 #-----------------------------------------------------------------------------------------
 #
-#   Placement.py
+#   Placements.py
 #
 #   PURPOSE: Get the coordinates and size of each widget based on screen size
 #
 #   INPUTS:
 #       self    structure containing all GUI information
 #-----------------------------------------------------------------------------------------
-def Placement(self, res):
+def Placements(self, res):
     # Initialize Placement
     Placement = {
                     'MainPage':{
@@ -184,7 +184,41 @@ def Placement(self, res):
                                 'ButtonLoadI':[],
                                 'ButtonSeg':[],
                                 'ButtonCont':[],
-                                'ButtonBack':[],
+                                'ButtonHome':[],
+                                'Help':[]
+                                },
+                    'RUC':{
+                                'LabelCol':[],
+                                'LabelCol2':[],
+                                'SheetCol':[],
+                                'Canvas2':[],
+                                'Toolbar2':[],
+                                'SliderX':[],
+                                'SliderY':[],
+                                'LabelExp':[],
+                                'ComboExp':[],
+                                'LabelConv':[],
+                                'LabelConvX':[],
+                                'EntryConvX':[],
+                                'LabelConvY':[],
+                                'EntryConvY':[],
+                                'ButtonExp':[],
+                                'LabelSeg':[],
+                                'Canvas1':[],
+                                'LabelRUC':[],
+                                'LabelSubX':[],
+                                'EntryXL':[],
+                                'EntryXU':[],
+                                'EntryXV':[],
+                                'LabelSubY':[],
+                                'EntryYL':[],
+                                'EntryYU':[],
+                                'EntryYV':[],
+                                'ButtonRUC':[],
+                                'ButtonExp':[],
+                                'LabelTitle':[],
+                                'ButtonFile':[],
+                                'ButtonHome':[],
                                 'Help':[]
                                 }
     }
@@ -365,8 +399,42 @@ def Placement(self, res):
         Placement['UseMod']['ButtonLoadI'] = [0.875, 0.2, 10]
         Placement['UseMod']['ButtonSeg'] = [0.5, 0.2, 15]
         Placement['UseMod']['ButtonCont'] = [0.997, 0.975, 10]
-        Placement['UseMod']['ButtonHome'] = [0.942, 0.975, 7]
+        Placement['UseMod']['ButtonHome'] = [0.942, 0.975, 7, 1]
         Placement['UseMod']['Help'] = [0.001, 0.975, 7, 0.05]
+
+        # -- Build RUC
+        Placement['RUC']['LabelCol'] = [0.175, 0.8, 10]
+        Placement['RUC']['LabelCol2'] = [0.175, 0.825, 10]
+        Placement['RUC']['SheetCol'] = [0.505, 0.675, 220, 250, 100, 100]
+        Placement['RUC']['Canvas2'] = [0.825, 0.25, 0.9]
+        Placement['RUC']['Toolbar2'] = [0.825, 0.85]
+        Placement['RUC']['SliderX'] = [0.5, 0.335, 200]
+        Placement['RUC']['SliderY'] = [0.5, 0.485, 200]
+        Placement['RUC']['LabelExp'] = [0.5, 0.1]
+        Placement['RUC']['ComboExp'] = [0.5, 0.2]
+        Placement['RUC']['LabelConv'] = [0.5, 0.4]
+        Placement['RUC']['LabelConvX'] = [0.2, 0.5]
+        Placement['RUC']['EntryConvX'] = [0.5, 0.5, 10]
+        Placement['RUC']['LabelConvY'] = [0.2, 0.65]
+        Placement['RUC']['EntryConvY'] = [0.5, 0.65, 10]
+        Placement['RUC']['ButtonExpW'] = [0.5, 0.8, 12]
+        Placement['RUC']['LabelSeg'] = [0.175, 0.175,]
+        Placement['RUC']['Canvas1'] = [0.175, 0.25, 0.9]
+        Placement['RUC']['LabelRUC'] = [0.825, .175]
+        Placement['RUC']['LabelSubX'] = [0.5, 0.2]
+        Placement['RUC']['EntryXL'] = [0.425, 0.329, 10]
+        Placement['RUC']['EntryXU'] = [0.575, 0.329, 10]
+        Placement['RUC']['EntryXV'] = [0.5, 0.2925, 10]
+        Placement['RUC']['LabelSubY'] = [0.5, 0.4]
+        Placement['RUC']['EntryYL'] = [0.425, 0.479, 10]
+        Placement['RUC']['EntryYU'] = [0.575, 0.479, 10]
+        Placement['RUC']['EntryYV'] = [0.5, 0.4425, 10]
+        Placement['RUC']['ButtonRUC'] = [0.5, 0.595, 12]
+        Placement['RUC']['ButtonExp'] = [0.5, 0.525, 10]
+        Placement['RUC']['LabelTitle'] = [0.5, 0.125]
+        Placement['RUC']['ButtonFile'] = [0.5, 0.15, 12]
+        Placement['RUC']['ButtonHome'] = [0.997, 0.975, 7, 1]
+        Placement['RUC']['Help'] = [0.001, 0.975, 7, 0.05]
         
 
 
@@ -531,7 +599,7 @@ def Placement(self, res):
         Placement['UseMod']['LabelC'] = [0.125, 0.45]
         Placement['UseMod']['EntryC'] = [0.125, 0.485, 10]
         Placement['UseMod']['Canvas1'] = [0.5, 0.3, 1.25]
-        Placement['UseMod']['Toolbar1'] = [0.5, 0.875]
+        Placement['UseMod']['Toolbar1'] = [0.5, 0.825]
         Placement['UseMod']['LabelX'] = [0.77, 0.4]
         Placement['UseMod']['LabelY'] = [0.8425, 0.4]
         Placement['UseMod']['LabelS'] = [0.9175, 0.4]
@@ -548,6 +616,43 @@ def Placement(self, res):
         Placement['UseMod']['ButtonCont'] = [0.999, 0.965, 10]
         Placement['UseMod']['ButtonHome'] = [0.909, 0.965, 7]
         Placement['UseMod']['Help'] = [0.001, 0.965, 7, 0.05]
+
+        # -- Build RUC
+        Placement['RUC']['LabelCol'] = [0.175, 0.8, 10]
+        Placement['RUC']['LabelCol2'] = [0.175, 0.825, 10]
+        Placement['RUC']['SheetCol'] = [0.505, 0.675, 220, 250, 100, 100]
+        Placement['RUC']['Canvas2'] = [0.825, 0.25, 1.5]
+        Placement['RUC']['Toolbar2'] = [0.825, 0.825]
+        Placement['RUC']['SliderX'] = [0.5, 0.335, 150]
+        Placement['RUC']['SliderY'] = [0.5, 0.485, 150]
+        Placement['RUC']['LabelExp'] = [0.5, 0.1]
+        Placement['RUC']['ComboExp'] = [0.5, 0.2]
+        Placement['RUC']['LabelConv'] = [0.5, 0.4]
+        Placement['RUC']['LabelConvX'] = [0.2, 0.5]
+        Placement['RUC']['EntryConvX'] = [0.5, 0.5, 10]
+        Placement['RUC']['LabelConvY'] = [0.2, 0.65]
+        Placement['RUC']['EntryConvY'] = [0.5, 0.65, 10]
+        Placement['RUC']['ButtonExpW'] = [0.5, 0.8, 10]
+        Placement['RUC']['LabelSeg'] = [0.175, 0.175]
+        Placement['RUC']['Canvas1'] = [0.175, 0.25, 1.5]
+        Placement['RUC']['LabelRUC'] = [0.825, .175]
+        Placement['RUC']['LabelSubX'] = [0.5, 0.25]
+        Placement['RUC']['EntryXL'] = [0.425, 0.329, 6]
+        Placement['RUC']['EntryXU'] = [0.575, 0.329, 6]
+        Placement['RUC']['EntryXV'] = [0.5, 0.2925, 6]
+        Placement['RUC']['LabelSubY'] = [0.5, 0.4]
+        Placement['RUC']['EntryYL'] = [0.425, 0.479, 6]
+        Placement['RUC']['EntryYU'] = [0.575, 0.479, 6]
+        Placement['RUC']['EntryYV'] = [0.5, 0.4425, 6]
+        Placement['RUC']['ButtonRUC'] = [0.5, 0.595, 10]
+        Placement['RUC']['ButtonExp'] = [0.5, 0.525, 10]
+        Placement['RUC']['LabelTitle'] = [0.5, 0.125]
+        Placement['RUC']['ButtonFile'] = [0.5, 0.15, 12]
+        Placement['RUC']['ButtonHome'] = [0.999, 0.965, 7, 1]
+        Placement['RUC']['Help'] = [0.001, 0.965, 7, 0.05]
+
+    else:
+        Placements(self, "1536x960")
 
 
     # Set to self

@@ -62,7 +62,7 @@ class MicroNetAssistant:
         # Get Placement Information
         screen_width = window.winfo_screenwidth()
         screen_height = window.winfo_screenheight()
-        Placement(self, str(screen_width) + "x" + str(screen_height))
+        Placements(self, str(screen_width) + "x" + str(screen_height))
 
         # Define Images
         title_img = os.path.join(os.getcwd(),'GUI','General','TitleHeader.png') 
