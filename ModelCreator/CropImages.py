@@ -498,7 +498,7 @@ def CropImages(self,window):
         # Create the help window
         helpwindow = tk.Toplevel(window)
         helpwindow.title("Help")
-        helpwindow.geometry("600x700")
+        helpwindow.geometry("800x700")
         helpwindow.resizable(False, False)
         helpwindow.configure(bg='white')
         helpwindow.grab_set()  
@@ -519,7 +519,7 @@ def CropImages(self,window):
         # Create the title
         label_title = ttk.Label(
                                 frame,
-                                text=' Crop Images',
+                                text='Crop Images',
                                 style = "ModernT.TLabel"
                                 )
         label_title.pack(padx = 5, pady=0, anchor="w")
@@ -529,19 +529,19 @@ def CropImages(self,window):
                         "\n\n Button Functions:")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Set list of buttons and functions        
-        image_list = ['save_btn.png', 'help_btn.png','back_btn.png','cont_btn.png']
-        func_list = [f'Save the project', 
-                     f'Load the Help Window',
-                     f'Return to the Image Selection page',
-                     f'Continue to the Crop Images page']
+        image_list = ['help_btn.png', 'save_btn.png', 'back_btn.png','cont_btn.png']
+        func_list = [f'Load the Help Window',
+                     f'Save the MicroNet Segmentation Model project',
+                     f'Return to the Resize Images page',
+                     f'Continue to the Label Images page']
 
         # Add buttons and functions to frame
         for i in range(len(image_list)):
@@ -553,7 +553,7 @@ def CropImages(self,window):
             row_frame = tk.Frame(frame, bg="white")
     
             # Image holder frame (fixed width)
-            image_holder = tk.Frame(row_frame, width=140, height=40, bg="white")
+            image_holder = tk.Frame(row_frame, width=180, height=40, bg="white")
             image_holder.pack_propagate(False)  # prevent shrinking
             image_holder.pack(side="left", padx=10, pady=5)
             image_label = tk.Label(image_holder, image=img, bg="white")
@@ -582,15 +582,15 @@ def CropImages(self,window):
         canvas.bind("<Configure>", on_canvas_configure)
 
         # Add more instructions
-        instructions = ("Select an image from the lefthand list and select 'Load Image' to " +
+        instructions = ("Select an image from the lefthand list and select “Load Image”  to " +
                         "display the image on screen.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -602,15 +602,16 @@ def CropImages(self,window):
         image_label.pack(anchor="center")
 
         # Add more instructions
-        instructions = ("Set the size of the crop window using the entry box below the image. Press 'Enter' to " +
-                        "set the new window size.")
+        instructions = ("If the image does not need to be cropped (i.e., it has previously been cropped to a square), press the “Add While Image” button" + 
+                        " to add the image to the righthand list. To crop an image, first set the size of the crop window using the entry box below the image." + 
+                        " Press “Enter” to set the new window size.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -625,11 +626,11 @@ def CropImages(self,window):
         instructions = ("Hover over the image to display the crop window in red.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -641,14 +642,14 @@ def CropImages(self,window):
         image_label.pack(anchor="center")
 
         # Add more instructions
-        instructions = ("Press 'Enter' to lock the current crop window.")
+        instructions = ("Press “Enter”  to lock the current crop window.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -660,30 +661,30 @@ def CropImages(self,window):
         image_label.pack(anchor="center")
 
         # Add more instructions
-        instructions = ("To add the cropped image to the project, press 'Enter'. The cropped image name" + 
+        instructions = ("To add the cropped image to the project, press “Enter”. The cropped image name " + 
                         "is automatically generated and saved in the right hand list box. To discard the " + 
-                        "cropped image, press 'Escape'.")
+                        "cropped image, press “Escape”.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add more instructions
-        instructions = ("Cropped images can be viewed by selecting an image from the righ hand "+
-                        "list box and pressing the 'View Image' button. Cropped images can be deleted " +
-                        "by pressing the 'Delete Image' button. Only the cropped image will be deleted - the "+
-                        "original image will remain in the left hand list box.")
+        instructions = ("Cropped images can be viewed by selecting an image from the righthand list and " + 
+                        "pressing the “View Image” button. Cropped images can be deleted by pressing the" + 
+                        " “Delete Image” button. Only the cropped image will be deleted - the original image" + 
+                        " will remain in the lefthand list.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image

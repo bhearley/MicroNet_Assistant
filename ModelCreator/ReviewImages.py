@@ -238,30 +238,30 @@ def ReviewImages(self,window):
         # Create the title
         label_title = ttk.Label(
                                 frame,
-                                text=' Export Images',
+                                text='Export Images',
                                 style = "ModernT.TLabel"
                                 )
         label_title.pack(padx = 5, pady=0, anchor="w")
 
         # Create the Instructions
-        instructions = ("The Export Images page allows the user to review the segmentations and " +
-                        "export the images to a single folder." + 
+        instructions = ("The Export Images page allows the user to review the manual labels " + 
+                        "for each image and export the images into a single folder for training." + 
                         "\n\n Button Functions:")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Set list of buttons and functions 
-        image_list = ['save_btn.png', 'help_btn.png','back_btn.png','cont_btn.png']
-        func_list = [f'Save the project', 
-                     f'Load the Help Window',
-                     f'Return to the Image Selection page',
-                     f'Continue to Train Model page']
+        image_list = ['help_btn.png','save_btn.png', 'back_btn.png','cont_btn.png']
+        func_list = [f'Load the Help Window', 
+                     f'Save the MicroNet Segmentation Model project',
+                     f'Return to the Label Images page',
+                     f'Continue to Data Definition page']
 
         # Add buttons and functions to frame
         for i in range(len(image_list)):
@@ -302,18 +302,19 @@ def ReviewImages(self,window):
         canvas.bind("<Configure>", on_canvas_configure)
 
         # Add more instructions
-        instructions = ("Select an image from the lefthand list and select 'Load Image' to " +
-                        "display the image on screen. To export the images for MicroNet, select " + 
-                        "'Export Iamges' and select the directory to save the images to. For each " + 
-                        "image, the original cropped image imagename.png and the segmented image " + 
-                        "imagename_mask.png will be saved.")
+        instructions = ("Select an image from the list and press “Load Image” to " + 
+                        "display the image on the screen. To export the images for " + 
+                        "training, select “Export Images” and choose the directory " + 
+                        "to save the images to. For each image, the original cropped " + 
+                        "image and the labeled image will be saved with “_mask” added " + 
+                        "to the filename.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image

@@ -15,6 +15,7 @@ def SegmentMicroNet(model_path, image_path, class_num):
     # Import Modules
     import imageio
     import numpy as np
+    from PIL import Image
     import pretrained_microscopy_models as pmm
     import segmentation_models_pytorch as smp
     from skimage import img_as_ubyte
@@ -139,6 +140,11 @@ def SegmentMicroNet(model_path, image_path, class_num):
 
     # Load the image
     im = imageio.imread(image_path)
+    
+    # Convert to RGB if necessary
+    if len(im.shape) != 3:
+        image_pil = Image.fromarray(im).convert('RGBA')
+        im = np.array(image_pil)
     im = im[:, :, :3] 
     im = img_as_ubyte(im)
 

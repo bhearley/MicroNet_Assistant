@@ -933,7 +933,7 @@ def SegmentImages(self,window):
         # Create the help window
         helpwindow = tk.Toplevel(window)
         helpwindow.title("Help")
-        helpwindow.geometry("600x700")
+        helpwindow.geometry("800x700")
         helpwindow.resizable(False, False)
         helpwindow.configure(bg='white')
         helpwindow.grab_set()  
@@ -954,32 +954,30 @@ def SegmentImages(self,window):
         # Create the title
         label_title = ttk.Label(
                                 frame,
-                                text=' Segment Images',
+                                text='Label Images',
                                 style = "ModernT.TLabel"
                                 )
         label_title.pack(padx = 5, pady=0, anchor="w")
 
         # Create the Instructions
-        instructions = ("The Segment Page allows  labelling of each image in the project for " +
-                        "segmentation, assisted by the Segment Anything Model (SAM) from Meta. " +
-                        "The SAM model takes input prompts of labels as background and foreground " +
-                        "for each individual body. SAM predictions can be manually edited within the window." + 
+        instructions = ("The Label Images page allows labeling of each image in the project for training." + 
+                        " Images can either be manually labeled or labeled using an available built-in segmentation model." 
                         "\n\n Button Functions:")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Set list of buttons and functions 
-        image_list = ['save_btn.png', 'help_btn.png','back_btn.png','cont_btn.png']
-        func_list = [f'Save the project', 
-                     f'Load the Help Window',
-                     f'Return to the Image Selection page',
-                     f'Continue to the Crop Images page']
+        image_list = ['help_btn.png', 'save_btn.png', 'back_btn.png','cont_btn.png']
+        func_list = [f'Load the Help Window',
+                     f'Save the MicroNet Segmentation Model project', 
+                     f'Return to the Crop Selection page',
+                     f'Continue to the Export Images page']
 
         # Add buttons and functions to frame
         for i in range(len(image_list)):
@@ -991,7 +989,7 @@ def SegmentImages(self,window):
             row_frame = tk.Frame(frame, bg="white")
     
             # Image holder frame (fixed width)
-            image_holder = tk.Frame(row_frame, width=140, height=40, bg="white")
+            image_holder = tk.Frame(row_frame, width=180, height=40, bg="white")
             image_holder.pack_propagate(False)  # prevent shrinking
             image_holder.pack(side="left", padx=10, pady=5)
             image_label = tk.Label(image_holder, image=img, bg="white")
@@ -1020,15 +1018,16 @@ def SegmentImages(self,window):
         canvas.bind("<Configure>", on_canvas_configure)
 
         # Add more instructions
-        instructions = ("Select an image from the lefthand list and select 'Load Image' to " +
-                        "display the image on screen.")
+        instructions = ("Select an image from the list and choose a labeling option " + 
+                        "from the drop down menu. Press “Load Image” to display the " + 
+                        "image and begin labeling.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -1040,74 +1039,16 @@ def SegmentImages(self,window):
         image_label.pack(anchor="center")
 
         # Add more instructions
-        instructions = ("Use the left mouse click to add foreground input prompt points (area to " +
-                        "label as in the body). Use the right mouse click to add background input " + 
-                        "prompt points (area to label as not in the body). Foreground points will display" +
-                         "in green and background points will display in red. Multiple input prompts can be " +
-                        "used for each individual body. The generated segmentation will automatically appear " + ""
-                        "over the image with each prompt.")
+        instructions = ("When segmenting an image, the MicroNet Assistant Tool allows 3 distinct classes to " + 
+                        "be labeled for segmentation. To change the class, use the drop down menu on the " + 
+                        "righthand side to select a segmentation option. The associated color will automatically be updated.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
-        label_inst1.pack(padx = 5, pady=5, anchor="w")
-
-        # Add associated image
-        img_file = os.path.join(os.getcwd(),'GUI','Help','sam_1.png')
-        img = Image.open(img_file)
-        img_tk = ImageTk.PhotoImage(img)
-        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
-        image_label.image = img_tk
-        image_label.pack(anchor="center")
-
-        # Add more instructions
-        instructions = ("To keep the current mask in the segmentation, press 'Enter'. The " +
-                        "mask will turn a darker shade when confiremd.")
-
-        label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
-        label_inst1.pack(padx = 5, pady=5, anchor="w")
-
-        # Add associated image
-        img_file = os.path.join(os.getcwd(),'GUI','Help','sam_2.png')
-        img = Image.open(img_file)
-        img_tk = ImageTk.PhotoImage(img)
-        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
-        image_label.image = img_tk
-        image_label.pack(anchor="center")
-
-        # Add more instructions
-        instructions = ("To discard the currentmask, press 'Escape'. Repeat for each individual body "+
-                        "in the image - using multiple prompts for multiple bodies will likely result in " +
-                        "poor segmentation results.")
-
-        label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
-        label_inst1.pack(padx = 5, pady=5, anchor="w")
-
-        # Add more instructions
-        instructions = ("The MicroNet Assistant Tool allows 3 distinct phases to be labelled " + 
-                        "for segmentation. To change the label, use the drop down menu on the" + 
-                        "right hand side to select a segmentation option. The associated color " +
-                        " will automatically be updated.")
-
-        label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -1119,20 +1060,126 @@ def SegmentImages(self,window):
         image_label.pack(anchor="center")
 
         # Add more instructions
-        instructions = ("The segmentation can be editied manually using the drawing tools on the " +
-                        "right hand side of the page. The 'Brush' button allows adding pixels to " +
-                        "the labelled segmentation and the 'Erase' button allows removing pixels from " +
-                        "the labelled segmentation. When a tool is active, the button will appear gray, and " +
-                        "when it is inactive it will appear orange. The size of the brush/eraser can be changed " +
-                        "using the slider bar. The toolbar under the image can be used to zoom in and out of a " +
-                        "region of interest.")
+        instructions = ("There are currently two options available for labeling: \n" + 
+                        "\u2022 Segment Anyting (SAM)\n"+
+                        "\u2022 Manual")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add subtitle
+        subtitle = ("Segment Anyting (SAM)")
+
+        label_sub1 = ttk.Label(
+                            frame,
+                            text=subtitle,
+                            style = "Modern4.TLabel",
+                            wraplength=750
+                            )
+        label_sub1.pack(padx = 5, pady=5, anchor="w")
+
+
+        # Add more instructions
+        instructions = ("The Segment Anything Model (SAM) from Meta enables rapid " + 
+                        "labeling of images by taking input prompts as points labeled " + 
+                        "either background or foreground for each individual body in " + 
+                        "the class. To segment a body using SAM, use the left mouse " + 
+                        "click to add foreground input prompt points (area to label " + 
+                        "as in the class). Use the right mouse click to add background " + 
+                        "input prompt points (area to label as not in the class). " + 
+                        "Foreground points will display in green and background points " + 
+                        "will display in red. Multiple input prompts can be used for " + 
+                        "each individual body. The generated mask will automatically " + 
+                        "appear over the image with each prompt.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add associated image
+        img_file = os.path.join(os.getcwd(),'GUI','Help','sam_1.png')
+        img = Image.open(img_file)
+        img_tk = ImageTk.PhotoImage(img)
+        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
+        image_label.image = img_tk
+        image_label.pack(anchor="center")
+
+        # Add more instructions
+        instructions = ("To keep the current mask in the class, press “Enter”. " + 
+                        "The mask will turn a darker shade when confirmed and " + 
+                        "prompt points will be removed from the image.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add associated image
+        img_file = os.path.join(os.getcwd(),'GUI','Help','sam_2.png')
+        img = Image.open(img_file)
+        img_tk = ImageTk.PhotoImage(img)
+        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
+        image_label.image = img_tk
+        image_label.pack(anchor="center")
+
+        # Add more instructions
+        instructions = ("To discard the current mask, press “Escape”. Repeat " + 
+                        "for each individual body in the image – using multiple " + 
+                        "prompts for multiple bodies without individually confirming " + 
+                        "each body will likely result in poor results.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add subtitle
+        subtitle = ("Manual")
+
+        label_sub1 = ttk.Label(
+                            frame,
+                            text=subtitle,
+                            style = "Modern4.TLabel",
+                            wraplength=750
+                            )
+        label_sub1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add more instructions
+        instructions = ("Manual labeling of images is available within all of " +
+                        "the segmentation options and is used to edit an " + 
+                        "automatic segmentation method or label images from " + 
+                        "scratch. Manual labeling is performed using the drawing " + 
+                        "tools on the righthand side of the page. The “Brush” " + 
+                        "button enables adding pixels to the class and the “Erase” " + 
+                        "button enables removing pixels from the class. When a " + 
+                        "drawing tool is active, the button will appear gray, and " + 
+                        "when it is inactive it will appear orange. The size of the " + 
+                        "brush/eraser can be changed using the slider bar. Pixels " + 
+                        "can only be added/erased for the current class selected on " + 
+                        "the righthand drop down menu. The toolbar under the image " + 
+                        "can be used to zoom in and out of a region of interest.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -1147,11 +1194,11 @@ def SegmentImages(self,window):
         instructions = ("Hovering the mouse over the image will display the brush/eraser.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -1163,15 +1210,15 @@ def SegmentImages(self,window):
         image_label.pack(anchor="center")
 
         # Add more instructions
-        instructions = ("To add/remove points, click with the left mouse button and drag over " +
-                        "the desired area, which will appear in white. ")
+        instructions = ("To add/remove points, click with the left mouse button and drag " + 
+                        "over the desired area, which will appear in white.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -1186,11 +1233,11 @@ def SegmentImages(self,window):
         instructions = ("Releasing the left mouse button will add/remove all pixels in the path.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -1204,7 +1251,7 @@ def SegmentImages(self,window):
     # Create Page Title
     self.label_title = ttk.Label(
                                 window,
-                                text='Segment Images',
+                                text='Label Images',
                                 style = "ModernT.TLabel"
                                 )
     self.label_title.place(

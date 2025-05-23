@@ -341,7 +341,7 @@ def ResizeImages(self,window):
         # Create the title
         label_title = ttk.Label(
                                 frame,
-                                text=' Resize Images',
+                                text='Resize Images',
                                 style = "ModernT.TLabel"
                                 )
         label_title.pack(padx = 5, pady=0, anchor="w")
@@ -352,17 +352,17 @@ def ResizeImages(self,window):
                         "1000 and 2000 pixels. \n\n Button Functions:")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Set list of buttons and functions
-        image_list = ['save_btn.png', 'help_btn.png','back_btn.png','cont_btn.png']
-        func_list = [f'Save the project', 
-                     f'Load the Help Window',
+        image_list = ['help_btn.png','save_btn.png','back_btn.png','cont_btn.png']
+        func_list = [f'Load the Help Window', 
+                     f'Save the MicroNet Segmentation Model project',
                      f'Return to the Image Selection page',
                      f'Continue to the Crop Images page']
 
@@ -376,7 +376,7 @@ def ResizeImages(self,window):
             row_frame = tk.Frame(frame, bg="white")
     
             # Image holder frame (fixed width)
-            image_holder = tk.Frame(row_frame, width=140, height=40, bg="white")
+            image_holder = tk.Frame(row_frame, width=180, height=40, bg="white")
             image_holder.pack_propagate(False)  # prevent shrinking
             image_holder.pack(side="left", padx=10, pady=5)
             image_label = tk.Label(image_holder, image=img, bg="white")
@@ -405,9 +405,9 @@ def ResizeImages(self,window):
         canvas.bind("<Configure>", on_canvas_configure)
 
         # Add more instructions
-        instructions = ("Select an image from the lefthand list and select 'Load Image' to " +
-                        "display the image on screen. The X and Y dimensions in pixels are " +
-                        "shown to the right of the image.")
+        instructions = ('Select an image from the lefthand list and select “Load Image” to ' +
+                        'display the image on screen. The X and Y dimensions in pixels are ' +
+                        'shown to the right of the image.')
 
         label_inst1 = ttk.Label(
                                     frame,
@@ -427,8 +427,8 @@ def ResizeImages(self,window):
 
         # Add more instructions
         instructions = ("Edit the scale using the entry box to the right of the dimensions." +
-                        " To edit just the selected image, uncheck the 'Scale All Images' box." +
-                        " To scale all images in the project file, check the 'Scale All Images' box." +
+                        " To edit just the selected image, uncheck the “Scale All Images”  box." +
+                        " To scale all images in the project file, check the “Scale All Images”  box." +
                         " Press the 'Scale' button to scale the image(s)")
 
         label_inst1 = ttk.Label(

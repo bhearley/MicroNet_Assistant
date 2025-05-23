@@ -30,16 +30,16 @@ def BuildStartPage(self,window):
 
         # Create the main canvas
         canvas = tk.Canvas(
-                            helpwindow, 
-                            height=500, 
-                            width=700, 
-                            bg="white"
-                            )
+                        helpwindow, 
+                        height=500, 
+                        width=700, 
+                        bg="white"
+                        )
         scrollbar = tk.Scrollbar(
-                                    helpwindow, 
-                                    orient="vertical", 
-                                    command=canvas.yview
-                                    )
+                                helpwindow, 
+                                orient="vertical", 
+                                command=canvas.yview
+                                )
         scrollbar.pack(side="right", fill="y")
         canvas.pack(side="left", fill="both", expand=True)
 
@@ -53,17 +53,27 @@ def BuildStartPage(self,window):
         # Create the title
         label_title = ttk.Label(
                                 frame,
-                                text=' Main Menu',
+                                text='Main Menu',
                                 style = "ModernT.TLabel"
                                 )
         label_title.pack(padx = 5, pady=0, anchor="w")
 
+        # Create the instructions
+        instructions = ("The main menu presents four options:")
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
         # Set list of buttons and functions
         image_list = ['new_mod.png', 'edit_mod.png','use_mod.png','exp_mod.png']
-        func_list = [f'Create a new MicroNet model project', 
-                     f'Edit a MicroNet model project',
-                     f'Segment an image with an existing trained MicroNet model',
-                     f'Export a segmented image to an analysis tool']
+        func_list = [f'Create a new MicroNet Segmentation Model project', 
+                     f'Edit an existing MicroNet Segmentation Model project',
+                     f'Segment an image with a trained MicroNet Model',
+                     f'Export the geometry of a segmented image to an analysis tool']
 
         # Add buttons and functions to frame
         for i in range(len(image_list)):
@@ -75,7 +85,7 @@ def BuildStartPage(self,window):
             row_frame = tk.Frame(frame, bg="white")
     
             # Image holder frame (fixed width)
-            image_holder = tk.Frame(row_frame, width=140, height=40, bg="white")
+            image_holder = tk.Frame(row_frame, width=220, height=40, bg="white")
             image_holder.pack_propagate(False)  # prevent shrinking
             image_holder.pack(side="left", padx=10, pady=5)
             image_label = tk.Label(image_holder, image=img, bg="white")
@@ -122,7 +132,7 @@ def BuildStartPage(self,window):
     # Create a label for defining a new model
     self.label_create = ttk.Label(
                             self.frame_create,
-                            text='Create a Model',
+                            text='Segmentation Model Training',
                             style = "Modern3.TLabel"
                             )
     self.label_create.place(
@@ -181,7 +191,7 @@ def BuildStartPage(self,window):
     # Create a label for using/loading a model
     self.label_use = ttk.Label(
                             self.frame_use,
-                            text='Load a Model',
+                            text='Segmentation & Modeling',
                             style = "Modern3.TLabel"
                             )
     self.label_use.place(
@@ -194,7 +204,7 @@ def BuildStartPage(self,window):
     # Create button to segment an image with a trained model
     self.btn_use_mod = ttk.Button(
                             self.frame_use, 
-                            text = "Use Model", 
+                            text = "Segment Image", 
                             command = self.segment_image, 
                             style="Modern.TButton", 
                             width = self.Placement['MainPage']['Button3'][2]
@@ -209,7 +219,7 @@ def BuildStartPage(self,window):
     # Create button to export ruc data
     self.btn_ruc = ttk.Button(
                             self.frame_use, 
-                            text = "Export Data", 
+                            text = "Export Geometry", 
                             command = self.start_export, 
                             style="Modern.TButton", 
                             width = self.Placement['MainPage']['Button4'][2]

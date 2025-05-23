@@ -1449,14 +1449,9 @@ def BuildRUCGenerator(self,window):
     # Function for Home
     def home():
 
-        # Delete the page
-        DeleteLocal(self)
-        DeletePages(self)
-
-        # Delete canvas
+        # Delete all items
         for widget in window.winfo_children():
-            if isinstance(widget, tk.Canvas):
-                widget.delete("all")
+            widget.delete("all")
                 
         # Update the page number
         self.Segment['GUI']['CurrentPage'] = 0

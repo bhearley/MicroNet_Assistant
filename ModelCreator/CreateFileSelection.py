@@ -587,7 +587,7 @@ def CreateFileSelection(self,window):
         # Create the help window
         helpwindow = tk.Toplevel(window)
         helpwindow.title("Help")
-        helpwindow.geometry("600x700")
+        helpwindow.geometry("800x700")
         helpwindow.resizable(False, False)
         helpwindow.configure(bg='white')
         helpwindow.grab_set()  
@@ -608,31 +608,32 @@ def CreateFileSelection(self,window):
         # Create the title
         label_title = ttk.Label(
                                 frame,
-                                text=' Image Selection',
+                                text='Image Selection',
                                 style = "ModernT.TLabel"
                                 )
         label_title.pack(padx = 5, pady=0, anchor="w")
 
         # Create the Instructions
-        instructions = ("The Image Selection page allows selection of the folder containing the " +
-                       "images to segment and select which files to include in the project. \n\n" +
+        instructions = ("The Image Selection page allows selection of the folder and " +  
+                        "images used for manual labeling. \n\n" +
                        "Button Functions:")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Set list of buttons and functions
-        image_list = ['save_btn.png', 'help_btn.png','back_btn.png','cont_btn.png','set_img.png']
-        func_list = [f'Save the project', 
-                     f'Load the Help Window',
+        image_list = [ 'help_btn.png', 'save_btn.png','back_btn.png','cont_btn.png','set_img.png']
+        func_list = [f'Load the Help Window',
+                     f'Save the MicroNet Segmentation Model project', 
                      f'Return to the Main Menu',
                      f'Continue to the Resize Images page', 
-                     f'Set the directory that contains the images used to train the MicroNet model']
+                     f'Set the directory that contains the images for training the segmentation model'
+                     ]
 
         # Add buttons and functions to frame
         for i in range(len(image_list)):
@@ -644,7 +645,7 @@ def CreateFileSelection(self,window):
             row_frame = tk.Frame(frame, bg="white")
     
             # Image holder frame (fixed width)
-            image_holder = tk.Frame(row_frame, width=140, height=40, bg="white")
+            image_holder = tk.Frame(row_frame, width=220, height=40, bg="white")
             image_holder.pack_propagate(False)  # prevent shrinking
             image_holder.pack(side="left", padx=10, pady=5)
             image_label = tk.Label(image_holder, image=img, bg="white")
@@ -673,15 +674,15 @@ def CreateFileSelection(self,window):
         canvas.bind("<Configure>", on_canvas_configure)
 
         # Add more instructions
-        instructions = ("After setting the directory, two list boxes will be displayed to add images to the project. " + 
-                        "Only images in the lefthand list box will be used for training the MicroNet model.")
+        instructions = ("After setting the directory, two list boxes will be displayed to add " + 
+                        "images to the project. Only images in the “Manual Segmentation Images” will be used for training the MicroNet model.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=750
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -693,19 +694,40 @@ def CreateFileSelection(self,window):
         image_label.pack(anchor="center")
 
         # Add more instructions
-        instructions = ("Individual images can be added to the project by selecting the file name on the "+
-                        "lefthand box and pressing the '\u2192' button. Images can be removed from the project by " + 
-                        "selecting the filename on the right hand box and pressing the '\u2190' button. Additionally, "+
-                        "all images can be added to the project by pressing the 'Add All Images' button, and all "+""
-                        "image can be removed from the project by pressing the 'Remove All Images' button.")
+        instructions = ('Individual images can be added to the project by selecting the file name on the' +
+                        ' “All Images” list box and pressing the “\u2192” button. All images can be added' + 
+                        ' to the project by pressing the “Add All Images” button. Images can be removed from' + 
+                        ' the project by selecting the filename on the “Manual Segmentation Images” list box' + 
+                        ' and pressing the “\u2190”. All images can be removed from the project by pressing' + 
+                        ' the “Remove All Images Button”.')
 
         label_inst1 = ttk.Label(
                                     frame,
                                     text=instructions,
                                     style = "Modern1.TLabel",
-                                    wraplength=550
+                                    wraplength=750
                                     )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add more instructions
+        instructions = ('Selected images can be viewed by pressing the “View Selected Images” button. Multiple'+ 
+                        ' images can be selected and viewed in the new window. Use the “\u2192” and “\u2190” buttons to navigate between images.')
+
+        label_inst1 = ttk.Label(
+                                    frame,
+                                    text=instructions,
+                                    style = "Modern1.TLabel",
+                                    wraplength=750
+                                    )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add associated image
+        img_file = os.path.join(os.getcwd(),'GUI','Help','view_sel.png')
+        img = Image.open(img_file)
+        img_tk = ImageTk.PhotoImage(img)
+        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
+        image_label.image = img_tk
+        image_label.pack(anchor="center")
 
     # Create Page Title
     self.label_title = ttk.Label(

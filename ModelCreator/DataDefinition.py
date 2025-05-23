@@ -134,13 +134,13 @@ def DataDefinition(self,window):
         # Create the help window
         helpwindow = tk.Toplevel(window)
         helpwindow.title("Help")
-        helpwindow.geometry("600x700")
+        helpwindow.geometry("1000x700")
         helpwindow.resizable(False, False)
         helpwindow.configure(bg='white')
         helpwindow.grab_set()  
 
         # Create the main canvas
-        canvas = tk.Canvas(helpwindow, height=500, width=700, bg="white")
+        canvas = tk.Canvas(helpwindow, height=500, width=900, bg="white")
         scrollbar = tk.Scrollbar(helpwindow, orient="vertical", command=canvas.yview)
         scrollbar.pack(side="right", fill="y")
         canvas.pack(side="left", fill="both", expand=True)
@@ -155,30 +155,31 @@ def DataDefinition(self,window):
         # Create the title
         label_title = ttk.Label(
                                 frame,
-                                text=' Export Images',
+                                text='Data Definition',
                                 style = "ModernT.TLabel"
                                 )
         label_title.pack(padx = 5, pady=0, anchor="w")
 
         # Create the Instructions
-        instructions = ("The Export Images page allows the user to review the segmentations and " +
-                        "export the images to a single folder." + 
+        instructions = ("The Data Definition page enables defining which images will be " + 
+                        "used in the training, validation, and test sets for training " + 
+                        "the segmentation model. " + 
                         "\n\n Button Functions:")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Set list of buttons and functions 
-        image_list = ['save_btn.png', 'help_btn.png','back_btn.png','cont_btn.png']
-        func_list = [f'Save the project', 
-                     f'Load the Help Window',
-                     f'Return to the Image Selection page',
-                     f'Continue to Train Model page']
+        image_list = ['help_btn.png','save_btn.png','back_btn.png','cont_btn.png']
+        func_list = [f'Load the Help Window', 
+                     f'Save the MicroNet Segmentation Model project',
+                     f'Return to the Export Images page',
+                     f'Continue to MicroNet Model Definition page']
 
         # Add buttons and functions to frame
         for i in range(len(image_list)):
@@ -219,22 +220,20 @@ def DataDefinition(self,window):
         canvas.bind("<Configure>", on_canvas_configure)
 
         # Add more instructions
-        instructions = ("Select an image from the lefthand list and select 'Load Image' to " +
-                        "display the image on screen. To export the images for MicroNet, select " + 
-                        "'Export Iamges' and select the directory to save the images to. For each " + 
-                        "image, the original cropped image imagename.png and the segmented image " + 
-                        "imagename_mask.png will be saved.")
+        instructions = ("To add an image to any of the sets, select the image names " + 
+                        "in a list box and press the button below the set it is to " + 
+                        "be placed in.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=950
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
-        img_file = os.path.join(os.getcwd(),'GUI','Help','exp_view.png')
+        img_file = os.path.join(os.getcwd(),'GUI','Help','data_def.png')
         img = Image.open(img_file)
         img_tk = ImageTk.PhotoImage(img)
         image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)

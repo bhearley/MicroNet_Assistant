@@ -102,7 +102,6 @@ def TrainModel(self,window):
         c = event.selected.column
         r = event.selected.row
 
-        # Set the number of division points
         try:
             float(self.sheet_aug.data[r][c])
             # Try Limits
@@ -136,9 +135,12 @@ def TrainModel(self,window):
         c = event.selected.column
         r = event.selected.row
 
-        # Set the number of division points
         try:
-            if Rows[r][1] is None:
+            if r != 2:
+                int(self.sheet_set.data[r][c])
+                self.sheet_set.data[r][c] = int(self.sheet_set.data[r][c])
+                self.sheet_set.redraw()
+            else:
                 float(self.sheet_set.data[r][c])
                 self.sheet_set.data[r][c] = float(self.sheet_set.data[r][c])
                 self.sheet_set.redraw()
@@ -405,30 +407,32 @@ def TrainModel(self,window):
         # Create the title
         label_title = ttk.Label(
                                 frame,
-                                text=' Export Images',
+                                text=' MicroNet Model Definition',
                                 style = "ModernT.TLabel"
                                 )
         label_title.pack(padx = 5, pady=0, anchor="w")
 
         # Create the Instructions
-        instructions = ("The Export Images page allows the user to review the segmentations and " +
-                        "export the images to a single folder." + 
+        instructions = ("The MicroNet Model Definition page allows users to define " + 
+                        "the settings for the MicroNet model and train a model. " + 
                         "\n\n Button Functions:")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Set list of buttons and functions 
-        image_list = ['save_btn.png', 'help_btn.png','back_btn.png','cont_btn.png']
-        func_list = [f'Save the project', 
-                     f'Load the Help Window',
-                     f'Return to the Image Selection page',
-                     f'Continue to Train Model page']
+        image_list = [ 'help_btn.png', 'save_btn.png', 'back_btn.png','cont_btn.png', 'train_mod.png']
+        func_list = [f'Load the Help Window', 
+                     f'Save the MicroNet Segmentation Model project',
+                     f'Return to the Data Definition Page',
+                     f'Continue to the Segment Image page',
+                     f'Being Training the model'
+                     ]
 
         # Add buttons and functions to frame
         for i in range(len(image_list)):
@@ -468,28 +472,230 @@ def TrainModel(self,window):
         frame.bind("<Configure>", on_frame_configure)
         canvas.bind("<Configure>", on_canvas_configure)
 
+        # Add subtitle
+        subtitle = ("Model Definition")
+
+        label_sub1 = ttk.Label(
+                            frame,
+                            text=subtitle,
+                            style = "Modern4.TLabel",
+                            wraplength=750
+                            )
+        label_sub1.pack(padx = 5, pady=5, anchor="w")
+
         # Add more instructions
-        instructions = ("Select an image from the lefthand list and select 'Load Image' to " +
-                        "display the image on screen. To export the images for MicroNet, select " + 
-                        "'Export Iamges' and select the directory to save the images to. For each " + 
-                        "image, the original cropped image imagename.png and the segmented image " + 
-                        "imagename_mask.png will be saved.")
+        instructions = ("The Model Definition section allows users to define the model " + 
+                        "architecture, encoder, and pretrained weights for the model. " + 
+                        "Further detail comparing the different model architectures and " + 
+                        "encoders is given at " + 
+                        "https://github.com/nasa/pretrained-microscopy-models/tree/main. " + 
+                        "Additionally, a checkbox option is given to use GPU for training. " + 
+                        "If selected and a GPU is found on the machine, GPU will be used; " + 
+                        "otherwise, CPU will be used for training.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
-        img_file = os.path.join(os.getcwd(),'GUI','Help','exp_view.png')
+        img_file = os.path.join(os.getcwd(),'GUI','Help','mod_def.png')
         img = Image.open(img_file)
         img_tk = ImageTk.PhotoImage(img)
         image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
         image_label.image = img_tk
         image_label.pack(anchor="center")
+
+        # Add subtitle
+        subtitle = ("Labels")
+
+        label_sub1 = ttk.Label(
+                            frame,
+                            text=subtitle,
+                            style = "Modern4.TLabel",
+                            wraplength=750
+                            )
+        label_sub1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add more instructions
+        instructions = ("The Labels section displays to the user the classes found " + 
+                        "in the labeled images. Users can name a class using the " + 
+                        "“Label” column of the table. Additionally, each column can " + 
+                        "be selected/unselected to be included in the training. If a " + 
+                        "class is unselected, it will be treated as the background class.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add associated image
+        img_file = os.path.join(os.getcwd(),'GUI','Help','labels.png')
+        img = Image.open(img_file)
+        img_tk = ImageTk.PhotoImage(img)
+        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
+        image_label.image = img_tk
+        image_label.pack(anchor="center")
+
+        # Add subtitle
+        subtitle = ("Image Augmentation")
+
+        label_sub1 = ttk.Label(
+                            frame,
+                            text=subtitle,
+                            style = "Modern4.TLabel",
+                            wraplength=750
+                            )
+        label_sub1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add more instructions
+        instructions = ("The Image Augmentation section allows the user to define the " + 
+                        "settings for random augmentations applied to each image in the " + 
+                        "training set. A drop down menu provides the options for the crop " + 
+                        "window that will be randomly selected for each image in the training " + 
+                        "set. All test and validation images will have the same window size " + 
+                        "but cropped in the center of the image. Entered probabilities for " + 
+                        "each row must be between 0 and 1. Additionally, Random Brightness, " + 
+                        "Random Contrast, and Blur have a specified limit input. Both the " + 
+                        "Random Brightness and Random Contrast limit must be between 0 and 1. " + 
+                        "Blur limit must be greater than 0.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add associated image
+        img_file = os.path.join(os.getcwd(),'GUI','Help','image_aug.png')
+        img = Image.open(img_file)
+        img_tk = ImageTk.PhotoImage(img)
+        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
+        image_label.image = img_tk
+        image_label.pack(anchor="center")
+
+        # Add subtitle
+        subtitle = ("Training Settings")
+
+        label_sub1 = ttk.Label(
+                            frame,
+                            text=subtitle,
+                            style = "Modern4.TLabel",
+                            wraplength=750
+                            )
+        label_sub1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add more instructions
+        instructions = ("The Training Settings section allows users to define the " + 
+                        "settings regarding training the model. In the table, either " + 
+                        "the Epochs or Patience must be defined. Setting a value for " + 
+                        "the Epochs row will train the model for a set number of " + 
+                        "epochs regardless of performance. Setting a value for the " + 
+                        "Patience will train the model until no change in performance " + 
+                        "is seen for the number of epochs set in that row. If both " + 
+                        "values are set, only the Epochs value will be passed to the " + 
+                        "training function. Additionally, two checkboxes enable " + 
+                        "visualizing the Training Data and Validation Data. " + 
+                        "Checking either box will display each image with its " + 
+                        "corresponding labels in a new window.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add associated image
+        img_file = os.path.join(os.getcwd(),'GUI','Help','train_set.png')
+        img = Image.open(img_file)
+        img_tk = ImageTk.PhotoImage(img)
+        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
+        image_label.image = img_tk
+        image_label.pack(anchor="center")
+
+        # Add subtitle
+        subtitle = ("Training the Model")
+
+        label_sub1 = ttk.Label(
+                            frame,
+                            text=subtitle,
+                            style = "Modern4.TLabel",
+                            wraplength=750
+                            )
+        label_sub1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add more instructions
+        instructions = ("To begin training the model, press the “Train Model” button. " + 
+                        "The user will be prompted to select the folder that the " + 
+                        "images were exported to (both original cropped and labeled " + 
+                        "images). The MicroNet output will be displayed in a separate " + 
+                        "window to monitor progress.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add associated image
+        img_file = os.path.join(os.getcwd(),'GUI','Help','train_prog.png')
+        img = Image.open(img_file)
+        img_tk = ImageTk.PhotoImage(img)
+        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
+        image_label.image = img_tk
+        image_label.pack(anchor="center")
+
+        # Add more instructions
+        instructions = ("When either the number of epochs or patience criteria is met, " + 
+                        "the training and validation learning curves will be presented " + 
+                        "to the user.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add associated image
+        img_file = os.path.join(os.getcwd(),'GUI','Help','learn_curves.png')
+        img = Image.open(img_file)
+        img_tk = ImageTk.PhotoImage(img)
+        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
+        image_label.image = img_tk
+        image_label.pack(anchor="center")
+
+        # Add more instructions
+        instructions = ("The program will then ask the user if they want to continue " + 
+                        "training. If “Yes” is selected, the model will continue " + 
+                        "training. \n" +
+                        "\u2022 If the number of epochs was set, the model will " + 
+                        "train for the same number of additional epochs. \n" + 
+                        "\u2022 If the patience was set, the learning rate will " + 
+                        "be reduced by a factor of 0.1 and training will continue " + 
+                        "until the same patience is met. \n\n"  + 
+                        "Once no more training is desired, the user will be prompted to save the model.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
 
     # Create Page Title
     self.label_title = ttk.Label(

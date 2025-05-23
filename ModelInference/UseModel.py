@@ -157,6 +157,15 @@ def UseModel(self,window):
             # Scale the image
             self.image_inf = self.image_inf.resize((int(self.image_inf.width*scale), int(self.image_inf.height*scale)))
 
+            # Delete the scale widgets
+            self.label_x.destroy()
+            self.label_y.destroy()
+            self.label_scale.destroy()
+            self.entry_X.destroy()
+            self.entry_Y.destroy()
+            self.entry_S.destroy()
+            self.btn_scale.destroy()
+
             # Reload the window
             self.pass_in = True
             load_image(self)
@@ -453,9 +462,9 @@ def UseModel(self,window):
             for j in range(self.inf_pred.shape[1]):
                 for k in range(self.inf_pred.shape[2]):
                     if self.inf_pred[i][j][k] == True:
-                        pixels[i,j] = Clrs[k]
+                        pixels[j,i] = Clrs[k]
                     else:
-                        pixels[i,j] = (255,255,255,0)
+                        pixels[j,i] = (255,255,255,0)
 
         # Combine Images
         self.combined_inf = Image.alpha_composite(self.image_inf, self.image_inf_seg)
@@ -621,9 +630,9 @@ def UseModel(self,window):
     # Function to go back to previous page
     def home():
 
-        # Delete the page
-        DeleteLocal(self)
-        DeletePages(self)
+        # Delete all items
+        for widget in window.winfo_children():
+            widget.delete("all")
                 
         # Update the page number
         self.Segment['GUI']['CurrentPage'] = 0
