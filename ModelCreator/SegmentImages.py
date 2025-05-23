@@ -115,72 +115,75 @@ def SegmentImages(self,window):
                         # Check that point is inside the image bounds
                         if 0 <= x < self.image.width and 0 <= y < self.image.height:
 
-                            # Preallocate the prompts
-                            if hasattr(self, "mask_in") == False:
-                                self.mask_in = []
-                                self.mask_type = []
+                            # Get Segment Anythin Mask
+                            if self.seg_mod == 'Segment Anything (SAM)':
 
-                            # Append the new prompt
-                            self.mask_in.append([x, y])
-                            if event.button == 1:
-                                self.mask_type.append(1)
-                            else:
-                                self.mask_type.append(0)
+                                # Preallocate the prompts
+                                if hasattr(self, "mask_in") == False:
+                                    self.mask_in = []
+                                    self.mask_type = []
 
-                            # Get the mask
-                            mask, score, logit = GetMask(self.predictor, self.mask_in, self.mask_type)
-
-                            # Initialize new image
-                            self.mask_image = Image.open(self.image_path)
-                            pixels = self.mask_image.load()
-                            for i in range(mask.shape[0]):
-                                for j in range(mask.shape[1]):
-                                    pixels[i, j] = (255, 255, 255, 0)
-
-                            # Get pixel data
-                            pixels = self.mask_image.load()
-
-                            # Apply color to pixels in mask
-                            for i in range(mask.shape[0]):
-                                for j in range(mask.shape[1]):
-                                    if mask[i,j] == True:
-                                        pixels[j,i] = Clrs[self.seg_num]['Edit']
-
-                            # Composite pictures together
-                            self.combined = Image.alpha_composite(self.combined_all, self.mask_image)
-
-                            # Get the limits
-                            xlim = self.ax_seg.get_xlim()
-                            ylim = self.ax_seg.get_ylim()
-
-                            # Display the image
-                            self.ax_seg.clear()
-                            self.ax_seg.imshow(self.combined)
-                            self.ax_seg.axis('off')  # Hide axes
-                            
-                            # Remove Previous Selection Points
-                            while len(self.ax_seg.lines) > 0:
-                                self.ax_seg.lines[len(self.ax_seg.lines)-1].remove()
-
-                            # Plot Points
-                            for i in range(len(self.mask_in)):
-                                pt = self.mask_in[i]
-                                if self.mask_type[i] == 1:
-                                    color = 'go'
+                                # Append the new prompt
+                                self.mask_in.append([x, y])
+                                if event.button == 1:
+                                    self.mask_type.append(1)
                                 else:
-                                    color = 'ro'
-                                self.ax_seg.plot(pt[0], pt[1], color)
+                                    self.mask_type.append(0)
 
-                            # Set the axes limits
-                            self.ax_seg.set_xlim(xlim)
-                            self.ax_seg.set_ylim(ylim)
+                                # Get the mask
+                                mask, score, logit = GetMask(self.predictor, self.mask_in, self.mask_type)
 
-                            # Redraw the canvas
-                            self.canvas.draw()
+                                # Initialize new image
+                                self.mask_image = Image.open(self.image_path)
+                                pixels = self.mask_image.load()
+                                for i in range(mask.shape[0]):
+                                    for j in range(mask.shape[1]):
+                                        pixels[i, j] = (255, 255, 255, 0)
 
-                            # Bind Buttons
-                            window.bind("<Return>", lambda event : save_mask(self, mask, 'save', event))
-                            window.bind("<Escape>", lambda event : save_mask(self, mask, 'undo', event))
+                                # Get pixel data
+                                pixels = self.mask_image.load()
+
+                                # Apply color to pixels in mask
+                                for i in range(mask.shape[0]):
+                                    for j in range(mask.shape[1]):
+                                        if mask[i,j] == True:
+                                            pixels[j,i] = Clrs[self.seg_num]['Edit']
+
+                                # Composite pictures together
+                                self.combined = Image.alpha_composite(self.combined_all, self.mask_image)
+
+                                # Get the limits
+                                xlim = self.ax_seg.get_xlim()
+                                ylim = self.ax_seg.get_ylim()
+
+                                # Display the image
+                                self.ax_seg.clear()
+                                self.ax_seg.imshow(self.combined)
+                                self.ax_seg.axis('off')  # Hide axes
+                                
+                                # Remove Previous Selection Points
+                                while len(self.ax_seg.lines) > 0:
+                                    self.ax_seg.lines[len(self.ax_seg.lines)-1].remove()
+
+                                # Plot Points
+                                for i in range(len(self.mask_in)):
+                                    pt = self.mask_in[i]
+                                    if self.mask_type[i] == 1:
+                                        color = 'go'
+                                    else:
+                                        color = 'ro'
+                                    self.ax_seg.plot(pt[0], pt[1], color)
+
+                                # Set the axes limits
+                                self.ax_seg.set_xlim(xlim)
+                                self.ax_seg.set_ylim(ylim)
+
+                                # Redraw the canvas
+                                self.canvas.draw()
+
+                                # Bind Buttons
+                                window.bind("<Return>", lambda event : save_mask(self, mask, 'save', event))
+                                window.bind("<Escape>", lambda event : save_mask(self, mask, 'undo', event))
 
             # If manaully adding/removing points is off
             elif self.add_selected == True or self.rem_selected == True:
@@ -247,7 +250,7 @@ def SegmentImages(self,window):
             # Remove Hover Point
             try:
                 # Remove the brush
-                for patch in self.ax_seg2.patches: 
+                for patch in self.ax_seg.patches: 
                     patch.remove()
                 self.canvas.draw_idle()
             except:
@@ -274,7 +277,7 @@ def SegmentImages(self,window):
             # Remove Hover Point
             try:
                 # Remove the brush
-                for patch in self.ax_seg2.patches: 
+                for patch in self.ax_seg.patches: 
                     patch.remove()
                 self.canvas.draw_idle()
             except:
@@ -349,7 +352,7 @@ def SegmentImages(self,window):
                     if event.inaxes != self.ax_seg:
                         try:
                             # Remove the brush
-                            for patch in self.ax_seg2.patches: 
+                            for patch in self.ax_seg.patches: 
                                 patch.remove()
                             self.canvas.draw_idle()
                             self.canvas.draw_idle()
@@ -502,36 +505,25 @@ def SegmentImages(self,window):
                     # Redraw canvas
                     self.canvas.draw()
 
-        # Function to Remove Hovering Cursor Brush         
-        def on_mouse_leave(self, event):
-
-            # Check if toolbar mode is zoom
-            if self.toolbar.mode == 'zoom':
-                self.toolbar._zoom_mode = None
-                self.toolbar.zoom() 
-                self.toolbar.mode = ''
-                return
+        # Function to fro mouse leave
+        def on_mouse_leave(event):
             
-            # Check if toolbar mode is zoom rect
-            elif self.toolbar.mode == 'zoom rect':
-                self.toolbar._zoom_mode = None
-                self.toolbar.zoom()
-                self.toolbar.mode = ''
-                return                          
-            # Check if toolbar mode is pan   
-            elif self.toolbar.mode == 'pan':
-                self.toolbar.pan()
-                return
+            # Fix zoom issue if zoom button is turned on
+            if self.toolbar.mode == 'zoom':
+                self.toolbar.release(event)  # Simulates releasing the mouse button
+                self.toolbar.zoom()          # Turns zoom mode off
 
-            # Remove previous point
-            try:
-                for patch in self.ax_seg2.patches:  
-                    patch.remove()
-            except:
-                pass
+            # Remove the brush
+            else:
+                # Remove previous point
+                try:
+                    for patch in self.ax_seg.patches:  
+                        patch.remove()
+                except:
+                    pass
 
-            # Redraw canvas
-            self.canvas.draw_idle()
+                # Redraw canvas
+                self.canvas.draw_idle()
 
         # Initialize
         if self.pass_init == False:
@@ -646,10 +638,10 @@ def SegmentImages(self,window):
         self.att_list.append('self.label_title')
     
         # Get the segmentation model
-        seg_mod = self.combo_segmod.get()
+        self.seg_mod = self.combo_segmod.get()
 
         # Load Segment Anything Model (SAM)
-        if seg_mod == 'Segment Anything (SAM)':
+        if self.seg_mod == 'Segment Anything (SAM)':
 
             # Load the SAM Model if not in project
             if self.Segment['Data'][self.img_name]['Predictor'] is None or self.Segment['Data'][self.img_name]['Predictor'] == 'Load':
@@ -780,7 +772,7 @@ def SegmentImages(self,window):
                 self.load_page()
 
         # Manual Segmentation
-        elif seg_mod == 'Manual':
+        elif self.seg_mod == 'Manual':
             self.Segment['Data'][self.img_name]['Predictor'] = 'Load'
             
         # Creat an empty masked image
@@ -891,10 +883,11 @@ def SegmentImages(self,window):
         self.drawing = False
 
         # Bind Canvas Events
+        self.canvas.draw()
         self.canvas.mpl_connect("button_press_event", lambda event: mouse_click(self, event))
         self.canvas.mpl_connect("motion_notify_event", lambda event : on_mouse_move(self, event))
         self.canvas.mpl_connect("button_release_event", lambda event : on_mouse_release(self, event))
-        self.canvas.mpl_connect('figure_leave_event', lambda event: on_mouse_leave(self, event))
+        self.canvas_widget.bind("<Leave>", on_mouse_leave)
 
     # Function to continue to next page
     def next_page():

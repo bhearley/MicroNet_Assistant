@@ -68,6 +68,84 @@ def CropImages(self,window):
                 self.ax_crop.add_patch(self.hover_rect)
                 self.canvas.draw_idle()
 
+        # Function to Confirm Crop Window
+        def save_image(self, event):
+
+            try:
+                # Get the box 
+                x = self.ax_crop.patches[0].get_x()
+                y = self.ax_crop.patches[0].get_y()
+                width = self.ax_crop.patches[0].get_width()
+                height = self.ax_crop.patches[0].get_height()
+            except:
+                x = 0
+                y = 0
+                width = self.image_full.width
+                height = self.image_full.height
+
+            # Get the image
+            self.image_crop = copy.deepcopy(self.image_full)
+            self.image_crop = self.image_full.crop((x, y, x + width, y + height))
+
+            # Get List of all images in project
+            all_images = list(self.Segment['Data'].keys())
+            ct = 0
+            base_name = self.img_full_name.split('.')[0]
+
+            # Get the new image name
+            while base_name +'_' + str(ct) + '.png' in all_images:
+                ct = ct + 1
+
+            # Save new image to data structure
+            self.Segment['Data'][base_name +'_' + str(ct)+ '.png'] = {
+                                                                    'Original Image':self.image_crop,
+                                                                    'Pixel List All':set(),
+                                                                    'Predictor':None,
+                                                                    'Segmented Image':None,
+                                                                    'Segments':{}
+                                                                    }
+            
+            # Preallocate segmentations
+            for i in range(3):
+                self.Segment['Data'][base_name +'_' + str(ct)+ '.png']['Segments'][i+1] = {
+                                                                                        'Pixel List':set()
+                                                                                        }
+            # Update List Box
+            update_listbox(self)
+
+            # Remove the rectangle
+            for patch in self.ax_crop.patches: 
+                patch.remove()
+            self.canvas.draw_idle()
+
+            # Unbind Buttons
+            window.unbind("<Return>")
+            window.unbind("<Escape>")
+
+            # Rebind Enter for Entry
+            self.entry_C.bind("<Return>", lambda event : get_window(self, event))
+
+            # Enable Motion
+            self.allow_motion = True
+
+        # Function to discard image
+        def no_save_image(self, event):
+
+            # Remove the rectangle
+            for patch in self.ax_crop.patches:
+                patch.remove()
+            self.canvas.draw_idle()
+
+            # Unbind Buttons
+            window.unbind("<Return>")
+            window.unbind("<Escape>")
+
+            # Rebind Enter for Entry
+            self.entry_C.bind("<Return>", lambda event: get_window(self, event))
+
+            # Enable Motion
+            self.allow_motion = True
+
         # Function to Lock Hovering Cursor Rectangle
         def mouse_click(self, event):
 
@@ -79,78 +157,6 @@ def CropImages(self,window):
                     
                     # Check that zoom is off
                     if self.toolbar.mode != 'zoom rect':
-    
-                        # Function to Confirm Crop Window
-                        def save_image(self, event):
-
-                            # Get the box 
-                            x = self.ax_crop.patches[0].get_x()
-                            y = self.ax_crop.patches[0].get_y()
-                            width = self.ax_crop.patches[0].get_width()
-                            height = self.ax_crop.patches[0].get_height()
-
-                            # Get the image
-                            self.image_crop = copy.deepcopy(self.image_full)
-                            self.image_crop = self.image_full.crop((x, y, x + width, y + height))
-
-                            # Get List of all images in project
-                            all_images = list(self.Segment['Data'].keys())
-                            ct = 0
-                            base_name = self.img_full_name.split('.')[0]
-
-                            # Get the new image name
-                            while base_name +'_' + str(ct) + '.png' in all_images:
-                                ct = ct + 1
-
-                            # Save new image to data structure
-                            self.Segment['Data'][base_name +'_' + str(ct)+ '.png'] = {
-                                                                                    'Original Image':self.image_crop,
-                                                                                    'Pixel List All':set(),
-                                                                                    'Predictor':None,
-                                                                                    'Segmented Image':None,
-                                                                                    'Segments':{}
-                                                                                    }
-                            
-                            # Preallocate segmentations
-                            for i in range(3):
-                                self.Segment['Data'][base_name +'_' + str(ct)+ '.png']['Segments'][i+1] = {
-                                                                                                        'Pixel List':set()
-                                                                                                        }
-                            # Update List Box
-                            update_listbox(self)
-
-                            # Remove the rectangle
-                            for patch in self.ax_crop.patches: 
-                                patch.remove()
-                            self.canvas.draw_idle()
-
-                            # Unbind Buttons
-                            window.unbind("<Return>")
-                            window.unbind("<Escape>")
-
-                            # Rebind Enter for Entry
-                            self.entry_C.bind("<Return>", lambda event : get_window(self, event))
-
-                            # Enable Motion
-                            self.allow_motion = True
-
-                        # Function to discard image
-                        def no_save_image(self, event):
-
-                            # Remove the rectangle
-                            for patch in self.ax_crop.patches:
-                                patch.remove()
-                            self.canvas.draw_idle()
-
-                            # Unbind Buttons
-                            window.unbind("<Return>")
-                            window.unbind("<Escape>")
-
-                            # Rebind Enter for Entry
-                            self.entry_C.bind("<Return>", lambda event: get_window(self, event))
-
-                            # Enable Motion
-                            self.allow_motion = True
 
                         # Fix Rectange
                         self.allow_motion = False
@@ -182,7 +188,7 @@ def CropImages(self,window):
         # Function to Set Crop Window
         def get_window(self, event):
             self.crop_window = int(self.entry_C.get())
-        
+
         # Check if image is selected
         if len([self.listbox_orig.get(idx) for idx in self.listbox_orig.curselection()]) < 1:
             messagebox.showerror(message = 'No image selected!')
@@ -301,6 +307,21 @@ def CropImages(self,window):
         self.c1 = self.canvas.mpl_connect("motion_notify_event", lambda event : on_mouse_move(self, event))
         self.c2 = self.canvas.mpl_connect("button_press_event", lambda event: mouse_click(self, event))
         self.c3 = self.canvas.mpl_connect('figure_leave_event', lambda event: on_mouse_leave(self, event))
+
+        # Create button to add entire image
+        self.btn_add_whole = ttk.Button(
+                                        window, 
+                                        text = "Add Whole Image", 
+                                        command = lambda:save_image(self, None), 
+                                        style = 'Modern2.TButton',
+                                        width = self.Placement['Crop']['ButtonWhole'][2]
+                                        )
+        self.btn_add_whole.place(
+                                anchor = 'n', 
+                                relx = self.Placement['Crop']['ButtonWhole'][0], 
+                                rely = self.Placement['Crop']['ButtonWhole'][1]
+                                )
+        self.loc_att_list.append('self.btn_add_whole')
 
     # Function to update cropped image listbox
     def update_listbox(self):

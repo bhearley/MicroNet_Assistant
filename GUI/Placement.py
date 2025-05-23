@@ -283,10 +283,10 @@ def Placements(self, res):
 
         # -- Crop
         Placement['Crop']['Canvas1'] = [0.5, 0.2, 10, 7]
-        Placement['Crop']['Toolbar1'] = [0.5, 0.8]
-        Placement['Crop']['LabelCrop'] = [0.47, 0.86]
-        Placement['Crop']['EntryCrop'] = [0.53, 0.86, 10]
-        Placement['Crop']['LabelCover'] = [0.5, 0.86, 10]
+        Placement['Crop']['Toolbar1'] = [0.5, 0.775]
+        Placement['Crop']['LabelCrop'] = [0.47, 0.83]
+        Placement['Crop']['EntryCrop'] = [0.53, 0.83, 10]
+        Placement['Crop']['LabelCover'] = [0.5, 0.83, 10]
         Placement['Crop']['LabelTitle'] = [0.5, 0.125]
         Placement['Crop']['Scrollbar1'] = [0.225, 0.2, 752]
         Placement['Crop']['Listbox1'] = [0.125, 0.2, 34, 54]
@@ -295,6 +295,7 @@ def Placements(self, res):
         Placement['Crop']['ButtonLoad'] = [0.125, 0.775, 10]
         Placement['Crop']['ButtonView'] = [0.795, 0.775, 12]
         Placement['Crop']['ButtonDelete'] = [0.895, 0.775, 12]
+        Placement['Crop']['ButtonWhole'] = [0.5, 0.875, 18]
         Placement['Crop']['ButtonCont'] = [0.997, 0.975, 10]
         Placement['Crop']['ButtonBack'] = [0.942, 0.975, 10]
         Placement['Crop']['Help'] = [0.001, 0.975, 7, 0.05]
