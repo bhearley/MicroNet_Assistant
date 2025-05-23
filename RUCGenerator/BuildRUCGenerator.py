@@ -1451,7 +1451,15 @@ def BuildRUCGenerator(self,window):
 
         # Delete all items
         for widget in window.winfo_children():
-            widget.delete("all")
+            if widget != self.panel_hdr and widget != self.panel_nasa:
+                try:
+                    widget.destroy()
+                except:
+                    pass
+                try:
+                    widget.delete("all")
+                except:
+                    pass
                 
         # Update the page number
         self.Segment['GUI']['CurrentPage'] = 0
