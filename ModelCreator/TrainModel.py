@@ -59,11 +59,11 @@ def TrainModel(self,window):
 
         # Create the drop down for weights
         self.combo_prew = ttk.Combobox(
-                                            self.frame_model,
-                                            values=values,
-                                            style="Modern.TCombobox",
-                                            state="readonly"
-                                            )
+                                    self.frame_model,
+                                    values=values,
+                                    style="Modern.TCombobox",
+                                    state="readonly"
+                                    )
         self.combo_prew.place(
                                 anchor='w', 
                                 relx = self.Placement['Train']['Combo3'][0], 
