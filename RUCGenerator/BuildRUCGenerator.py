@@ -2,7 +2,7 @@
 #
 #   BuildRUCGenerator.py
 #
-#   PURPOSE: Build the RUC Generator.
+#   PURPOSE: Build the Export Geometry page.
 #
 #   INPUTS:
 #       self    structure containing all GUI information
@@ -897,7 +897,7 @@ def BuildRUCGenerator(self,window):
         # Create the label for the RUC
         self.label_ruc = ttk.Label(
                                 window,
-                                text='RUC',
+                                text='Model',
                                 style = "Modern3.TLabel"
                                 )
         self.label_ruc.place(
@@ -1066,7 +1066,7 @@ def BuildRUCGenerator(self,window):
         # Create button to remake the RUC
         self.btn_ruc = ttk.Button(
                                 window, 
-                                text = "Update RUC", 
+                                text = "Update Model", 
                                 command = create_ruc, 
                                 style = 'Modern3.TButton',
                                 width = self.Placement['RUC']['ButtonRUC'][2]
@@ -1133,29 +1133,29 @@ def BuildRUCGenerator(self,window):
         # Create the title
         label_title = ttk.Label(
                                 frame,
-                                text=' RUC Generator',
+                                text='Export Geometry',
                                 style = "ModernT.TLabel"
                                 )
         label_title.pack(padx = 5, pady=0, anchor="w")
 
         # Create the Instructions
-        instructions = ("The RUC Generator page enables generation of a input deck for various " +
-                        "analysis tools that captures a segmented microstructure." 
+        instructions = ("The Export Geometry page enables generation of geometric input files for " + 
+                        "various analysis tools that captures the segmented microstructure." +
                         "\n\n Button Functions:")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Set list of buttons and functions 
         image_list = ['help_btn.png','home_btn.png','sel_file.png']
         func_list = [f'Load the Help Window', 
                      f'Return to the Main Menu',
-                     f'Select a segmented file to export an RUC']
+                     f'Select a segmented file to export geometry']
 
         # Add buttons and functions to frame
         for i in range(len(image_list)):
@@ -1196,19 +1196,20 @@ def BuildRUCGenerator(self,window):
         canvas.bind("<Configure>", on_canvas_configure)
 
         # Add more instructions
-        instructions = ("Once a file is selected, the segmentation will appear on the " +
-                        "left hand side of the window and the voxelized RUC will appear " +
-                        "on the right hand side of the window. The RUC control panel and " +
-                        "color manager will appear on the center of the screen. \n\n" +
-                        "The color manager table allows editing of material assignment for the "
-                        "generated model. Right clicking on any row allows:")
+        instructions = ("To select an image to export the geometry of, press the “Select File” and " + 
+                        "choose a segmented image. Once a file is selected, the segmentation will " + 
+                        "appear on the lefthand side of the window and the voxelated geometry will " + 
+                        "appear on the righthand size of the window. The control panel and color " + 
+                        "manager will appear on the center of the screen. \n\n" +
+                        "The color manager allows editing of material assignment for the generated " + 
+                        "geometric model. Right clicking on any row allows::")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Set menu options and descriptions
@@ -1219,7 +1220,7 @@ def BuildRUCGenerator(self,window):
                      '      \u2022 Renumber Materials']
         menu_desc = ['Add a color/material',
                      'Remove a color/material',
-                     'Set the current material color to "Other"',
+                     'Set the current material color to "Other" (background)',
                      'Use the picker tool to set the color for the material',
                      'Renumber all materials sequentially']
 
@@ -1263,23 +1264,25 @@ def BuildRUCGenerator(self,window):
                                     )
         label_inst1.pack(padx = 5, pady=0, anchor="w")
 
-        instructions = ('To add a material and corresponding color to the RUC, use the ' +
-                        '"Add Color" menu option to create a new row in the color manager table. '+
-                        'The new material color will default to "None". To set the color, use ' +
-                        'either the "Set as Other" or "Set with Picker" menu options.\n\n"Set as Other" ' + 
-                        'will assign the corresponding material number for that row to any color not ' +
-                        'defined in the color manager table.\n\n"Set with Picker" enables setting the material '+
-                        'color by picking from the left hand image. Hovering over the image will display the ' +
-                        'color and corresponding RGBA values. Left clicking the mouse will confirm the color for ' +
-                        'the material. Right clicking will cancel the color assignment \n\n Press the "Update RUC" ' + 
-                        'button to generate a new RUC with the new colors.')
+        instructions = ("To add a material and corresponding color the model, use the “Add Color” " + 
+                        "menu option to create a new row in the color manager table. The new material " + 
+                        "color will default to “None”. To set the color, use either the “Set as Other” or " + 
+                        "“Set with Picker” menu options.\n\n" + 
+                        "“Set as Other” will assign the corresponding material number for that row to any " + 
+                        "color not defined in the color manager table and will display as white in the " + 
+                        "voxelated model.\n\n" + 
+                        "“Set with Picker” enables setting the material color by picking from the Segmented " + 
+                        "Image. Hovering over the image will display the color and corresponding RGB values. " + 
+                        "Left clicking the mouse will confirm the color for the material. Right clicking will " + 
+                        "cancel the color assignment. \n\n " + 
+                        "Press the “Update Model” button to generate a new geometric model with the new colors.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -1294,51 +1297,52 @@ def BuildRUCGenerator(self,window):
         instructions = ("Remove a Material:")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern4.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern4.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=0, anchor="w")
 
-        instructions = ('To remove a material and corresponding color to the RUC, use the ' +
-                        '"Delete Color" menu option to delete a row in the color manager table. '+
-                        'Press the "Update RUC" button to generate a new RUC with the new colors.')
+        instructions = ("To remove a material and corresponding color from the model, use the " + 
+                        "“Delete Color” menu option to delete a row in the color manager table. " + 
+                        "Press the “Update Model” button to generate a new geometric model with " + 
+                        "the new colors.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add more instructions
-        instructions = ("Assigning Material:")
+        instructions = ("Assigning Materials to Colors:")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern4.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern4.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=0, anchor="w")
 
-        instructions = ('To assign a material number to a color, use the drop down menu in each row '+
-                        'of the color manager table. Material numbers are assumed to start at 1. All ' +
-                        'rows can be reassigned material numbers sequentially using the "Renumber Materials '+
-                        'menu option.')
+        instructions = ("To assign a material number to a color, use the drop down menu in each row of " + 
+                        "the color manager table. Material numbers are assumed to start at 1. All rows " + 
+                        "can be reassigned material numbers sequentially using the “Renumber Materials” " + 
+                        "menu option.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add more instructions
-        instructions = ("Editing the RUC:")
+        instructions = ("Editing the Model Geometry:")
 
         label_inst1 = ttk.Label(
                                     frame,
@@ -1348,15 +1352,15 @@ def BuildRUCGenerator(self,window):
                                     )
         label_inst1.pack(padx = 5, pady=0, anchor="w")
 
-        instructions = ('The RUC is with assignem materials/colors is generatated and displayed on the '+
-                        'right hand side of the window.')
+        instructions = ("The voxelated model with assigned materials/colors is generated and displayed on " + 
+                        "the righthand side of the window.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -1367,18 +1371,18 @@ def BuildRUCGenerator(self,window):
         image_label.image = img_tk
         image_label.pack(anchor="center")
 
-        instructions = ('To edit the dimensions of the RUC, use the RUC control panel on the center of ' +
-                        'the screen. The number of divisions/subcells in X and Y can be manually entered ' +
-                        'in the entry box above the corresponding slider bar or with the slider bar itself. '+
-                        'The bounds for the slider bar can also be manually adjusted using the entry boxes on '+
-                        'either side of a given slider bar.')
+        instructions = ("To edit the dimensions of the model, us the model control panel on the center " + 
+                        "of the screen. The number of voxels in X and Y can be manually entered in the " + 
+                        "entry box above the corresponding slider bar or with the slider bar itself. " + 
+                        "The bounds for the slider bar can also be manually adjusted using the entry " + 
+                        "boxes on either side of a given slider bar.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
         
         # Add more instructions
@@ -1392,18 +1396,17 @@ def BuildRUCGenerator(self,window):
                                     )
         label_inst1.pack(padx = 5, pady=0, anchor="w")
 
-        instructions = ('Individual subcells can be manually assigned a material by ' + 
-                        'right clicking on an individual subcell on the RUC image and ' +
-                        'selecting a material from the popupmenu. The toolbar can be used ' +
-                        'to zoom in on the image. Note: the zoom tool must be turned off for ' +
-                        'material assignment with the popupmenu.')
+        instructions = ("Individual voxels can be manually assigned a material by rick clicking on an " + 
+                        "individual voxel on the model image and selecting a material from the popup menu. " + 
+                        "The toolbar below the model image can be used to zoom in on the image. Note: the " + 
+                        "zoom tool must be unselected for material assignment with the popup menu.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -1415,7 +1418,7 @@ def BuildRUCGenerator(self,window):
         image_label.pack(anchor="center")
 
         # Add more instructions
-        instructions = ("Exporting the RUC:")
+        instructions = ("Exporting the Model:")
 
         label_inst1 = ttk.Label(
                                     frame,
@@ -1425,17 +1428,17 @@ def BuildRUCGenerator(self,window):
                                     )
         label_inst1.pack(padx = 5, pady=0, anchor="w")
 
-        instructions = ('To export the RUC, press the "Export" button, which will create the Export Window. ' +
-                        'Use the drop down menu to select a configured analysis tool to export the data to. Pixels ' +
-                        'can be converted to distance using the entry boxes on the window for X and Y. Press "Export" to ' +
-                        'generate and save the export file.')
+        instructions = ("To export the model, press the “Export” button, which will create the Export " + 
+                        "Window. Use the drop down menu to select a configured analysis tool to export " + 
+                        "the model to. Pixels can be converted to distance using the entry boxes on the " + 
+                        "window for X and Y. Press “Export to generate and save the export file.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
@@ -1470,7 +1473,7 @@ def BuildRUCGenerator(self,window):
     # Create Page Title
     self.label_title = ttk.Label(
                                 window,
-                                text='RUC Generator',
+                                text='Export Geometry',
                                 style = "ModernT.TLabel"
                                 )
     self.label_title.place(

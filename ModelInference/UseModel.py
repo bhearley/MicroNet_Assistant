@@ -674,14 +674,13 @@ def UseModel(self,window):
         # Create the title
         label_title = ttk.Label(
                                 frame,
-                                text=' Export Images',
+                                text='Segment Image',
                                 style = "ModernT.TLabel"
                                 )
         label_title.pack(padx = 5, pady=0, anchor="w")
 
         # Create the Instructions
-        instructions = ("The Export Images page allows the user to review the segmentations and " +
-                        "export the images to a single folder." + 
+        instructions = ("The Segment Image page allows users to segment an image using a trained MicroNet model. " + 
                         "\n\n Button Functions:")
 
         label_inst1 = ttk.Label(
@@ -693,11 +692,14 @@ def UseModel(self,window):
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Set list of buttons and functions 
-        image_list = ['save_btn.png', 'help_btn.png','back_btn.png','cont_btn.png']
-        func_list = [f'Save the project', 
-                     f'Load the Help Window',
-                     f'Return to the Image Selection page',
-                     f'Continue to Train Model page']
+        image_list = ['help_btn.png','home_btn.png','cont_btn.png', 'load_mod.png', 'load_img.png', 'seg_img.png']
+        func_list = [f'Load the Help Window', 
+                     f'Return to the Main Menu',
+                     f'Continue to the Export Geometry page',
+                     f'Load a trained MicroNet model',
+                     f'Load the image to segment',
+                     f'Segment the image'
+                     ]
 
         # Add buttons and functions to frame
         for i in range(len(image_list)):
@@ -738,22 +740,67 @@ def UseModel(self,window):
         canvas.bind("<Configure>", on_canvas_configure)
 
         # Add more instructions
-        instructions = ("Select an image from the lefthand list and select 'Load Image' to " +
-                        "display the image on screen. To export the images for MicroNet, select " + 
-                        "'Export Iamges' and select the directory to save the images to. For each " + 
-                        "image, the original cropped image imagename.png and the segmented image " + 
-                        "imagename_mask.png will be saved.")
+        instructions = ("To segment an image, both a model and the image must be loaded. " + 
+                        "To load a model, press the “Load Model” button to select a " + 
+                        "trained model. The window will display the name of the model " + 
+                        "and number of classes on screen.")
 
         label_inst1 = ttk.Label(
-                                    frame,
-                                    text=instructions,
-                                    style = "Modern1.TLabel",
-                                    wraplength=550
-                                    )
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
         label_inst1.pack(padx = 5, pady=5, anchor="w")
 
         # Add associated image
-        img_file = os.path.join(os.getcwd(),'GUI','Help','exp_view.png')
+        img_file = os.path.join(os.getcwd(),'GUI','Help','mod_disp.png')
+        img = Image.open(img_file).convert('RGBA')
+        img_tk = ImageTk.PhotoImage(img)
+        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
+        image_label.image = img_tk
+        image_label.pack(anchor="center")
+
+        # Add more instructions
+        instructions = ("To load an image, press the “Load Image” button and select " + 
+                        "the image. The window will display the image and the " + 
+                        "dimensions of the image. Users can rescale the image to " + 
+                        "match scaling performed for training by changing the scale " + 
+                        "entry box and pressing the “Scale” button.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add associated image
+        img_file = os.path.join(os.getcwd(),'GUI','Help','scale_seg.png')
+        img = Image.open(img_file).convert('RGBA')
+        img_tk = ImageTk.PhotoImage(img)
+        image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
+        image_label.image = img_tk
+        image_label.pack(anchor="center")
+
+        # Add more instructions
+        instructions = ("When both a model and image are defined, pressing “Segment Image” " + 
+                        "will perform the segmentation. The segmented image will appear on " + 
+                        "screen with the option to save or discard the image. Pressing " + 
+                        "“Save Image” will prompt the user to save the image and pressing " + 
+                        "“Discard Image” will delete the segmentation and reload the original image.")
+
+        label_inst1 = ttk.Label(
+                                frame,
+                                text=instructions,
+                                style = "Modern1.TLabel",
+                                wraplength=550
+                                )
+        label_inst1.pack(padx = 5, pady=5, anchor="w")
+
+        # Add associated image
+        img_file = os.path.join(os.getcwd(),'GUI','Help','seg_keep.png')
         img = Image.open(img_file).convert('RGBA')
         img_tk = ImageTk.PhotoImage(img)
         image_label = tk.Label(frame, image=img_tk, bg="white", width=img.width, height=img.height)
