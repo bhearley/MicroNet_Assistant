@@ -10,223 +10,22 @@
 def Placements(self, res):
     # Initialize Placement
     Placement = {
-                    'MainPage':{
-                                'Title':[],
-                                'Logo':[],
-                                'Frame1':[],
-                                'Label1':[],
-                                'Button1':[],
-                                'Button2':[],
-                                'Frame2':[],
-                                'Label2':[],
-                                'Button3':[],
-                                'Button4':[],
-                                'Help':[],
-                                'Save':[]
-                                },
-                    'FileSelect':{
-                                'LabelT':[],
-                                'Canvas1':[],
-                                'Toolbar1':[],
-                                'ButtonLeftW':[],
-                                'ButtonRightW':[],
-                                'Scrollbar1':[],
-                                'Label1':[],
-                                'Listbox1':[],
-                                'Scrollbar2':[],
-                                'Label2':[],
-                                'Listbox2':[],
-                                'ButtonLeft':[],
-                                'ButtonRight':[],
-                                'ButtonAllLeft':[],
-                                'ButtonAllRight':[],
-                                'ButtonView':[],
-                                'LabelTitle':[],
-                                'ButtonFldr':[],
-                                'ButtonCont':[],
-                                'ButtonBack':[],
-                                'Help':[]
-                                },
-                    'Resize':{
-                                'Canvas1':[],
-                                'Toolbar1':[],
-                                'LabelX':[],
-                                'LabelY':[],
-                                'LabelS':[],
-                                'EntryX':[],
-                                'EntryY':[],
-                                'EntryS':[],
-                                'ButtonS':[],
-                                'Check1':[],
-                                'LabelTitle':[],
-                                'ButtonLoad':[],
-                                'Scrollbar1':[],
-                                'Listbox1':[],
-                                'ButtonCont':[],
-                                'ButtonBack':[],
-                                'Help':[]
-                                },
-                    'Crop':{
-                                'Canvas1':[],
-                                'Toolbar1':[],
-                                'LabelCrop':[],
-                                'EntryCrop':[],
-                                'LabelCover':[],
-                                'LabelTitle':[],
-                                'Scrollbar1':[],
-                                'Listbox1':[],
-                                'Scrollbar2':[],
-                                'Listbox2':[],
-                                'ButtonLoad':[],
-                                'ButtonView':[],
-                                'ButtonDelete':[],
-                                'ButtonCont':[],
-                                'ButtonBack':[],
-                                'Help':[]
-                                },
-                    'Segment':{
-                                'Image1':[],
-                                'Canvas1':[],
-                                'Toolbar1':[],
-                                'LabelTitle':[],
-                                'ButtonAdd':[],
-                                'ButtonRemove':[],
-                                'Slider1':[],
-                                'Combo1':[],
-                                'Scrollbar1':[],
-                                'Listbox1':[],
-                                'Combo2':[],
-                                'ButtonCont':[],
-                                'ButtonBack':[],
-                                'Help':[]
-                                },
-                    'Review':{
-                                'Image1':[],
-                                'LabelTitle':[],
-                                'Scrollbar1':[],
-                                'Listbox1':[],
-                                'ButtonLoad':[],
-                                'ButtonExport':[],
-                                'ButtonCont':[],
-                                'ButtonBack':[],
-                                'Help':[]
-                                },
-                    'DataDef':{
-                                'LabelTitle':[],
-                                'Scrollbar1':[],
-                                'Label1':[],
-                                'Listbox1':[],
-                                'Button1':[],
-                                'Scrollbar2':[],
-                                'Label2':[],
-                                'Listbox2':[],
-                                'Button2':[],
-                                'Scrollbar3':[],
-                                'Label3':[],
-                                'Listbox3':[],
-                                'Button3':[],
-                                'Scrollbar4':[],
-                                'Label4':[],
-                                'Listbox4':[],
-                                'Button4':[],
-                                'ButtonCont':[],
-                                'ButtonBack':[],
-                                'Help':[]
-                                },
-                    'Train':{
-                                'Combo3':[],
-                                'LabelTitle':[],
-                                'Frame1':[],
-                                'Label1':[],
-                                'Label2':[],
-                                'Combo1':[],
-                                'Label3':[],
-                                'Combo2':[],
-                                'Label4':[],
-                                'Check1':[],
-                                'Frame2':[],
-                                'Label5':[],
-                                'Label6':[],
-                                'Combo4':[],
-                                'Sheet1':[],
-                                'Label4':[],
-                                'Frame3':[],
-                                'Label7':[],
-                                'Sheet2':[],
-                                'Check2':[],
-                                'Check3':[],
-                                'Frame4':[],
-                                'Label8':[],
-                                'Sheet3':[],
-                                'ButtonTrain':[],
-                                'ButtonCont':[],
-                                'ButtonBack':[],
-                                'Help':[]
-                                },
-                    'UseMod':{
-                                'LabelMT':[],
-                                'LabelM':[],
-                                'LabelC':[],
-                                'EntryC':[],
-                                'Canvas1':[],
-                                'Toolbar1':[],
-                                'LabelX':[],
-                                'LabelY':[],
-                                'LabelS':[],
-                                'EntryX':[],
-                                'EntryY':[],
-                                'EntryS':[],
-                                'ButtonS':[],
-                                'ButtonSave':[],
-                                'ButtonDisc':[],
-                                'LabelTitle':[],
-                                'ButtonLoadM':[],
-                                'ButtonLoadI':[],
-                                'ButtonSeg':[],
-                                'ButtonCont':[],
-                                'ButtonHome':[],
-                                'Help':[]
-                                },
-                    'RUC':{
-                                'LabelCol':[],
-                                'LabelCol2':[],
-                                'SheetCol':[],
-                                'Canvas2':[],
-                                'Toolbar2':[],
-                                'SliderX':[],
-                                'SliderY':[],
-                                'LabelExp':[],
-                                'ComboExp':[],
-                                'LabelConv':[],
-                                'LabelConvX':[],
-                                'EntryConvX':[],
-                                'LabelConvY':[],
-                                'EntryConvY':[],
-                                'ButtonExp':[],
-                                'LabelSeg':[],
-                                'Canvas1':[],
-                                'LabelRUC':[],
-                                'LabelSubX':[],
-                                'EntryXL':[],
-                                'EntryXU':[],
-                                'EntryXV':[],
-                                'LabelSubY':[],
-                                'EntryYL':[],
-                                'EntryYU':[],
-                                'EntryYV':[],
-                                'ButtonRUC':[],
-                                'ButtonExp':[],
-                                'LabelTitle':[],
-                                'ButtonFile':[],
-                                'ButtonHome':[],
-                                'Help':[]
-                                }
-    }
+                'MainPage':{},
+                'FileSelect':{},
+                'Resize':{},
+                'Crop':{},
+                'Segment':{},
+                'Review':{},
+                'DataDef':{},
+                'Train':{},
+                'UseMod':{},
+                'RUC':{}
+                }
     
     # 2560 x 1440
     if res == "2560x1440":
         # -- Main Page
-        Placement['MainPage']['Title'] = [0.5, 0.015, 1.75]
+        Placement['MainPage']['Title'] = [0.5, 0.015, 1.1]
         Placement['MainPage']['Logo'] = [0.999, 0.045, 1]
         Placement['MainPage']['Frame1'] = [0.35, 0.5, 3, 400, 400]
         Placement['MainPage']['Label1'] = [0.5, 0.1]
@@ -442,13 +241,13 @@ def Placements(self, res):
     # 1536 x 960
     if res == "1536x960":
         # -- Main Page
-        Placement['MainPage']['Title'] = [0.5, 0.005, 1.5]
+        Placement['MainPage']['Title'] = [0.5, 0.005, 0.8]
         Placement['MainPage']['Logo'] = [0.999, 0.045, 0.8]
-        Placement['MainPage']['Frame1'] = [0.35, 0.5, 3, 300, 300]
+        Placement['MainPage']['Frame1'] = [0.35, 0.5, 3, 400, 300]
         Placement['MainPage']['Label1'] = [0.5, 0.1]
         Placement['MainPage']['Button1'] = [0.5, 0.4, 15]
         Placement['MainPage']['Button2'] = [0.5, 0.75, 15]
-        Placement['MainPage']['Frame2'] = [0.65, 0.5, 3, 300, 300]
+        Placement['MainPage']['Frame2'] = [0.65, 0.5, 3, 400, 300]
         Placement['MainPage']['Label2'] = [0.5, 0.1]
         Placement['MainPage']['Button3'] = [0.5, 0.4, 15]
         Placement['MainPage']['Button4'] = [0.5, 0.75, 15]
