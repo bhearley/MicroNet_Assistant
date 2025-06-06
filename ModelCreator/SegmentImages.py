@@ -690,6 +690,12 @@ def SegmentImages(self,window):
                                     break
 
                                 else:
+                                    # Create the directory
+                                    try:
+                                        os.mkdir(def_direc)
+                                    except:
+                                        pass
+
                                     # Copy model to default directory
                                     shutil.copy(model_path,os.path.join(def_direc,os.path.basename(model_path)))
 
