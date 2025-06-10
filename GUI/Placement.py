@@ -221,7 +221,7 @@ def Placements(self, res):
         Placement['RUC']['LabelSeg'] = [0.175, 0.175,]
         Placement['RUC']['Canvas1'] = [0.175, 0.225, 8, 8]
         Placement['RUC']['LabelRUC'] = [0.825, .175]
-        Placement['RUC']['LabelSubX'] = [0.5, 0.2]
+        Placement['RUC']['LabelSubX'] = [0.5, 0.25]
         Placement['RUC']['EntryXL'] = [0.425, 0.329, 10]
         Placement['RUC']['EntryXU'] = [0.575, 0.329, 10]
         Placement['RUC']['EntryXV'] = [0.5, 0.2925, 10]
